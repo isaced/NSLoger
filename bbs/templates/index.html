@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+                <div class="tip">Cocoa开发者的聚集地</div>
+                <div class="line"></div>
+                <div class="tableview">
+                  {% for subject in subject_list %}
+                  <div class="cell">
+                    <div class="headimage pull-left"><a href="#"><img class="img-circle" src="http://www.startbbs.com/uploads/avatar/1/01/1_avatar_middle.jpg" /></a></div>
+                    <div class="detail pull-left">
+                      <div class="title"><a href="subject/{{ subject.id }}">{{ subject.title }}</a></div>
+                      <div class="meta">{{ subject.user}} | {{ subject.datetime}}</div>
+                    </div>
+                    <div class="reply_count pull-right"><a href="#">{{ subject.comment.count}}</a></div>
+                  </div>
+                  {% endfor %}
+                </div>
+{% endblock %}

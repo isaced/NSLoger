@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+                <div class="pull-left">
+                  <div class="subject-title">{{ subject.title }}</div>
+                  <div class="subject-meta">{{ subject.user }} 发表于 {{ subject.datetime }}</div>
+                </div>
+                <div class="subject-headimg pull-right"><img src="http://www.startbbs.com/uploads/avatar/default.jpg" /></div>
+                <div class="clearfix"></div>
+                <div class="line"></div>
+                <div class="subject-content">
+                  {{ subject.content }}
+                </div>
+
+{% endblock %}
+
+
+{% block reply %}
+                <div class="box commont">
+                  <div class="count">{{ reply_list.count }} 回复</div>
+                  <div class="line"></div>
+                  {% for reply in reply_list %}
+                  <div class="cell">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tbody><tr>
+                      <td valign="top" width="48">
+                      <a href="#" title="{{ reply.user }}">
+                        <img src="http://www.startbbs.com/uploads/avatar/default.jpg">
+                      </a>
+                      </td>
+                      <td width="10"></td>
+                      <td valign="top" width="auto">
+                      <div class="pull-right">
+                      <span >
+                        #1 - <a href="#" onclick="">回复</a>
+                      </span>
+                      </div>
+                        <a href="#" title="{{ reply.user }}">{{ reply.user }}</a>
+                      <span class="datetime">{{ reply.datetime }}</span>
+                        <div class="content reply_content">{{ reply.content }}</div>
+                        <div class="pull-right">
+                      </div>
+                      </td>
+                      </tr>
+                      </tbody></table>
+                  </div>
+                  {% endfor %}
+                </div>
+
+                <div class="box reply">
+                  <div class="title">回复</div>
+                  <div class="line"></div>
+                  <div class="text">
+                    <form class="">
+                      <textarea class="form-control" rows="3"></textarea>
+                      <button type="submit" class="btn btn-default submit-btn">回复</button>
+                    </form>
+                  </div>
+                </div>
+{% endblock %}
