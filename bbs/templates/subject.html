@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
+{% load humanize %}
+
 {% block content %}
                 <div class="pull-left">
                   <div class="subject-title">{{ subject.title }}</div>
-                  <div class="subject-meta">{{ subject.user }} 发表于 {{ subject.datetime }}</div>
+                  <div class="subject-meta">{{ subject.user }} 发表于 {{ subject.datetime|naturaltime }}</div>
                 </div>
                 <div class="subject-headimg pull-right"><img src="http://www.startbbs.com/uploads/avatar/default.jpg" /></div>
                 <div class="clearfix"></div>
@@ -36,7 +38,7 @@
                       </span>
                       </div>
                         <a href="#" title="{{ reply.user }}">{{ reply.user }}</a>
-                      <span class="datetime">{{ reply.datetime }}</span>
+                      <span class="datetime">{{ reply.datetime|naturaltime }}</span>
                         <div class="content reply_content">{{ reply.content }}</div>
                         <div class="pull-right">
                       </div>
