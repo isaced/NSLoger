@@ -52,16 +52,20 @@ body {
   padding-top: 8px;
   padding-bottom: 8px;
 }
-
-.tip{
-  padding: 10px;
+.box .box-title{
+  padding: 3px;
+  margin-left: 10px;
 }
 
-.line{
+.box .box-line{
   height: 1px;
   background-color: #eee;
   margin-bottom: 5px;
   margin-top: 5px;
+}
+.box .box-content{
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .tableview{
@@ -106,6 +110,40 @@ body {
   color: #fff;
 }
 
+/* --- user info ---*/
+.user-info .username{
+  margin-bottom: 20px;
+}
+
+.user-info .descrption{
+  color: #ccc;
+}
+.user-info .comment-header{
+  background-color: #EDF3F5;
+  color: #999;
+  height: 38px;
+  padding-top: 10px;
+  padding-left: 10px;
+  font-size: 13px;
+}
+.user-info .comment-header .reply-date{
+  color: #999;
+  margin-right: 10px;
+
+}
+
+.user-info .arrow{
+  margin-top: -20px;
+  margin-left: 20px;  
+  color: #EDF3F5;
+}
+.user-info .comment-content{
+  font-size: 13px;
+  margin-left: 20px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
 /* --- Subject Detail --- */
 .subject-title{
   margin-left: 8px;
@@ -124,36 +162,31 @@ body {
 .subject-content{
   margin: 20px;
 }
-.commont{
+
+
+/* --- reply --- */
+.comment{
   margin-top: 10px;
 }
 
-/* --- reply --- */
-.commont .headimage{
+.comment .headimage{
   margin-left: 10px;
   width: 60px;
   height: 60px;
 }
-.commont .count{
-  margin-left: 10px;
-}
-.commont .content{
+.comment .content{
   margin-top: 5px;
 }
-.commont .datetime{
+.comment .datetime{
   color: #ccc;
   margin-left: 10px;
   font-size: 13px;
 }
-.commont .cell{
+.comment .cell{
   height: auto;
   margin: 10px;
 }
 
-
-.reply .title{
-  margin-left: 10px;
-}
 .reply .text{
   margin:10px;
 }
