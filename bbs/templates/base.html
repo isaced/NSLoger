@@ -67,18 +67,13 @@
         
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-8">
-              <div class="box">
-                {% block content %}
-
-                {% endblock %}
-              </div>
-
+              {% block content %}   {% endblock %}
               {% block reply %}   {% endblock %}
             </div>
             <div class="col-xs-12 col-xs-12 col-sm-6 col-md-4">
               <div class="box right-bar">
-                <div class="title">登陆</div>
-                <div class="line"></div>
+                <div class="box-title">登陆</div>
+                <div class="box-line"></div>
                 <div class="content">
                   <!-- Login Form -->
                     <form class="form-horizontal" role="form">
@@ -106,9 +101,9 @@
 
               </div>
               <div class="box right-bar">
-                <div class="title">Ad</div>
-                <div class="line"></div>
-                <div class="content">
+                <div class="box-title">Ad</div>
+                <div class="box-line"></div>
+                <div class="box-content">
                   <img class="img-thumbnail" src="{% static "img/right-image1.jpg" %}" />
               </div>
               </div>

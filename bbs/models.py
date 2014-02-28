@@ -10,7 +10,7 @@ class Comment(models.Model):
     datetime = models.DateTimeField(auto_now_add=True,verbose_name='回复时间')
     user = models.ForeignKey(User,verbose_name='作者')
     def __unicode__(self):
-        return self.title
+        return "comment:" + self.user.username
     
 class Subject(models.Model):
     title = models.CharField(max_length=50,verbose_name='标题')     
