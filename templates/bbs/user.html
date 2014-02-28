@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+
+    {% if user %}
+                <div class="user-info">
+                    <div class="box">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="73" valign="top" align="center"><img src="http://9429127371.a.uxengine.net/avatar/3d32294e2391a8f08b80e096d0d34f97?s=73&amp;d=http%3A%2F%2Fcdn.v2ex.com%2Fstatic%2Fimg%2Favatar_large.png" class="avatar" border="0" align="default">
+                                        </td>
+                                        <td width="10"></td>
+                                        <td width="auto" valign="top" align="left">
+                                            <h1 class="username">{{ user.username }}</h1>
+                                            <span class="descrption">
+                                                NSLoger 第 {{ user.id }} 号会员，加入于 {{ user.date_joined|date:"Y-m-d H:i" }}
+                                            </span>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    <div class="box">
+                        <div class="box-title">最近发表的主题</div>
+                        <div class="box-line"></div>
+                        <div class="box-content">
+                            <div class="tableview">
+                                {% for subject in subject_list %}
+                                <div class="cell">
+                                  <div class="detail pull-left">
+                                    <div class="title"><a href="{% url 'subject' subject.id %}">{{ subject.title }}</a></div>
+                                    <div class="meta"><a href="{% url 'user' subject.user.id %}">{{ subject.user}}</a> | {{ subject.datetime|naturaltime }}</div>
+                                  </div>
+                                  <div class="reply_count pull-right"><a href="#">{{ subject.comment.count}}</a></div>
+                                </div>
+                                {% endfor %}
+                              </div>
+                        </div>
+                    </div>
+
+
+                <div class="box">
+                        <div class="box-title">最近回复的主题</div>
+                        <div class="box-line"></div>
+                        <div class="comment-list">
+                                {% for comment in comment_list %}
+                                    <div class="comment-header">
+                                        回复了XXXX
+                                        <div class="reply-date pull-right">3秒前</div>
+                                    </div>
+                                    <span class="caret arrow"></span>
+                                    <div class="comment-content">回复内容～～</div>
+                                {% endfor %}
+                        </div>
+                </div>
+
+            </div>
+    {% else %}
+
+    {% endif %}
+
+{% endblock %}
