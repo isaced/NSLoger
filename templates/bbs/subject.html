@@ -7,7 +7,7 @@
                 <div class="box">
                   <div class="pull-left">
                     <div class="subject-title">{{ subject.title }}</div>
-                    <div class="subject-meta"><a href="{% url 'user' subject.user.id %}">{{ subject.user}}</a> 发表于 {{ subject.datetime|naturaltime }}</div>
+                    <div class="subject-meta"><a href="#">{{ subject.user}}</a> 发表于 {{ subject.datetime|naturaltime }}</div>
                   </div>
                   <div class="subject-headimg pull-right"><img src="http://www.startbbs.com/uploads/avatar/default.jpg" /></div>
                   <div class="clearfix"></div>
@@ -39,7 +39,7 @@
                         #1 - <a href="#" onclick="">回复</a>
                       </span>
                       </div>
-                        <a href="{% url 'user' reply.user.id %}">{{ reply.user}}</a>
+                        <a href="#">{{ reply.user}}</a>
                       <span class="datetime">{{ reply.datetime|naturaltime }}</span>
                         <div class="content reply_content">{{ reply.content }}</div>
                         <div class="pull-right">

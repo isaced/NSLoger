@@ -10,14 +10,14 @@ from django.contrib.auth.models import User
 def index(request):
     '''首页'''
     subject_list = Subject.objects.all()
-    return render_to_response("index.html",{'subject_list':subject_list})
+    return render_to_response("bbs/index.html",{'subject_list':subject_list})
 
 def subject(request,subject_id):
     '''主题详情'''
     subject = Subject.objects.get(id=subject_id)
     if subject:
         reply_list = Comment.objects.filter(subject=subject)
-        return render_to_response("subject.html",{'subject':subject,'reply_list':reply_list})
+        return render_to_response("bbs/subject.html",{'subject':subject,'reply_list':reply_list})
     else:
         return render_to_response("404.html")
 
@@ -27,7 +27,7 @@ def user(request,user_id):
     if user:
         sbject_list = Subject.objects.all()
         comment_list = Comment.objects.filter(user=user)
-    return render_to_response("user.html",{"user":user,"subject_list":sbject_list,"comment_list":comment_list})
+    return render_to_response("bbs/user.html",{"user":user,"subject_list":sbject_list,"comment_list":comment_list})
 
 def login(request):
     '''登陆'''

@@ -11,8 +11,8 @@
                     <div class="cell">
                       <div class="headimage pull-left"><a href="#"><img class="img-circle" src="http://www.startbbs.com/uploads/avatar/1/01/1_avatar_middle.jpg" /></a></div>
                       <div class="detail pull-left">
-                        <div class="title"><a href="{% url 'subject' subject.id %}">{{ subject.title }}</a></div>
-                        <div class="meta"><a href="{% url 'user' subject.user.id %}">{{ subject.user}}</a> | {{ subject.datetime|naturaltime }}</div>
+                        <div class="title"><a href="{% url 'bbs:subject' subject.id %}">{{ subject.title }}</a></div>
+                        <div class="meta"><a href="#">{{ subject.user}}</a> | {{ subject.datetime|naturaltime }}</div>
                       </div>
                       <div class="reply_count pull-right"><a href="#">{{ subject.comment.count}}</a></div>
                     </div>
