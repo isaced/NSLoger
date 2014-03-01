@@ -4,7 +4,11 @@
 
 {% block content %}
                 <div class="box">
-                  <div class="box-title">Cocoa开发者的聚集地</div>
+                    <ol class="breadcrumb">
+                        <li><a href="/">首页</a></li>
+                        <li>所有话题</li>
+                    </ol>
+                  <div class="clearfix"></div>
                   <div class="box-line"></div>
                   <div class="tableview">
                     {% for topic in topic_list %}
@@ -23,28 +27,31 @@
                     {% endfor %}
                   </div>
                   <div>
-                    <ul class="pager">
-                      <li class="next"><a href="{% url 'bbs:recent' %}">更多话题</a></li>
-                    </ul>
-                  </div>
-              </div>
+                    <div class="box-line"></div>
+                    <ul class="pager text-muted">
 
-              <div class="panel panel-default">
-                  <div class="panel-heading">节点导航</div>
-                  <div class="panel-body">  
-                      <ul class="node-panel">
-                      {% for item in nodes %}
-                        <li>
-                          <div class="row text-muted node-line">
-                              <div class="col-xs-2 category-name">{{item.category_name}}</div>
-                              <div class="col-xs-10">
-                                {% for node in item.category_nodes %}
-                                      <a class="node-name" href="/node/{{node.slug}}">{{ node.name }}</a>
-                                  {% endfor %}
-                              </div>
-                            </div>
+                      {% if topic_list.has_previous %}
+                        <li class="previous">
+                          <a href="?page={{ topic_list.previous_page_number }}">&larr;上一页</a>
                         </li>
-                        {% endfor %}
+                      {% else %}
+                        <li class="previous disabled">
+                          <a href="#">&larr;上一页</a>
+                        </li>
+                      {% endif %}
+
+                      <li>第{{ topic_list.number }}页，共{{ topic_list.paginator.num_pages }}页</li>
+
+
+                      {% if topic_list.has_next %}
+                        <li class="next">
+                          <a href="?page={{ topic_list.next_page_number }}">下一页 &rarr;</a>
+                        </li>
+                      {% else %}
+                        <li class="next disabled">
+                          <a href="#">下一页 &rarr;</a>
+                        </li>
+                      {% endif %}
                     </ul>
                   </div>
               </div>

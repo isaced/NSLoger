@@ -94,3 +94,6 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
+
+# Constant Define
+NUM_TOPICS_PER_PAGE = 5

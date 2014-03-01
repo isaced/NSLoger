@@ -109,6 +109,11 @@ body {
   margin-top: -5px;
 }
 
+.pager{
+  margin: 8px;
+  margin-top: 15px;
+}
+
 /* --- Node --- */
 .node{
   font-size:12px;
