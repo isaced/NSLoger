@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
+from django.http import Http404
 
 from models import Topic,Comment,Category,Node
 
@@ -20,12 +21,18 @@ def index(request):
 
 def topic(request,topic_id):
     '''主题详情'''
-    topic = Topic.objects.get(id=topic_id)
-    if topic:
-        comment_list = Comment.objects.filter(topic=topic)
-        return render_to_response("bbs/topic.html",{'topic':topic,'comment_list':comment_list})
-    else:
-        return render_to_response("404.html")
+    try:
+        topic = Topic.objects.get(id=topic_id)
+    except Topic.DoesNotExist:
+        raise Http404
+
+    topic.num_views += 1
+    topic.save()
+
+    comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
+
+    return render_to_response("bbs/topic.html",{'topic':topic,'comment_list':comment_list})
+
 
 def node(request, node_slug):
     '''节点页'''
