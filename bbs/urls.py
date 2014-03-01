@@ -6,5 +6,6 @@ from bbs import views
 
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),
-        url(r'subject/(?P<subject_id>\d)/$', views.subject, name="subject"),
+        url(r't/(?P<topic_id>\d)/$', views.topic, name="topic"),
+        url(r'^node/(\w+)/?$',views.node,name="node"),
         )

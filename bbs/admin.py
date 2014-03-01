@@ -1,5 +1,7 @@
 from django.contrib import admin
-from bbs.models import Subject,Comment
+from bbs.models import Topic,Comment,Category,Node
 
-admin.site.register(Subject)
+admin.site.register(Topic)
 admin.site.register(Comment)
+admin.site.register(Category)
+admin.site.register(Node)

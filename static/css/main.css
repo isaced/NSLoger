@@ -8,15 +8,7 @@ body {
   /* The html and body elements cannot have any padding or margin. */
 }
 
-/* Wrapper for page content to push down footer */
-#wrap {
-  min-height: 100%;
-  height: auto;
-  /* Negative indent footer by its height */
-  margin: 0 auto -60px;
-  /* Pad bottom by footer height */
-  padding: 0 0 60px;
-}
+
 
 /* Set the fixed height of the footer here */
 #footer {
@@ -32,7 +24,7 @@ body {
 #wrap > .container {
   padding: 60px 15px 0;
 }
-.container .text-muted {
+#footer .container .text-muted {
   margin: 20px 0;
 }
 
@@ -40,7 +32,6 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
-
 
 /*----*/
 .box{
@@ -110,49 +101,54 @@ body {
   color: #fff;
 }
 
-/* --- user info ---*/
-.user-info .username{
-  margin-bottom: 20px;
+.breadcrumb{
+  margin-bottom: 1px;
+  background-color: #fff;
+}
+.breadcrumb .new-btn{
+  margin-top: -5px;
 }
 
-.user-info .descrption{
-  color: #ccc;
-}
-.user-info .comment-header{
-  background-color: #EDF3F5;
+/* --- Node --- */
+.node{
+  font-size:12px;
+  line-height: 10px;
+  display: inline-block;  
   color: #999;
-  height: 38px;
-  padding-top: 10px;
-  padding-left: 10px;
-  font-size: 13px;
-}
-.user-info .comment-header .reply-date{
-  color: #999;
-  margin-right: 10px;
-
+  padding: 2px 4px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  text-decoration: none;
+  background: #f5f5f5;
 }
 
-.user-info .arrow{
-  margin-top: -20px;
-  margin-left: 20px;  
-  color: #EDF3F5;
+.node-panel{
+  list-style: none;
 }
-.user-info .comment-content{
-  font-size: 13px;
-  margin-left: 20px;
-  margin-top: -10px;
+.node-panel .node-line{
+  border-bottom: 1px solid #eee;
   margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+.node-panel .category-name{
+  font-weight: bold;
+}
+
+.node-panel .node-name{
+  margin-right: 10px;
 }
 
 /* --- Subject Detail --- */
 .subject-title{
-  margin-left: 8px;
+  margin-top:8px;
+  margin-left: 10px;
   font-size: 23px;
 }
 .subject-meta{
+  margin-top: 5px;
   margin-left: 8px;
   font-size: 13px;
-  color: #ccc;
 }
 .subject-headimg{
   margin-right: 10px;
@@ -178,7 +174,6 @@ body {
   margin-top: 5px;
 }
 .comment .datetime{
-  color: #ccc;
   margin-left: 10px;
   font-size: 13px;
 }
