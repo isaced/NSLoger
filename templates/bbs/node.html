@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+                <div class="box">
+                    <ol class="breadcrumb">
+                        <li><a href="/">首页</a></li>
+                        <li>{{node.name}}</li>
+                    <a href="#" class="btn btn-sm btn-success pull-right new-btn">新话题</a>
+                    </ol>
+                  <div class="clearfix"></div>
+                  <div class="box-line"></div>
+                  <div class="tableview">
+                    {% for topic in topic_list %}
+                    <div class="cell">
+                      <div class="headimage pull-left"><a href="#"><img class="img-circle" src="http://www.startbbs.com/uploads/avatar/1/01/1_avatar_middle.jpg" /></a></div>
+                      <div class="detail pull-left">
+                        <div class="title"><a href="{% url 'bbs:topic' topic.id %}">{{ topic.title }}</a></div>
+                        <div class="meta text-muted">
+                          <a class="node" href="">{{ topic.node.name }}</a>  •  
+                          <a href="#">{{ topic.author }}</a>  •  
+                          {{ topic.created_on|naturaltime }}
+                        </div>
+                      </div>
+                      <div class="reply_count pull-right"><a href="#">{{ topic.num_comments }}</a></div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                                    <div>
+                    <div class="box-line"></div>
+                    <ul class="pager text-muted">
+
+                      {% if topic_list.has_previous %}
+                        <li class="previous">
+                          <a href="?page={{ topic_list.previous_page_number }}">&larr;上一页</a>
+                        </li>
+                      {% else %}
+                        <li class="previous disabled">
+                          <a href="#">&larr;上一页</a>
+                        </li>
+                      {% endif %}
+
+                      <li>第{{ topic_list.number }}页，共{{ topic_list.paginator.num_pages }}页</li>
+
+
+                      {% if topic_list.has_next %}
+                        <li class="next">
+                          <a href="?page={{ topic_list.next_page_number }}">下一页 &rarr;</a>
+                        </li>
+                      {% else %}
+                        <li class="next disabled">
+                          <a href="#">下一页 &rarr;</a>
+                        </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+              </div>
+{% endblock %}

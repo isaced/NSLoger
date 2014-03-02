@@ -104,3 +104,6 @@ EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "test@cloverstd.com"
 EMAIL_HOST_PASSWORD = "aa1234567"
+
+# Constant Define
+NUM_TOPICS_PER_PAGE = 5

@@ -6,14 +6,16 @@
 {% block content %}
                 <div class="box">
                   <div class="pull-left">
-                    <div class="subject-title">{{ subject.title }}</div>
-                    <div class="subject-meta"><a href="#">{{ subject.user}}</a> 发表于 {{ subject.datetime|naturaltime }}</div>
+                    <div class="subject-title">{{ topic.title }}</div>
+                    <div class="subject-meta text-muted">
+                      <a href="#">{{ topic.user}}</a> 发表于 {{ topic.created_on|naturaltime }} | {{ topic.num_views }} 次点击
+                    </div>
                   </div>
                   <div class="subject-headimg pull-right"><img src="http://www.startbbs.com/uploads/avatar/default.jpg" /></div>
                   <div class="clearfix"></div>
                   <div class="box-line"></div>
                   <div class="subject-content">
-                    {{ subject.content }}
+                    {{ topic.content }}
                   </div>
                 </div>
 {% endblock %}
@@ -21,9 +23,9 @@
 
 {% block reply %}
                 <div class="box comment">
-                  <div class="box-title">{{ reply_list.count }} 回复</div>
+                  <div class="box-title">{{ comment_list.count }} 回复</div>
                   <div class="box-line"></div>
-                  {% for reply in reply_list %}
+                  {% for comment in comment_list %}
                   <div class="cell">
                       <table border="0" cellpadding="0" cellspacing="0" width="100%">
                       <tbody><tr>
@@ -35,13 +37,13 @@
                       <td width="10"></td>
                       <td valign="top" width="auto">
                       <div class="pull-right">
-                      <span >
+                      <span class="text-muted">
                         #1 - <a href="#" onclick="">回复</a>
                       </span>
                       </div>
-                        <a href="#">{{ reply.user}}</a>
-                      <span class="datetime">{{ reply.datetime|naturaltime }}</span>
-                        <div class="content reply_content">{{ reply.content }}</div>
+                        <a href="#">{{ comment.author}}</a>
+                      <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
+                        <div class="content reply_content">{{ comment.content }}</div>
                         <div class="pull-right">
                       </div>
                       </td>

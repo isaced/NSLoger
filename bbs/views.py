@@ -1,42 +1,74 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.shortcuts import render_to_response
-from django.core.paginator import Paginator,InvalidPage,EmptyPage,PageNotAnInteger
+from django.http import Http404
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from models import Subject,Comment
-from django.contrib.auth.models import User
+from models import Topic,Comment,Category,Node
+
+from NSLoger.settings import NUM_TOPICS_PER_PAGE
 
 def index(request):
     '''首页'''
-    subject_list = Subject.objects.all()
-    return render_to_response("bbs/index.html",{'subject_list':subject_list})
+    topic_list = Topic.objects.all().order_by('-updated_on')[:NUM_TOPICS_PER_PAGE]
 
-def subject(request,subject_id):
+    nodes = []
+    categor_list = Category.objects.all()
+    for category in categor_list:
+        node = {}
+        category_nodes = Node.objects.filter(category=category.id)
+        node['category_name'] = category.name
+        node['category_nodes'] = category_nodes
+        nodes.append(node)
+
+    return render_to_response("bbs/index.html",{'topic_list':topic_list,'nodes':nodes})
+
+def recent(request):
+    topic_list = Topic.objects.all().order_by('-updated_on')
+    paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
+    page = request.GET.get('page')
+    
+    try:
+        topic_list = paginator.page(page)
+    except PageNotAnInteger:
+        topic_list = paginator.page(1)
+    except EmptyPage:
+        topic_list = paginator.page(paginator.num_pages)
+
+    return render_to_response("bbs/recent.html",{"topic_list":topic_list});
+
+def topic(request,topic_id):
     '''主题详情'''
-    subject = Subject.objects.get(id=subject_id)
-    if subject:
-        reply_list = Comment.objects.filter(subject=subject)
-        return render_to_response("bbs/subject.html",{'subject':subject,'reply_list':reply_list})
-    else:
-        return render_to_response("404.html")
 
-def user(request,user_id):
-    ''''用户信息'''
-    user = User.objects.get(id=user_id)
-    if user:
-        sbject_list = Subject.objects.all()
-        comment_list = Comment.objects.filter(user=user)
-    return render_to_response("bbs/user.html",{"user":user,"subject_list":sbject_list,"comment_list":comment_list})
+    try:
+        topic = Topic.objects.get(id=topic_id)
+    except Topic.DoesNotExist:
+        raise Http404
 
-def login(request):
-    '''登陆'''
-    return HttpResponse("login")
+    topic.num_views += 1
+    topic.save()
 
-def register(request):
-    '''用户注册'''
-    return HttpResponse("register")
+    comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
 
-def logout(request):
-    '''注销'''
-    return HttpResponse("logout")
+    return render_to_response("bbs/topic.html",{'topic':topic,'comment_list':comment_list})
+
+
+def node(request, node_slug):
+    '''节点页'''
+
+    try:
+        node = Node.objects.get(slug=node_slug)
+    except Node.DoesNotExist:
+        raise Http404
+
+    topic_list = Topic.objects.filter(node=node).order_by('-updated_on')
+    paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
+    page = request.GET.get('page')
+    
+    try:
+        topic_list = paginator.page(page)
+    except PageNotAnInteger:
+        topic_list = paginator.page(1)
+    except EmptyPage:
+        topic_list = paginator.page(paginator.num_pages)  
+
+    return render_to_response("bbs/node.html",{"node":node, "topic_list":topic_list})
