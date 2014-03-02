@@ -94,3 +94,13 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
+
+AUTH_USER_MODEL = 'people.Member'
+
+# Email setting
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.exmail.qq.com"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "test@cloverstd.com"
+EMAIL_HOST_PASSWORD = "aa1234567"
