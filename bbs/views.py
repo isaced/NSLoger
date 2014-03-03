@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,render,HttpResponseRedirect
 from django.http import Http404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.decorators import login_required
 
 from models import Topic,Comment,Category,Node
+from bbs.forms import ReplyForm, TopicForm, EditForm
 
 from NSLoger.settings import NUM_TOPICS_PER_PAGE
 
@@ -20,7 +22,7 @@ def index(request):
         node['category_nodes'] = category_nodes
         nodes.append(node)
 
-    return render_to_response("bbs/index.html",{'topic_list':topic_list,'nodes':nodes})
+    return render(request,"bbs/index.html",{'topic_list':topic_list,'nodes':nodes})
 
 def recent(request):
     topic_list = Topic.objects.all().order_by('-updated_on')
@@ -49,8 +51,31 @@ def topic(request,topic_id):
 
     comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
 
-    return render_to_response("bbs/topic.html",{'topic':topic,'comment_list':comment_list})
+    form = ReplyForm()
+    return render(request,"bbs/topic.html",{'topic':topic,'comment_list':comment_list,'form':form})
 
+@login_required
+def reply(request, topic_id):
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            try:
+                topic = Topic.objects.get(id=topic_id)
+            except Topic.DoesNotExist:
+                raise Http404
+            comment.topic = topic
+            comment.save()
+            
+            topic.num_replies += 1
+            topic.updated_on = timezone.now()
+            # topic.last_reply = request.user
+            topic.save()
+            
+            return HttpResponseRedirect('/t/' + topic_id)
+
+    return HttpResponseRedirect('/t/' + topic_id)
 
 def node(request, node_slug):
     '''节点页'''
@@ -71,4 +96,4 @@ def node(request, node_slug):
     except EmptyPage:
         topic_list = paginator.page(paginator.num_pages)  
 
-    return render_to_response("bbs/node.html",{"node":node, "topic_list":topic_list})
+    return render(request,"bbs/node.html",{"node":node, "topic_list":topic_list})
