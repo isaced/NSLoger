@@ -19,7 +19,7 @@
                           {{ topic.created_on|naturaltime }}
                         </div>
                       </div>
-                      <div class="reply_count pull-right"><a href="#">{{ topic.num_comments }}</a></div>
+                      <div class="reply_count pull-right"><a href="{% url 'bbs:topic' topic.id %}">{{ topic.num_comments }}</a></div>
                     </div>
                     {% endfor %}
                   </div>

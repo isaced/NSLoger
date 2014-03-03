@@ -7,34 +7,41 @@
                 <div class="box">
                   <div class="box-title">登录</div>
                   <div class="box-line"></div>
+                  <div class="box-content">
+
                   {% if messages %}
-                    <div class="alert alert-info" style="margin-bottom: 0px;">
+                    <div class="alert alert-danger" style="margin-bottom: 0px;">
                         {% for message in messages %}{{ message }}{% endfor %}
                     </div>
                   {% endif %}
-                  <form action="{% url 'user:login' %}" method=POST>{% csrf_token %}
-                  {% for field in form %}
-                  <div class="form-group">
-                      <label for="{{ field.id }}" class="control-label">{{ field.label }}：</label>
-                      {{ field }}
-                      {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
-                      {% if field.errors %}
-                      <label>
-                        <ul class="list-inline">
-                        {% for item in field.errors %}
-                            <li><p class="form-control-static text-danger">{{ item }}</p></li>
-                        {% endfor %}
-                        </ul>
-                      </label>
-                      {% endif %}
-                  </div>
-                  {% endfor %}
-                  <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="auto"> 下次自动登录
-                    </label>
-                  </div>
-                  <button type="submit" class="btn btn-defualt">登录</button>
-                </form>
+
+                    <form class="form-horizontal" role="form" action="{% url 'user:login' %}" method=POST>{% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id }}" class="col-sm-3 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-5">
+                          <input type="email" class="form-control" name="{{ field.html_name }}" value="{{ field.value |default_if_none:""}}">
+                          {% if field.help_text %}
+                            <span class="help-block">{{field.help_text}}</span>
+                          {% endif %}
+                        </div>
+                        {% if field.errors %}
+                        <label>
+                          <ul class="list-inline">
+                          {% for item in field.errors %}
+                              <li><p class="form-control-static text-danger">{{ item }}</p></li>
+                          {% endfor %}
+                          </ul>
+                        </label>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                        <div class="form-group">
+                          <div class="col-sm-offset-3 col-sm-10">
+                            <button type="submit" class="btn btn-default">登陆</button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
               </div>
 {% endblock %}
