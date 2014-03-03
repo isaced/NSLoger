@@ -40,7 +40,7 @@
                         </li>
                       {% endif %}
 
-                      <li>第{{ topic_list.number }}页，共{{ topic_list.paginator.num_pages }}页</li>
+                      <li>{{ topic_list.number }}/{{ topic_list.paginator.num_pages }}</li>
 
 
                       {% if topic_list.has_next %}

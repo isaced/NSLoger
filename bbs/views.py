@@ -3,6 +3,8 @@ from django.shortcuts import render_to_response,render,HttpResponseRedirect
 from django.http import Http404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 from models import Topic,Comment,Category,Node
 from bbs.forms import ReplyForm, TopicForm, EditForm
@@ -68,14 +70,12 @@ def reply(request, topic_id):
             comment.topic = topic
             comment.save()
             
-            topic.num_replies += 1
+            topic.num_comments += 1
             topic.updated_on = timezone.now()
             # topic.last_reply = request.user
             topic.save()
-            
-            return HttpResponseRedirect('/t/' + topic_id)
 
-    return HttpResponseRedirect('/t/' + topic_id)
+    return HttpResponseRedirect(reverse("bbs:topic" ,args=topic_id))
 
 def node(request, node_slug):
     '''节点页'''
@@ -97,3 +97,30 @@ def node(request, node_slug):
         topic_list = paginator.page(paginator.num_pages)  
 
     return render(request,"bbs/node.html",{"node":node, "topic_list":topic_list})
+
+@login_required
+def new(request, node_slug):
+    context = {}
+    try:
+        node = Node.objects.get(slug=node_slug)
+    except Node.DoesNotExist:
+        raise Http404
+    
+    if request.method == 'GET':
+        form = TopicForm()
+        context['node'] = node
+        context['form'] = form
+        return render(request,'bbs/new.html',context)
+    
+    form = TopicForm(request.POST)
+    if form.is_valid():
+        topic = form.save(commit=False)
+        topic.node = node
+        topic.author = request.user
+        # topic.last_reply = request.user
+        topic.updated_on = timezone.now()
+        topic.save()
+        # node.num_topics += 1
+        node.save()
+        
+    return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))

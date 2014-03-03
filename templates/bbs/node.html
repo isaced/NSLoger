@@ -7,7 +7,7 @@
                     <ol class="breadcrumb">
                         <li><a href="/">首页</a></li>
                         <li>{{node.name}}</li>
-                    <a href="#" class="btn btn-sm btn-success pull-right new-btn">新话题</a>
+                    <a href="{% url 'bbs:new' node.slug %}" class="btn btn-sm btn-success pull-right new-btn">新主题</a>
                     </ol>
                   <div class="clearfix"></div>
                   <div class="box-line"></div>
@@ -41,7 +41,7 @@
                         </li>
                       {% endif %}
 
-                      <li>第{{ topic_list.number }}页，共{{ topic_list.paginator.num_pages }}页</li>
+                      <li>{{ topic_list.number }}/{{ topic_list.paginator.num_pages }}</li>
 
 
                       {% if topic_list.has_next %}
