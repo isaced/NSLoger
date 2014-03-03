@@ -3,6 +3,8 @@ from django.shortcuts import render_to_response,render,HttpResponseRedirect
 from django.http import Http404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 from models import Topic,Comment,Category,Node
 from bbs.forms import ReplyForm, TopicForm, EditForm
@@ -68,14 +70,12 @@ def reply(request, topic_id):
             comment.topic = topic
             comment.save()
             
-            topic.num_replies += 1
+            topic.num_comments += 1
             topic.updated_on = timezone.now()
             # topic.last_reply = request.user
             topic.save()
-            
-            return HttpResponseRedirect('/t/' + topic_id)
 
-    return HttpResponseRedirect('/t/' + topic_id)
+    return HttpResponseRedirect(reverse("bbs:topic" ,args=topic_id))
 
 def node(request, node_slug):
     '''节点页'''
