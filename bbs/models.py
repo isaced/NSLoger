@@ -16,7 +16,8 @@ class Node(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(blank=True, null=True)
+    updated_on = models.DateTimeField(blank=True, null=True,auto_now=True)
+    num_topics = models.IntegerField(default=0)
     category = models.ForeignKey(Category)
 
     def __unicode__(self):
@@ -29,9 +30,10 @@ class Topic(models.Model):
     author = models.ForeignKey(User,verbose_name='作者')
     num_views = models.IntegerField(default=0,verbose_name='浏览量')
     num_comments = models.IntegerField(default=0,verbose_name='评论数')
+    last_reply = models.ForeignKey(User,related_name='+')
     datetime = models.DateTimeField(auto_now_add=True,verbose_name='发表时间')
     created_on = models.DateTimeField(auto_now_add=True,verbose_name='更新时间')
-    updated_on = models.DateTimeField(blank=True, null=True)
+    updated_on = models.DateTimeField(auto_now=True,blank=True, null=True)
 
     def __unicode__(self):
         return self.title

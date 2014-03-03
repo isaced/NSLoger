@@ -72,7 +72,7 @@ def reply(request, topic_id):
             
             topic.num_comments += 1
             topic.updated_on = timezone.now()
-            # topic.last_reply = request.user
+            topic.last_reply = request.user
             topic.save()
 
     return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
@@ -117,10 +117,10 @@ def new(request, node_slug):
         topic = form.save(commit=False)
         topic.node = node
         topic.author = request.user
-        # topic.last_reply = request.user
+        topic.last_reply = request.user
         topic.updated_on = timezone.now()
         topic.save()
-        # node.num_topics += 1
+        node.num_topics += 1
         node.save()
         
     return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
