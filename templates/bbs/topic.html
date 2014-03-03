@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% load humanize %}
-
+{% load gravatar %}
 
 {% block content %}
                 <div class="box">
@@ -14,7 +14,7 @@
                       By <a href="#">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击
                     </div>
                   </div>
-                  <div class="subject-headimg pull-right"><img src="http://www.startbbs.com/uploads/avatar/default.jpg" /></div>
+                  <div class="subject-headimg pull-right"><img src="{% gravatar topic.author 60 %}" /></div>
                   <div class="clearfix"></div>
                   <div class="box-line"></div>
                   <div class="subject-content">
@@ -34,7 +34,7 @@
                       <tbody><tr>
                       <td valign="top" width="48">
                       <a href="#" title="{{ reply.user }}">
-                        <img src="http://www.startbbs.com/uploads/avatar/default.jpg">
+                        <img src="{% gravatar comment.author 60 %}">
                       </a>
                       </td>
                       <td width="10"></td>

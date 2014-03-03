@@ -79,7 +79,8 @@
                                     <tr>
                                       <td width="60" valign="top">
                                         <a href="/member/isaced">
-                                          <img src="http://9429127371.a.uxengine.net/avatar/3d32294e2391a8f08b80e096d0d34f97?s=48&amp;d=http%3A%2F%2Fcdn.v2ex.com%2Fstatic%2Fimg%2Favatar_large.png" class="avatar" border="0" align="default" style="max-width: 60px; max-height: 60px;"></a>
+                                          {% load gravatar %}
+                                          <img src="{% gravatar user 60 %}" class="avatar" border="0" align="default" style="max-width: 60px; max-height: 60px;"></a>
                                         </td>
                                       <td width="10" valign="top"></td>
                                       <td width="auto" align="left">
