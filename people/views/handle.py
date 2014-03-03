@@ -81,5 +81,5 @@ def logout(request):
 
 
 def user(request, uid):
-    user = Member.objects.get(pd=uid)
+    user_from_id = Member.objects.get(pk=uid)
     return render(request, "people/user.html", locals())
