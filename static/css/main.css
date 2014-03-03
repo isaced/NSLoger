@@ -112,7 +112,13 @@ body {
 .breadcrumb .new-btn{
   margin-top: -5px;
 }
-
+.topic_breadcrumb{
+  margin-left: 10px;
+  color: #999;
+}
+.topic_breadcrumb a{
+  color: #999;
+}
 .pager{
   margin: 8px;
   margin-top: 15px;
@@ -150,15 +156,20 @@ body {
 
 /* --- Subject Detail --- */
 .subject-title{
-  margin-top:8px;
+  margin-top:10px;
   margin-left: 10px;
-  font-size: 23px;
+  margin-bottom: 10px;
+  font-size: 25px;
 }
 .subject-meta{
   margin-top: 5px;
   margin-left: 8px;
-  font-size: 13px;
+  font-size: 12px;
 }
+.subject-meta a{
+  color: #999;
+}
+
 .subject-headimg{
   margin-right: 10px;
   width: 60px;

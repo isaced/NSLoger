@@ -75,7 +75,7 @@ def reply(request, topic_id):
             # topic.last_reply = request.user
             topic.save()
 
-    return HttpResponseRedirect(reverse("bbs:topic" ,args=topic_id))
+    return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
 
 def node(request, node_slug):
     '''节点页'''
