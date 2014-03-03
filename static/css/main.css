@@ -16,6 +16,9 @@ body {
   background-color: #f5f5f5;
 }
 
+.center{
+  text-align: center;
+}
 
 /* Custom page CSS
 -------------------------------------------------- */
@@ -55,6 +58,7 @@ body {
   margin-top: 5px;
 }
 .box .box-content{
+  padding-top: 5px;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -206,4 +210,16 @@ body {
 }
 .right-bar .content{
   margin-left: 10px;
+}
+
+.userinfo .username{
+  font-size: 25px;
+}
+.userinfo .td-line{
+  border-left: 1px solid #ccc; 
+  border-right: 1px solid #ccc;
+}
+.userinfo .notice{
+  margin-top: 10px;
+  font-size: 13px;
 }
