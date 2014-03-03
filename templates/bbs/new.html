@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+                <div class="box">
+                    <ol class="breadcrumb">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="{% url 'bbs:node' node.slug %}">{{node.name}}</a></li>
+                        <li>新主题</li>
+                    </ol>
+                  <div class="clearfix"></div>
+                  <div class="box-line"></div>
+                  <div class="box-content">
+                    <form role="form" action="{% url 'bbs:new' node.slug %}" method="post" class="form-vertical">
+                      {% csrf_token %}
+                      {% for field in form %}
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">{{ field.label }}:</label>
+                        {{field}}
+                      </div>
+                        {% endfor %}
+                      <button type="submit" class="btn btn-default">发布</button>
+                    </form>
+                  </div>
+              </div>
+{% endblock %}

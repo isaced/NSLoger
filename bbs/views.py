@@ -97,3 +97,30 @@ def node(request, node_slug):
         topic_list = paginator.page(paginator.num_pages)  
 
     return render(request,"bbs/node.html",{"node":node, "topic_list":topic_list})
+
+@login_required
+def new(request, node_slug):
+    context = {}
+    try:
+        node = Node.objects.get(slug=node_slug)
+    except Node.DoesNotExist:
+        raise Http404
+    
+    if request.method == 'GET':
+        form = TopicForm()
+        context['node'] = node
+        context['form'] = form
+        return render(request,'bbs/new.html',context)
+    
+    form = TopicForm(request.POST)
+    if form.is_valid():
+        topic = form.save(commit=False)
+        topic.node = node
+        topic.author = request.user
+        # topic.last_reply = request.user
+        topic.updated_on = timezone.now()
+        topic.save()
+        # node.num_topics += 1
+        node.save()
+        
+    return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
