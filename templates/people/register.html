@@ -7,24 +7,47 @@
                 <div class="box">
                   <div class="box-title">注册</div>
                   <div class="box-line"></div>
-                  <form action="{% url 'user:register' %}" method=POST>{% csrf_token %}
-                  {% for field in form %}
-                  <div class="form-group">
-                      <label for="{{ field.id }}" class="control-label">{{ field.label }}：</label>
-                      {{ field }}
-                      {% if field.help_text %}<span class="help-block">{{field.help_text}}</span>{% endif %}
-                      {% if field.errors %}
-                      <label>
-                        <ul class="list-inline">
-                        {% for item in field.errors %}
-                            <li><p class="form-control-static text-danger">{{item}}</p></li>
-                        {% endfor %}
-                        </ul>
-                      </label>
-                      {% endif %}
+                  <div class="box-content">
+                    <form class="form-horizontal" role="form" action="{% url 'user:register' %}" method="POST">
+                      {% csrf_token %}
+                      {% for field in form %}
+                      <div class="form-group">
+                        <label for="{{ field.id }}" class="col-sm-3 control-label">{{ field.label }}：</label>
+                        <div class="col-sm-5">
+                          <input type="email" class="form-control" name="{{ field.html_name }}" value="{{ field.value |default_if_none:""}}">
+                          {% if field.help_text %}
+                            <span class="help-block">{{field.help_text}}</span>
+                          {% endif %}
+                        </div>
+                        <div class="col-sm-4">
+                          {% if field.errors %}
+                            <label>
+                              <ul class="list-inline">
+                              {% for item in field.errors %}
+                                  <li><p class="form-control-static text-danger">{{item}}</p></li>
+                              {% endfor %}
+                              </ul>
+                            </label>
+                        {% endif %}
+                        </div>
+
+                      </div>
+                      {% endfor %}
+                      <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"> 记住密码
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                          <button type="submit" class="btn btn-default">注册</button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                  {% endfor %}
-                  <button type="submit" class="btn btn-defualt">注册</button>
-                </form>
               </div>
 {% endblock %}
