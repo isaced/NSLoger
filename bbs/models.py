@@ -34,7 +34,7 @@ class Topic(models.Model):
     last_reply = models.ForeignKey(User,related_name='+',verbose_name='最后回复者')
     datetime = models.DateTimeField(auto_now_add=True,verbose_name='发表时间')
     created_on = models.DateTimeField(auto_now_add=True,verbose_name='更新时间')
-    updated_on = models.DateTimeField(auto_now=True,blank=True, null=True)
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
         return self.title
