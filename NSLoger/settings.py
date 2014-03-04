@@ -106,7 +106,7 @@ EMAIL_HOST_USER = "test@cloverstd.com"
 EMAIL_HOST_PASSWORD = "aa1234567"
 
 # Constant Define
-NUM_TOPICS_PER_PAGE = 5
+NUM_TOPICS_PER_PAGE = 10
 
 # Gravtar Define
 GRAVATAR_DEFAULT_IMAGE = ""

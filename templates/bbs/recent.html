@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load humanize %}
+{% load gravatar %}
 
 {% block content %}
                 <div class="box">
@@ -13,7 +14,7 @@
                   <div class="tableview">
                     {% for topic in topic_list %}
                     <div class="cell">
-                      <div class="headimage pull-left"><a href="#"><img class="img-circle" src="http://www.startbbs.com/uploads/avatar/1/01/1_avatar_middle.jpg" /></a></div>
+                      <div class="headimage pull-left"><a href="#"><img class="img-circle" src="{% gravatar topic.author 60 %}" /></a></div>
                       <div class="detail pull-left">
                         <div class="title"><a href="{% url 'bbs:topic' topic.id %}">{{ topic.title }}</a></div>
                         <div class="meta text-muted">
