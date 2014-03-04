@@ -2,6 +2,7 @@
 
 {% load humanize %}
 {% load gravatar %}
+{% load bbstag %}
 
 {% block content %}
                 <div class="box">
@@ -18,7 +19,7 @@
                   <div class="clearfix"></div>
                   <div class="box-line"></div>
                   <div class="subject-content">
-                    {{ topic.content }}
+                    {{ topic.content|my_markdown }}
                   </div>
                 </div>
 {% endblock %}
@@ -46,7 +47,7 @@
                       </div>
                         <a href="{% url 'user:user' comment.author.id %}">{{ comment.author}}</a>
                       <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
-                        <div class="content reply_content">{{ comment.content }}</div>
+                        <div class="content reply_content">{{ comment.content|my_markdown }}</div>
                         <div class="pull-right">
                       </div>
                       </td>
