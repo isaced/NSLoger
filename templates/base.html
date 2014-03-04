@@ -50,6 +50,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">帐号<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="{% url 'user:user' user.id %}">个人主页</a></li>
+                  <li><a href="{% url 'user:password' %}">修改密码</a></li>
                   <li><a href="{% url 'user:settings' %}">设置</a></li>
                   <li class="divider"></li>
                   <li><a href="{% url 'user:logout' %}">登出</a></li>
