@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load gravatar %}
+{% load bbstag %}
+
+
+{% block content %}
+                <div class="box">
+                    <ol class="breadcrumb">
+                        <li><a href="/">NSLoger</a></li>
+                        <li>通知提醒</li>
+                        <span class="pull-right text-muted">共{{notices.count}}条</span>
+                    </ol>
+                  <div class="clearfix"></div>
+                  <div class="box-line"></div>
+                  <div>
+  {% if notices %}
+    {% for item in notices %} 
+    <div class="notice-cell"> 
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody>
+            <tr>
+                <td width="24" valign="top" align="center">
+                  <a href="{% url 'user:user' user.id %}"><img src="{% gravatar item.from_user 30 %}" class="img-rounded img-responsive" border="0" alt="{{ item.fron_user.name}}"></a>
+                </td>
+                <td width="12"></td>
+                <td width="auto" valign="middle">
+                  <p class="text-gray">
+                    <a href="{% url 'user:user' user.id %}">{{item.from_user.username}}</a> 在主题 
+                    <a href="{% url 'bbs:topic' item.topic.id %}" target="_blank">{{item.topic.title}}</a> 中回复了我 &nbsp;&nbsp;
+                    <span class="text-muted small">{{ item.time|naturaltime }}</span>
+                    {% if not item.is_readed %} &nbsp;&nbsp;
+                      <span class="label label-info">新消息</span>
+                    {% endif %}
+                  </p>
+                <p style="font-size:14px;">{{item.content}}</p>
+                </td>
+                <td width="80" align="right" valign="middle">
+                    <a href="{% url 'bbs:notice_delete' item.id %}" class="count">删除</a>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+    {% notice_set_all_readed user %}
+  {% else %}
+    <div class="item text-center text-muted" style="padding:15px 0;">没有消息</div>
+  {% endif %}
+                  </div>
+              </div>
+{% endblock %}

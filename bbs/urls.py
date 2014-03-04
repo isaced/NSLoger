@@ -11,4 +11,6 @@ urlpatterns = patterns('',
         url(r'^t/(\d+)/reply/?$',views.reply,name='reply'),
         url(r'^t/([\w-]+)/new/?$',views.new,name='new'),
         url(r'^node/(?P<node_slug>[\w-]+)/$',views.node,name="node"),
+		url(r'^notice/?$',views.notice,name='notice'),
+		url(r'^notice/(\d+)/delete/?$',views.notice_delete,name='notice_delete'),
         )

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 
-from models import Topic,Comment,Category,Node
+from models import Topic,Comment,Category,Node,Notice
 from bbs.forms import ReplyForm, TopicForm, EditForm
 
 from NSLoger.settings import NUM_TOPICS_PER_PAGE
@@ -124,3 +124,27 @@ def new(request, node_slug):
         node.save()
         
     return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
+
+@login_required
+def notice(request):
+    context = {}
+    if request.method == 'GET':
+        notices = Notice.objects.filter(to_user=request.user,is_deleted=False).order_by('-time')
+        context['notices'] = notices
+        
+        return render(request,'bbs/notice.html',context)
+
+@login_required
+def notice_delete(request, notice_id):
+    if request.method == 'GET':
+        try:
+            notice = Notice.objects.get(id=notice_id)
+        except Notice.DoesNotExist:
+            raise Http404     
+        notice.is_deleted = True
+        notice.save()
+        
+    return HttpResponseRedirect(reverse("bbs:notice"))
+
+def about(request):
+    return render(request,'bbs/about.html')

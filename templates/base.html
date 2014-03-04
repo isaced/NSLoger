@@ -114,7 +114,12 @@
                                 </tbody>
                               </table>
                               <div class="box-line"></div>
-                              <div class="notice text-muted">无通知</div>
+                              {% load bbstag %}
+                              <div class="notice">
+                                <a href="{% url 'bbs:notice' %}">
+                                  {% num_notice user %} 条未读消息
+                                </a>
+                              </div>
                             </div>
                   {% else %}
                       <div class="box-title">登陆</div>

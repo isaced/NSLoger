@@ -3,6 +3,7 @@
 from django.db import models
 #from django.contrib.auth.models import User
 from people.models import Member as User
+from django.db.models.signals import post_save
 
 # --- Model Define ---
 
@@ -46,3 +47,23 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return self.content
+
+# notice model
+class Notice(models.Model):
+    from_user = models.ForeignKey(User,related_name='+')   #not to create a backwards relation
+    to_user = models.ForeignKey(User,related_name='+')
+    topic = models.ForeignKey(Topic,null=True)
+    content = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    is_readed = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.content
+    
+def create_notice(sender, **kwargs):
+    comment = kwargs['instance']   
+    if comment.author != comment.topic.author:      # don't create notice when you reply to yourself
+        Notice.objects.create(from_user=comment.author,to_user=comment.topic.author,topic=comment.topic,content=comment.content)
+    
+post_save.connect(create_notice, sender=Comment)

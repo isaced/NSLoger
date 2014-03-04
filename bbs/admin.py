@@ -1,5 +1,5 @@
 from django.contrib import admin
-from bbs.models import Topic,Comment,Category,Node
+from bbs.models import Topic,Comment,Category,Node,Notice
 
 class TopicAdmin(admin.ModelAdmin):
 	list_display = ('title','created_on','node','author','num_comments','num_views')
@@ -16,8 +16,11 @@ class NodeAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
 	list_display = ('name',)
 
+class NoticeAdmin(admin.ModelAdmin):
+	list_display = ('from_user', 'to_user','topic','is_readed','is_deleted','time')
 
 admin.site.register(Topic,TopicAdmin)
 admin.site.register(Comment,CommentAdmin)
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Node,NodeAdmin)
+admin.site.register(Notice,NoticeAdmin)
