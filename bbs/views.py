@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 from django.shortcuts import render_to_response,render,HttpResponseRedirect
 from django.http import Http404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -7,6 +8,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 
 from models import Topic,Comment,Category,Node,Notice
+from people.models import Member as User
 from bbs.forms import ReplyForm, TopicForm, EditForm
 
 from NSLoger.settings import NUM_TOPICS_PER_PAGE
@@ -63,13 +65,32 @@ def reply(request, topic_id):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
+
             try:
                 topic = Topic.objects.get(id=topic_id)
             except Topic.DoesNotExist:
                 raise Http404
+
             comment.topic = topic
             comment.save()
             
+            # --- 解析@ ---
+
+            team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+            at_name_list = set(re.findall(team_name_pattern, comment.content))
+            if at_name_list:
+                for at_name in at_name_list:
+                    if at_name != comment.author.username and at_name != comment.topic.author.username:
+                        try:
+                            at_user = User.objects.get(username=at_name)
+                            if at_user:
+                                notice = Notice(from_user=comment.author,to_user=at_user    ,topic=comment.topic,content=comment.content)
+                                notice.save()
+                        except:
+                            pass
+
+            # --- 解析@ ---
+
             topic.num_comments += 1
             topic.updated_on = timezone.now()
             topic.last_reply = request.user
@@ -108,21 +129,21 @@ def new(request, node_slug):
     
     if request.method == 'GET':
         form = TopicForm()
-        context['node'] = node
-        context['form'] = form
-        return render(request,'bbs/new.html',context)
-    
-    form = TopicForm(request.POST)
-    if form.is_valid():
-        topic = form.save(commit=False)
-        topic.node = node
-        topic.author = request.user
-        topic.last_reply = request.user
-        topic.updated_on = timezone.now()
-        topic.save()
-        node.num_topics += 1
-        node.save()
-        
+        return render(request,'bbs/new.html',{'node':node,'form':form})
+    else:
+        form = TopicForm(request.POST)
+        if form.is_valid():
+            topic = form.save(commit=False)
+            topic.node = node
+            topic.author = request.user
+            topic.last_reply = request.user
+            topic.updated_on = timezone.now()
+            topic.save()
+            node.num_topics += 1
+            node.save()
+        else:
+            return render(request,'bbs/new.html',{'node':node,'form':form})
+
     return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
 
 @login_required
