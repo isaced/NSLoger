@@ -25,4 +25,6 @@ def num_notice(user):
 @register.filter(is_safe=True)
 @stringfilter
 def my_markdown(value):
-	return mark_safe(markdown2.markdown(force_unicode(value),extras=['fenced-code-blocks'],safe_mode=True))
+	md = markdown2.markdown(force_unicode(value),extras=['fenced-code-blocks'],safe_mode=True)
+	md = md.replace('[HTML_REMOVED]', '')
+	return mark_safe(md)
