@@ -29,10 +29,11 @@
                         <label >{{ form.title.label }}:</label>
                         <input type="text" class="form-control" name="{{ form.title.html_name }}" value="{{ form.title.value |default_if_none:""}}">
                       </div>
-
                       <div class="form-group">
                         <label>{{ form.content.label }}:</label>
-                        <textarea class="form-control" name="{{ form.content.html_name }}" rows="10">{{ form.content.value |default_if_none:""}}</textarea>
+                        <div id="epiceditor">
+                          <textarea style="display:none"  name="content" id="content" class="form-control">{{ form.content.value |default_if_none:""}}</textarea>
+                        </div>
                       </div>
 
                       <button type="submit" class="btn btn-default">发布</button>
@@ -45,4 +46,8 @@
                     <small>支持Markdown语法</small>
                   </blockquote>
               </div>
+{% endblock %}
+
+{% block footer %}
+{% include "bbs/epiceditor_script.html" %}
 {% endblock %}

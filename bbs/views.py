@@ -60,6 +60,13 @@ def topic(request,topic_id):
 
 @login_required
 def reply(request, topic_id):
+
+    try:
+        topic = Topic.objects.get(id=topic_id)
+        comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
+    except Topic.DoesNotExist:
+        raise Http404
+
     if request.method == 'POST':
         form = ReplyForm(request.POST)
         if form.is_valid():
@@ -95,8 +102,12 @@ def reply(request, topic_id):
             topic.updated_on = timezone.now()
             topic.last_reply = request.user
             topic.save()
+            return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
+    else:
+        form = ReplyForm()
 
-    return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
+    return render(request,"bbs/topic.html",{"node":node,"topic":topic,"form":form,"comment_list":comment_list})
+    
 
 def node(request, node_slug):
     '''节点页'''
@@ -127,10 +138,7 @@ def new(request, node_slug):
     except Node.DoesNotExist:
         raise Http404
     
-    if request.method == 'GET':
-        form = TopicForm()
-        return render(request,'bbs/new.html',{'node':node,'form':form})
-    else:
+    if request.method == 'POST':
         form = TopicForm(request.POST)
         if form.is_valid():
             topic = form.save(commit=False)
@@ -141,10 +149,12 @@ def new(request, node_slug):
             topic.save()
             node.num_topics += 1
             node.save()
-        else:
-            return render(request,'bbs/new.html',{'node':node,'form':form})
+            return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
+    else:
+        form = TopicForm()
 
-    return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
+    return render(request,'bbs/new.html',{'node':node,'form':form})
+    
 
 @login_required
 def notice(request):
