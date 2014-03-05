@@ -14,7 +14,7 @@
                       <div class="form-group">
                         <label for="{{ field.id }}" class="col-sm-3 control-label">{{ field.label }}：</label>
                         <div class="col-sm-5">
-                          <input type="email" class="form-control" name="{{ field.html_name }}" value="{{ field.value |default_if_none:""}}">
+                          <input type="{%if forloop.counter == 1 %}text{% elif forloop.counter == 2 or forloop.counter == 3 %}password{% elif forloop.counter == 4 %}email{% endif %}" class="form-control" name="{{ field.html_name }}" value="{{ field.value |default_if_none:""}}">
                           {% if field.help_text %}
                             <span class="help-block">{{field.help_text}}</span>
                           {% endif %}
