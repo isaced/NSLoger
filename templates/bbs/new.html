@@ -10,16 +10,39 @@
                   <div class="clearfix"></div>
                   <div class="box-line"></div>
                   <div class="box-content">
+                    {% if form.title.errors or form.content.errors %}
+                    <div>
+                        <ol class="alert alert-danger">
+                        遇到问题了：
+                        {% for field in form %}
+                          {% for error in field.errors %}
+                            <li style="margin-left:30px;">{{ error }}</li>
+                          {% endfor %}
+                        {% endfor %}
+                        </ol>
+                    </div>
+                    {% endif %}
                     <form role="form" action="{% url 'bbs:new' node.slug %}" method="post" class="form-vertical">
                       {% csrf_token %}
-                      {% for field in form %}
+
                       <div class="form-group">
-                        <label for="exampleInputEmail1">{{ field.label }}:</label>
-                        {{field}}
+                        <label >{{ form.title.label }}:</label>
+                        <input type="text" class="form-control" name="{{ form.title.html_name }}" value="{{ form.title.value |default_if_none:""}}">
                       </div>
-                        {% endfor %}
+
+                      <div class="form-group">
+                        <label>{{ form.content.label }}:</label>
+                        <textarea class="form-control" name="{{ form.content.html_name }}" rows="10">{{ form.content.value |default_if_none:""}}</textarea>
+                      </div>
+
                       <button type="submit" class="btn btn-default">发布</button>
                     </form>
                   </div>
+                </br>
+                  <blockquote>
+                    <p>简明释义</p>
+                    <small>我们鼓励分享、讨论、发表你的任何观点</small>
+                    <small>支持Markdown语法</small>
+                  </blockquote>
               </div>
 {% endblock %}
