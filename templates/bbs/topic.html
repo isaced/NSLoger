@@ -10,12 +10,12 @@
                     <div class="topic_breadcrumb">
                       <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">node</a> 
                     </div>
+                  <div class="subject-headimg pull-right"><img src="{% gravatar topic.author 60 %}" /></div>
                     <div class="subject-title">{{ topic.title }}</div>
                     <div class="subject-meta text-muted">
                       By <a href="#">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击
                     </div>
                   </div>
-                  <div class="subject-headimg pull-right"><img src="{% gravatar topic.author 60 %}" /></div>
                   <div class="clearfix"></div>
                   <div class="box-line"></div>
                   <div class="subject-content">

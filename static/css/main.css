@@ -19,6 +19,14 @@ body {
 .center{
   text-align: center;
 }
+.badge-info{
+  background-color: #AAB0C6;
+  color: white;
+}
+.badge-info a{
+  background-color: #AAB0C6;
+  color: white;
+}
 
 /* Custom page CSS
 -------------------------------------------------- */
@@ -63,46 +71,27 @@ body {
   margin-right: 10px;
 }
 
-.tableview{
-  margin-top: 10px;
-}
 .tableview .cell{
-  height: 66px;
-  margin-bottom: 5px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
 }
 .tableview .cell:hover{background:#f6f6f6}
 .tableview .cell .headimage{
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   margin-left: 5px;
-  margin-top: 3px;
+  margin-top: -3px;
 }
 .tableview .cell .detail{
-  margin-left: 10px;
+  padding-left: 65px;
 }
 .tableview .cell .detail .title{
-  margin-top: 10px;
-  font-size: 18px;
+  margin-top: 5px;
+  font-size: 16px;
 }
 .tableview .cell .detail .meta{
-  margin-top: 6px;
+  margin-top: 5px;
   font-size: 12px;
-}
-.tableview .cell .reply_count{
-  margin-right: 15px;
-  margin-top: 15px;
-  background-color: #428bca;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  padding-top: 4px;
-  font-size: 13px;
-　border-radius: 15px;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
-.tableview .cell .reply_count a{
-  color: #fff;
 }
 
 .breadcrumb{
@@ -151,7 +140,7 @@ body {
 }
 
 .node-panel .node-name{
-  margin-right: 10px;
+  margin-left: 20px;
 }
 
 /* --- Subject Detail --- */

@@ -14,24 +14,10 @@
                   <div class="box-line"></div>
                   <div class="tableview">
                     {% for topic in topic_list %}
-                    <div class="cell">
-                      <div class="headimage pull-left"><a href="#">
-                        <img class="img-circle" src="{% gravatar topic.author 60 %}" /></a>
-                      </div>
-                      <div class="detail pull-left">
-                        <div class="title"><a href="{% url 'bbs:topic' topic.id %}">{{ topic.title }}</a></div>
-                        <div class="meta text-muted">
-                          <a class="node" href="">{{ topic.node.name }}</a>  •  
-                          <a href="#">{{ topic.author }}</a>  •  
-                          {{ topic.created_on|naturaltime }}
-                        </div>
-                      </div>
-                      <div class="reply_count pull-right"><a href="#">{{ topic.num_comments }}</a></div>
-                    </div>
+                      {% include "bbs/topic_cell.html" %}
                     {% endfor %}
                   </div>
-                                    <div>
-                    <div class="box-line"></div>
+                  <div>
                     <ul class="pager text-muted">
 
                       {% if topic_list.has_previous %}
