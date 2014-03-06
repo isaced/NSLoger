@@ -67,8 +67,8 @@
               {% block content %}   {% endblock %}
               {% block reply %}   {% endblock %}
             </div>
-            <div class="col-xs-12 col-xs-12 col-sm-6 col-md-4">
-              <div class="box right-bar">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+              <div class="box right-bar hidden-xs">
                   {% if user.is_authenticated %}
                           <div class="box-content userinfo">
                               <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -129,7 +129,7 @@
                       </div>
                   {% endif %}
               </div>
-              <div class="box right-bar">
+              <div class="box right-bar hidden-xs">
                 <div class="box-title">Ad</div>
                 <div class="box-line"></div>
                 <div class="box-content">
