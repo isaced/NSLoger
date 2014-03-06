@@ -149,6 +149,24 @@ def new(request, node_slug):
             topic.save()
             node.num_topics += 1
             node.save()
+
+            # --- 解析@ ---
+
+            team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+            at_name_list = set(re.findall(team_name_pattern, topic.content))
+            if at_name_list:
+                for at_name in at_name_list:
+                    if at_name != topic.author.username:
+                        try:
+                            at_user = User.objects.get(username=at_name)
+                            if at_user:
+                                notice = Notice(from_user=topic.author,to_user=at_user,topic=topic,content='')
+                                notice.save()
+                        except:
+                            pass
+
+            # --- 解析@ ---
+
             return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
     else:
         form = TopicForm()
