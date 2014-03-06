@@ -3,8 +3,11 @@ from django import template
 from django.utils.encoding import force_unicode
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse
 from bbs.models import Notice
+from people.models import Member as User
 import markdown2
+import re
 
 register = template.Library()
 
@@ -27,4 +30,17 @@ def num_notice(user):
 def my_markdown(value):
 	md = markdown2.markdown(force_unicode(value),extras=['fenced-code-blocks'],safe_mode=True)
 	md = md.replace('[HTML_REMOVED]', '')
+
+	# @人给链接输出
+	team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+	at_name_list = set(re.findall(team_name_pattern, md))
+	if at_name_list:
+		for at_name in at_name_list:
+			try:
+				at_user = User.objects.get(username=at_name)
+				if at_user:
+					md = md.replace('@'+at_name,'<a href="%s">@%s</a>' % (reverse("user:user",args=(at_user.id,)),at_name))
+			except:
+				pass
+
 	return mark_safe(md)
