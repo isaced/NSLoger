@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from people.forms import RegisterForm, LoginForm
 from people.models import Member
+from bbs.models import Topic, Comment
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import logout as auth_logout, authenticate, login as auth_login
 from django.core.urlresolvers import reverse
@@ -82,4 +83,5 @@ def logout(request):
 
 def user(request, uid):
     user_from_id = Member.objects.get(pk=uid)
+    topic_list = Topic.objects.order_by("-updated_on").filter(author=user_from_id.id)[:10]
     return render(request, "people/user.html", locals())
