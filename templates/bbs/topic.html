@@ -66,7 +66,7 @@
                         {% csrf_token %}
 
                         <div class="form-group">
-                          <div id="epiceditor">
+                          <div id="epiceditor" style="border: 1px solid #ccc;">
                             <textarea style="display:none"  name="content" id="content" class="form-control">{{ form.content.value |default_if_none:""}}</textarea>
                           </div>
                         </div>
