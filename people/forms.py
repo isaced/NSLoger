@@ -72,16 +72,17 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
-    email = forms.EmailField(label="邮箱", required=True, max_length=255,)
-                             #widget=forms.TextInput(attrs={
-                                 #'class':'disabled',
-                                 #'readonly':'readonly'}))
+    email = forms.EmailField(label="邮箱", required=True, max_length=255,
+                             widget=forms.TextInput(attrs={
+                                 'class':'disabled form-control',
+                                 'readonly':'readonly'}))
     blog = forms.CharField(label="博客", max_length=128, required=False,
-                           validators=[URLValidator])
-    #location = forms.CharField(label="城市", max_length=10)
-    #weibo_id = forms.CharField(label="新浪微博", max_length=30)
+                           validators=[URLValidator],
+                           widget=forms.URLInput(attrs={'class':'form-control'}))
+    location = forms.CharField(label="城市", max_length=10,required=False,widget=forms.TextInput(attrs={'class':'form-control'}))
+    weibo_id = forms.CharField(label="新浪微博", max_length=30,required=False,widget=forms.TextInput(attrs={'class':'form-control'}))
     profile = forms.CharField(label="个人简介", max_length=140, required=False,
-                              widget=forms.Textarea())
+                              widget=forms.Textarea(attrs={'class':'form-control'}))
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         user = kwargs.pop('instance',None)
@@ -119,9 +120,9 @@ class ProfileForm(forms.ModelForm):
 
 
 class PasswordChangeForm(forms.Form):
-    old_password = forms.CharField(label="原密码", widget=forms.PasswordInput(), required=True)
-    password = forms.CharField(label="新密码", min_length=6, max_length=30, widget=forms.PasswordInput(), required=True)
-    password2 = forms.CharField(label="重复密码", min_length=6, max_length=30, widget=forms.PasswordInput(), required=True)
+    old_password = forms.CharField(label="原密码", widget=forms.PasswordInput(attrs={'class':'form-control'}), required=True)
+    password = forms.CharField(label="新密码", min_length=6, max_length=30, widget=forms.PasswordInput(attrs={'class':'form-control'}), required=True)
+    password2 = forms.CharField(label="重复密码", min_length=6, max_length=30, widget=forms.PasswordInput(attrs={'class':'form-control'}), required=True)
 
     def clean_password2(self):
         password = self.cleaned_data.get("password")

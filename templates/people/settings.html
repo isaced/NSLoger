@@ -8,16 +8,18 @@
                   <div class="box-title">个人设置</div>
                   <div class="box-line"></div>
                   {% if messages %}
-                    <div class="alert alert-info" style="margin-bottom: 0px;">
+                    <div class="alert alert-info" style="margin:10px">
                         {% for message in messages %}{{ message }}{% endfor %}
                     </div>
                   {% endif %}
-                  <form action="{% url 'user:settings' %}" method=POST>{% csrf_token %}
+                  <form action="{% url 'user:settings' %}" method='POST' class="form-horizontal">{% csrf_token %}
                   {% for field in form %}
                   <div class="form-group">
-                      <label for="{{ field.id }}" class="control-label">{{ field.label }}：</label>
+                      <label for="{{ field.id }}" class="col-sm-3 control-label">{{ field.label }}：</label>
+                      <div class="col-sm-5">
                       {{ field }}
                       {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
+                      </div>
                       {% if field.errors %}
                       <label>
                         <ul class="list-inline">
@@ -29,7 +31,11 @@
                       {% endif %}
                   </div>
                   {% endfor %}
-                  <button type="submit" class="btn btn-defualt">修改</button>
+                        <div class="form-group">
+                          <div class="col-sm-offset-3 col-sm-10">
+                            <button type="submit" class="btn btn-default">登陆</button>
+                          </div>
+                        </div>
                 </form>
               </div>
 {% endblock %}
