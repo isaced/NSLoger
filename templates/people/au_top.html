@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load gravatar %}
+
+{% block content %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">用户活跃榜</div>
+        <div class="panel-body">
+        {% for user in au_list %}
+        <p>
+            <img width="60" height="60" src="{% gravatar user.email 60 %}" class="img-responsive center-block" alt="{{ user_from_id.username }}">
+            {{ user.username }}
+        </p>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

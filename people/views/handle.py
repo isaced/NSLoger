@@ -85,3 +85,7 @@ def user(request, uid):
     user_from_id = Member.objects.get(pk=uid)
     topic_list = Topic.objects.order_by("-updated_on").filter(author=user_from_id.id)[:10]
     return render(request, "people/user.html", locals())
+
+def au_top(request):
+    au_list = Member.objects.order_by('-au')[:20]
+    return render(request, "people/au_top.html", locals())

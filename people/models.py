@@ -59,9 +59,14 @@ class Member(AbstractBaseUser):
     profile = models.CharField("个人简介", max_length=140, blank=True)
     avatar = models.CharField("头像", max_length=128, blank=True)
 
+    au = models.IntegerField("用户活跃度", default=0)
+    last_ip = models.IPAddressField("上次访问IP", default="0.0.0.0")
+
 
     email_verified = models.BooleanField("邮箱是否验证", default=False)
     date_joined = models.DateTimeField("用户注册时间", default=timezone.now)
+    topic_num = models.IntegerField("帖子数", default=0)
+    comment_num = models.IntegerField("评论数", default=0)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -110,3 +115,11 @@ class Member(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    def calculate_au(self):
+        """
+        计算活跃度
+        公式：Topic * 5 + Comment * 1
+        """
+        self.au = self.topic_num * 5 + self.comment_num * 1
+        return self.au

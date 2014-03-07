@@ -11,4 +11,5 @@ urlpatterns = patterns('',
         url(r'^settings/$', views.profile, name="settings"),
         url(r'^password/$', views.password, name="password"),
         url(r'^(?P<uid>\d+)/$', views.user, name="user"),
+        url(r'^au_top/$', views.au_top, name="au_top"),
         )

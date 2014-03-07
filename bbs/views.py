@@ -32,7 +32,7 @@ def recent(request):
     topic_list = Topic.objects.all().order_by('-updated_on')
     paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
     page = request.GET.get('page')
-    
+
     try:
         topic_list = paginator.page(page)
     except PageNotAnInteger:
@@ -71,6 +71,9 @@ def reply(request, topic_id):
         form = ReplyForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
+            request.user.comment_num += 1
+            request.user.calculate_au()
+            request.user.save()
             comment.author = request.user
 
             try:
@@ -80,7 +83,7 @@ def reply(request, topic_id):
 
             comment.topic = topic
             comment.save()
-            
+
             # --- 解析@ ---
 
             team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
@@ -107,7 +110,7 @@ def reply(request, topic_id):
         form = ReplyForm()
 
     return render(request,"bbs/topic.html",{"node":node,"topic":topic,"form":form,"comment_list":comment_list})
-    
+
 
 def node(request, node_slug):
     '''节点页'''
@@ -120,13 +123,13 @@ def node(request, node_slug):
     topic_list = Topic.objects.filter(node=node).order_by('-updated_on')
     paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
     page = request.GET.get('page')
-    
+
     try:
         topic_list = paginator.page(page)
     except PageNotAnInteger:
         topic_list = paginator.page(1)
     except EmptyPage:
-        topic_list = paginator.page(paginator.num_pages)  
+        topic_list = paginator.page(paginator.num_pages)
 
     return render(request,"bbs/node.html",{"node":node, "topic_list":topic_list})
 
@@ -137,12 +140,15 @@ def new(request, node_slug):
         node = Node.objects.get(slug=node_slug)
     except Node.DoesNotExist:
         raise Http404
-    
+
     if request.method == 'POST':
         form = TopicForm(request.POST)
         if form.is_valid():
             topic = form.save(commit=False)
             topic.node = node
+            request.user.topic_num += 1
+            request.user.calculate_au()
+            request.user.save()
             topic.author = request.user
             topic.last_reply = request.user
             topic.updated_on = timezone.now()
@@ -172,7 +178,7 @@ def new(request, node_slug):
         form = TopicForm()
 
     return render(request,'bbs/new.html',{'node':node,'form':form})
-    
+
 
 @login_required
 def notice(request):
@@ -180,7 +186,7 @@ def notice(request):
     if request.method == 'GET':
         notices = Notice.objects.filter(to_user=request.user,is_deleted=False).order_by('-time')
         context['notices'] = notices
-        
+
         return render(request,'bbs/notice.html',context)
 
 @login_required
@@ -189,10 +195,10 @@ def notice_delete(request, notice_id):
         try:
             notice = Notice.objects.get(id=notice_id)
         except Notice.DoesNotExist:
-            raise Http404     
+            raise Http404
         notice.is_deleted = True
         notice.save()
-        
+
     return HttpResponseRedirect(reverse("bbs:notice"))
 
 def about(request):

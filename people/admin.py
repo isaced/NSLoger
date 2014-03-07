@@ -67,7 +67,7 @@ class MyUserAdmin(UserAdmin):
     list_filter = ('email', 'email_verified',)
     fieldsets = (
         (None, {'fields': ('username', 'email', 'date_joined', 'password')}),
-        ('状态', {'fields': ('email_verified',)}),
+        ('状态', {'fields': ('email_verified', 'last_ip', 'au', 'topic_num', 'comment_num')}),
         ('社交网络', {'fields': ('weibo_id', 'blog')}),
         #('Permissions', {'fields': ('is_admin',)}),
     )
