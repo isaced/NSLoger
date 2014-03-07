@@ -1,15 +1,15 @@
-{% extends "base.html" %}
+  {% extends "base.html" %}
 
 {% block content %}
-                <div class="box">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     <ol class="breadcrumb">
                         <li><a href="/">首页</a></li>
                         <li><a href="{% url 'bbs:node' node.slug %}">{{node.name}}</a></li>
                         <li>新主题</li>
                     </ol>
-                  <div class="clearfix"></div>
-                  <div class="box-line"></div>
-                  <div class="box-content">
+                </div>
+                <div class="panel-body">
                     {% if form.title.errors or form.content.errors %}
                     <div>
                         <ol class="alert alert-danger">
