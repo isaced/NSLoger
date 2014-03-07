@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'bbs',      # 帖子相关
     'people',   # 用户相关
+    'sites',    # 酷站
 )
 
 MIDDLEWARE_CLASSES = (

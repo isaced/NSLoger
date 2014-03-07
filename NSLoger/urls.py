@@ -17,5 +17,6 @@ urlpatterns = patterns('',
     #url(r'^logout/', views.logout),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('bbs.urls', namespace='bbs')),
+    url(r'^sites/', include('sites.urls', namespace='sites')),
     url(r'^accounts/', include('people.urls', namespace='user')),
 )

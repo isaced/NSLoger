@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+{% for sites in categorys %}
+
+	<div class="panel panel-default">
+	    <div class="panel-heading">{{sites.category_name}}</div>
+	    <div class="panel-body node-panel"> 
+	    <div class="row">
+	    	{% for site in sites.category_sites %}
+	    	<div class="col-xs-2"><a href="{{site.url}}">{{site.name}}</a></div>
+	    	{% endfor %}
+	    </div> 
+	    </div>
+	</div>
+
+{% endfor %}
+
+{% endblock %}
