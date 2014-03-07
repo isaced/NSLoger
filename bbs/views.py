@@ -167,7 +167,7 @@ def new(request, node_slug):
 
             # --- 解析@ ---
 
-            return HttpResponseRedirect(reverse("bbs:node" ,args=(node_slug,)))
+            return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic.id,)))
     else:
         form = TopicForm()
 
