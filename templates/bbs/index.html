@@ -4,50 +4,50 @@
 {% load gravatar %}
 
 {% block content %}
-                <div class="box">
-                  <div class="box-title">Cocoa开发者的聚集地</div>
-                  <div class="box-line"></div>
-                  <div class="tableview">
-                    {% for topic in topic_list %}
-                        {% include "bbs/topic_cell.html" %}
-                    {% endfor %}
-                  </div>
-                  <div>
-                    <ul class="pager">
-                      <li class="next"><a href="{% url 'bbs:recent' %}">更多话题</a></li>
-                    </ul>
-                  </div>
-              </div>
 
-              <div class="panel panel-default">
-                  <div class="panel-heading">节点导航</div>
-                  <div class="panel-body">  
-                      <ul class="node-panel">
-                      {% for item in nodes %}
-                        <li>
-                          <div class="row text-muted node-line">
-                              <div class="col-xs-2 category-name">{{item.category_name}}</div>
-                              <div class="col-xs-10">
-                                {% for node in item.category_nodes %}
-                                      <a class="node-name" href="/node/{{node.slug}}">{{ node.name }}</a>
-                                  {% endfor %}
-                              </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                  </div>
+<div class="panel panel-default">
+  <div class="panel-heading">Cocoa开发者的聚集地</div>
+  <div class="panel-body tableview">
+    {% for topic in topic_list %}
+        {% include "bbs/topic_cell.html" %}
+    {% endfor %}
+
+  </div>
+  <div class="panel-body">
+    <ul class="pager">
+      <li class="next"><a href="{% url 'bbs:recent' %}">更多话题</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">节点导航</div>
+    <div class="panel-body node-panel">  
+        <ul>
+        {% for item in nodes %}
+          <li>
+            <div class="row text-muted node-line">
+                <div class="col-xs-4 col-sm-3 col-md-2 category-name">{{item.category_name}}</div>
+                <div class="col-xs-8 col-sm-9 col-md-10">
+                  {% for node in item.category_nodes %}
+                        <a class="node-name" href="/node/{{node.slug}}">{{ node.name }}</a>
+                    {% endfor %}  
+                </div>
               </div>
+          </li>
+          {% endfor %}
+      </ul>
+    </div>
+</div>
 {% endblock %}
 
 {% block sidebar %}
-              <div class="box right-bar hidden-xs">
-                <div class="box-title">友情链接</div>
-                <div class="box-line"></div>
-                <div class="box-content">
-                  <ul>
-                    <li><a href="#">虚位以待</a></li>
-                  </ul>
-                </div>
-              </div>
+<div class="panel panel-default hidden-xs">
+  <div class="panel-heading">友情链接</div>
+  <div class="panel-body">
+    <ul>
+      <li>虚位以待</li>
+    </ul>
+  </div>
+</div>
 {% endblock %}

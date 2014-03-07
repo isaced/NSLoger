@@ -4,20 +4,21 @@
 {% load gravatar %}
 
 {% block content %}
-                <div class="box">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
                     <ol class="breadcrumb">
-                        <li><a href="/">首页</a></li>
-                        <li>{{node.name}}</li>
-                    <a href="{% url 'bbs:new' node.slug %}" class="btn btn-sm btn-success pull-right new-btn">新主题</a>
-                    </ol>
-                  <div class="clearfix"></div>
-                  <div class="box-line"></div>
-                  <div class="tableview">
+                          <li><a href="/">首页</a></li>
+                          <li>{{node.name}}</li>
+                          <a href="{% url 'bbs:new' node.slug %}" class="btn btn-sm btn-success pull-right new-btn">新主题</a>
+                      </ol>
+                  </div>
+
+                  <div class="panel-body tableview">
                     {% for topic in topic_list %}
                       {% include "bbs/topic_cell.html" %}
                     {% endfor %}
                   </div>
-                  <div>
+                  <div class="panel-footer">
                     <ul class="pager text-muted">
 
                       {% if topic_list.has_previous %}

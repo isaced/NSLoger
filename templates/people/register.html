@@ -4,10 +4,9 @@
 {% load humanize %}
 
 {% block content %}
-                <div class="box">
-                  <div class="box-title">注册</div>
-                  <div class="box-line"></div>
-                  <div class="box-content">
+              <div class="panel panel-default">
+                <div class="panel-heading">注册</div>
+                <div class="panel-body">
                     <form class="form-horizontal" role="form" action="{% url 'user:register' %}" method="POST">
                       {% csrf_token %}
                       {% for field in form %}

@@ -39,36 +39,10 @@ body {
   margin: 20px 0;
 }
 
-#footer > .container {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
 /*----*/
-.box{
-  border-radius:3px;
-  box-shadow:0px 1px 5px rgba(0,0,0,0.15);
-  border-bottom:1px solid #E2E2E9;
-  margin-bottom:20px;
-  background-color:#fff;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-.box .box-title{
-  padding: 3px;
-  margin-left: 10px;
-}
 
-.box .box-line{
-  height: 1px;
-  background-color: #eee;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-.box .box-content{
-  padding-top: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
+.tableview {
+  margin: -15px;
 }
 
 .tableview .cell{
@@ -95,22 +69,23 @@ body {
 }
 
 .breadcrumb{
-  margin-bottom: 1px;
-  background-color: #fff;
+  margin: 0px;
+  padding: 0px;
 }
 .breadcrumb .new-btn{
-  margin-top: -5px;
+  line-height: 12px;
 }
+
 .topic_breadcrumb{
   margin-left: 10px;
+  margin-top: 10px;
   color: #999;
 }
 .topic_breadcrumb a{
   color: #999;
 }
 .pager{
-  margin: 8px;
-  margin-top: 15px;
+  margin: 0px;
 }
 
 /* --- Node --- */
@@ -127,45 +102,43 @@ body {
   background: #f5f5f5;
 }
 
-.node-panel{
+.node-panel ul{
   list-style: none;
 }
+
 .node-panel .node-line{
   border-bottom: 1px solid #eee;
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
-.node-panel .category-name{
-  font-weight: bold;
-}
 
 .node-panel .node-name{
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 /* --- Subject Detail --- */
-.subject-title{
+.topic-header{
+  border-bottom: 1px solid #ccc;
+}
+.topic-header .topic-title{
   margin-top:10px;
   margin-left: 10px;
   margin-bottom: 10px;
   font-size: 25px;
 }
-.subject-meta{
+.topic-header .topic-meta{
   margin-top: 5px;
   margin-left: 8px;
   font-size: 12px;
 }
-.subject-meta a{
+.topic-header .topic-meta a{
   color: #999;
 }
 
-.subject-headimg{
+.topic-header .topic-headimg{
   margin-right: 10px;
   width: 60px;
   height: 60px;
-}
-.subject-content{
-  margin: 20px;
 }
 
 
@@ -199,18 +172,6 @@ body {
 }
 
 /* --- right ---*/
-
-.right-bar{
-  margin-bottom: 20px;
-  padding-right: 10px;
-  width: 300px;
-}
-.right-bar .title{
-  margin-left: 10px;
-}
-.right-bar .content{
-  margin-left: 10px;
-}
 
 .userinfo .username{
   font-size: 25px;

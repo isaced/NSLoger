@@ -5,90 +5,97 @@
 {% load bbstag %}
 
 {% block content %}
-                <div class="box">
-                  <div>
+<div class="panel panel-default">
+                  <div class="topic-header">
+                    <div class="topic-headimg pull-right"><img src="{% gravatar topic.author 60 %}" /></div>
                     <div class="topic_breadcrumb">
                       <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">node</a> 
                     </div>
-                  <div class="subject-headimg pull-right"><img src="{% gravatar topic.author 60 %}" /></div>
-                    <div class="subject-title">{{ topic.title }}</div>
-                    <div class="subject-meta text-muted">
+                    <div class="topic-title">{{ topic.title }}</div>
+                    <div class="topic-meta text-muted">
                       By <a href="#">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击
                     </div>
                   </div>
-                  <div class="clearfix"></div>
-                  <div class="box-line"></div>
-                  <div class="subject-content">
-                    {{ topic.content|my_markdown }}
-                  </div>
-                </div>
+    <div class="panel-body">
+      {{ topic.content|my_markdown }}
+    </div>
+</div>
+
 {% endblock %}
 
 
 {% block reply %}
-                <div class="box comment">
-                  <div class="box-title">{{ comment_list.count }} 回复</div>
-                  <div class="box-line"></div>
-                  {% for comment in comment_list %}
-                  <div class="cell">
-                      <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                      <tbody><tr>
-                      <td valign="top" width="48">
-                      <a href="{% url 'user:user' comment.author.id %}" title="{{ comment.author.username }}">
-                        <img src="{% gravatar comment.author 60 %}">
-                      </a>
-                      </td>
-                      <td width="10"></td>
-                      <td valign="top" width="auto">
-                      <div class="pull-right">
-                      <span class="text-muted">
-                        #{{forloop.counter}} - <a href="#" onclick="">回复</a>
-                      </span>
-                      </div>
-                        <a href="{% url 'user:user' comment.author.id %}">{{ comment.author}}</a>
-                      <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
-                        <div class="content reply_content">{{ comment.content|my_markdown }}</div>
-                        <div class="pull-right">
-                      </div>
-                      </td>
-                      </tr>
-                      </tbody></table>
+<div class="panel panel-default">
+  <div class="panel-heading">{{ comment_list.count }} 回复</div>
+  <div class="panel-body">
+    {% for comment in comment_list %}
+      <div class="cell">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody><tr>
+      <td valign="top" width="48">
+      <a href="{% url 'user:user' comment.author.id %}" title="{{ comment.author.username }}">
+        <img src="{% gravatar comment.author 60 %}">
+      </a>
+      </td>
+      <td width="10"></td>
+      <td valign="top" width="auto">
+      <div class="pull-right">
+      <span class="text-muted">
+        #{{forloop.counter}} - <a href="#" onclick="">回复</a>
+      </span>
+      </div>
+        <a href="{% url 'user:user' comment.author.id %}">{{ comment.author}}</a>
+      <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
+        <div class="content reply_content">{{ comment.content|my_markdown }}</div>
+        <div class="pull-right">
+      </div>
+      </td>
+      </tr>
+      </tbody></table>
+  </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% if user.is_authenticated %}
+  <div class="panel panel-default">
+    <div class="panel-heading">回复</div>
+    <div class="panel-body">
+            <div>
+              <form class="text" action="{% url 'bbs:reply' topic.id %}" method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <div id="epiceditor" style="border: 1px solid #ccc;">
+                    <textarea style="display:none"  name="content" id="content" class="form-control">{{ form.content.value |default_if_none:""}}</textarea>
                   </div>
+                </div>
+
+                <button type="submit" class="btn btn-default submit-btn">回复</button>
+
+                {% if form.content.errors %}
+                <label class="pull-right">
+                  <ul class="list-inline">
+                  {% for item in form.content.errors %}
+                      <li><p class="form-control-static text-danger">{{ item }}</p></li>
                   {% endfor %}
-                </div>
-
-                {% if user.is_authenticated %}
-                <div class="box reply">
-                  <div class="box-title">回复</div>
-                  <div class="box-line"></div>
-                    <div>
-                      <form class="text" action="{% url 'bbs:reply' topic.id %}" method="post">
-                        {% csrf_token %}
-
-                        <div class="form-group">
-                          <div id="epiceditor" style="border: 1px solid #ccc;">
-                            <textarea style="display:none"  name="content" id="content" class="form-control">{{ form.content.value |default_if_none:""}}</textarea>
-                          </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-default submit-btn">回复</button>
-
-                        {% if form.content.errors %}
-                        <label class="pull-right">
-                          <ul class="list-inline">
-                          {% for item in form.content.errors %}
-                              <li><p class="form-control-static text-danger">{{ item }}</p></li>
-                          {% endfor %}
-                          </ul>
-                        </label>
-                        {% endif %}
-
-                      </form>
-                    </div>
-                </div>
+                  </ul>
+                </label>
                 {% endif %}
+
+              </form>
+            </div>
+    </div>
+  </div>
+{% endif %}
+
 {% endblock %}
 
+
 {% block footer %}
+
+{% if user.is_authenticated %}
 {% include "bbs/epiceditor_script.html" %}
+{% endif %}
+
 {% endblock %}

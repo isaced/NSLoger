@@ -4,9 +4,9 @@
 {% load humanize %}
 
 {% block content %}
-                <div class="box">
-                  <div class="box-title">个人设置</div>
-                  <div class="box-line"></div>
+            <div class="panel panel-default">
+              <div class="panel-heading">个人设置</div>
+                <div class="panel-body">
                   {% if messages %}
                     <div class="alert alert-info" style="margin:10px">
                         {% for message in messages %}{{ message }}{% endfor %}
@@ -37,5 +37,6 @@
                           </div>
                         </div>
                 </form>
+                </div>
               </div>
 {% endblock %}

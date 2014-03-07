@@ -6,15 +6,15 @@
 
 
 {% block content %}
-                <div class="box">
-                    <ol class="breadcrumb">
-                        <li><a href="/">NSLoger</a></li>
-                        <li>通知提醒</li>
-                        <span class="pull-right text-muted">共{{notices.count}}条</span>
-                    </ol>
-                  <div class="clearfix"></div>
-                  <div class="box-line"></div>
-                  <div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+      <ol class="breadcrumb">
+          <li><a href="/">NSLoger</a></li>
+          <li>通知提醒</li>
+          <span class="pull-right text-muted">共{{notices.count}}条</span>
+      </ol>
+  </div>
+  <div class="panel-body">
   {% if notices %}
     {% for item in notices %} 
     <div class="notice-cell"> 

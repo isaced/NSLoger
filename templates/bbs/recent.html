@@ -4,19 +4,20 @@
 {% load gravatar %}
 
 {% block content %}
-                <div class="box">
-                    <ol class="breadcrumb">
-                        <li><a href="/">首页</a></li>
-                        <li>所有话题</li>
-                    </ol>
-                  <div class="clearfix"></div>
-                  <div class="box-line"></div>
-                  <div class="tableview">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <ol class="breadcrumb">
+                    <li><a href="/">首页</a></li>
+                    <li>所有话题</li>
+                </ol>
+              </div>
+
+                <div class="panel-body tableview">
                     {% for topic in topic_list %}
                       {% include "bbs/topic_cell.html" %} 
                     {% endfor %}
                   </div>
-                  <div>
+                  <div class="panel-footer">
                     <ul class="pager text-muted">
 
                       {% if topic_list.has_previous %}
