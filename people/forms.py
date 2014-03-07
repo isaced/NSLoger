@@ -75,7 +75,7 @@ class ProfileForm(forms.ModelForm):
     email = forms.EmailField(label="邮箱", required=True, max_length=255,
                              widget=forms.TextInput(attrs={
                                  'class':'disabled form-control',
-                                 'readonly':'readonly'}))
+                                 }))
     blog = forms.CharField(label="博客", max_length=128, required=False,
                            validators=[URLValidator],
                            widget=forms.URLInput(attrs={'class':'form-control'}))
@@ -93,7 +93,8 @@ class ProfileForm(forms.ModelForm):
         model = Member
         fileds = ('email', 'blog', 'location', 'weibo_id', 'profile')
         exclude = ('is_active', "is_admin", "password", "last_login",
-                   "date_joined", "email_verified", "username", "avatar")
+                   "date_joined", "email_verified", "username", "avatar",
+                   "au", "last_ip", "comment_num", "topic_num")
 
 
     def clean_email(self):
