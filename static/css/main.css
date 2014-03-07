@@ -118,7 +118,8 @@ body {
 
 /* --- Subject Detail --- */
 .topic-header{
-  border-bottom: 1px solid #ccc;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #eee;
 }
 .topic-header .topic-title{
   margin-top:10px;
