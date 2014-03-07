@@ -17,7 +17,19 @@
                   <div class="form-group">
                       <label for="{{ field.id }}" class="col-sm-3 control-label">{{ field.label }}：</label>
                       <div class="col-sm-5">
-                      {{ field }}
+                      {% if forloop.counter == 2 %}
+                        <div class="input-group">
+                          <span class="input-group-addon">weibo.com/</span>
+                          <input type="text" class="form-control" name="{{ field.html_name }}" value="{{ field.value }}">
+                        </div>
+                      {% elif forloop.counter == 3 %}
+                        <div class="input-group">
+                          <span class="input-group-addon">http://</span>
+                          <input type="text" class="form-control" name="{{ field.html_name }}" value="{{ field.value }}">
+                        </div>
+                      {% else %}
+                          {{ field }}
+                      {% endif %}
                       {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
                       </div>
                       {% if field.errors %}

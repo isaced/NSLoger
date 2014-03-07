@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="panel panel-default">
-  <div class="panel-body">
+  <div class="panel-body userpage">
         <div class="row">
             <div class="col-md-2">
                 <img width="60" height="60" src="{% gravatar user_from_id.email 60 %}" class="img-responsive center-block" alt="{{ user_from_id.username }}">
@@ -14,19 +14,14 @@
                 <strong>{{ user_from_id.username }}</strong>
                 <p>NSLoger 第 {{ user_from_id.id }} 名会员，加入于 {{ user_from_id.date_joined|date:'Y-m-d H:i:s' }}</p>
             </div>
-            <div class="col-md-12">
-                <p>
-                {{ user_from_id.weibo_id }}
-                </p>
-                <p>
-                {{ user_from_id.location }}
-                </p>
-                <p>
-                {{ user_from_id.blog }}
-                </p>
-                <p>
-                {{ user_from_id.profile }}
-                </p>
+            <div class="col-md-12 p-info">
+                <p> <strong>位置：</strong>{{ user_from_id.location }}</p>
+                <p> <strong>微博：</strong><a href="http://weibo.com/{{ user_from_id.weibo_id }}">{{ user_from_id.weibo_id }}</a></p>
+                <p> <strong>博客：</strong><a href="{{ user_from_id.blog }}">{{ user_from_id.blog }}</a></p>
+                <blockquote class="pull-right">
+                  <p>{{ user_from_id.profile }}</p>
+                  <small>{{ user_from_id.username }}</small>
+                </blockquote>
             </div>
         </div>
     </div>
