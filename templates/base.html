@@ -41,18 +41,21 @@
               <li class="active"><a href="/">首页</a></li>
               <li><a href="#">酷站</a></li>
               <li><a href="#">用户榜</a></li>
-              {% if user.is_authenticated %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">帐号<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'user:user' user.id %}">个人主页</a></li>
-                  <li><a href="{% url 'user:password' %}">修改密码</a></li>
-                  <li><a href="{% url 'user:settings' %}">设置</a></li>
-                  <li class="divider"></li>
-                  <li><a href="{% url 'user:logout' %}">登出</a></li>
+                  {% if user.is_authenticated %}
+                      <li><a href="{% url 'user:user' user.id %}">个人主页</a></li>
+                      <li><a href="{% url 'user:password' %}">修改密码</a></li>
+                      <li><a href="{% url 'user:settings' %}">设置</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{% url 'user:logout' %}">登出</a></li>
+                  {% else %}
+                      <li><a href="{% url 'user:login' %}">登陆</a></li>
+                      <li><a href="{% url 'user:register' %}">注册</a></li>
+                  {% endif %}
                 </ul>
               </li>
-              {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div>
