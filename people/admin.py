@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from people.models import Member
+from people.models import Member, Follower
 
 # Register your models here.
 
@@ -86,6 +86,7 @@ class MyUserAdmin(UserAdmin):
 
 # Now register the new UserAdmin...
 admin.site.register(Member, MyUserAdmin)
+admin.site.register(Follower)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)

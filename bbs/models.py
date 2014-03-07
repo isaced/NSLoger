@@ -4,6 +4,7 @@ from django.db import models
 #from django.contrib.auth.models import User
 from people.models import Member as User
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 # --- Model Define ---
 
@@ -61,10 +62,24 @@ class Notice(models.Model):
 
     def __unicode__(self):
         return self.content
-    
+
+
+class FavoritedTopic(models.Model):
+    user = models.OneToOneField(User, verbose_name="用户")
+    topic = models.OneToOneField(Topic, verbose_name="主题")
+
+    class Meta:
+        unique_together = ('user', 'topic')
+
+
+    def __unicode__(self):
+        return self.id
+
+
+
 def create_notice(sender, **kwargs):
-    comment = kwargs['instance']   
+    comment = kwargs['instance']
     if comment.author != comment.topic.author:      # don't create notice when you reply to yourself
         Notice.objects.create(from_user=comment.author,to_user=comment.topic.author,topic=comment.topic,content=comment.content)
-    
+
 post_save.connect(create_notice, sender=Comment)

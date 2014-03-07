@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from people.forms import RegisterForm, LoginForm
-from people.models import Member
+from people.models import Member, Follower
 from bbs.models import Topic, Comment
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import logout as auth_logout, authenticate, login as auth_login
@@ -83,8 +83,16 @@ def logout(request):
 
 def user(request, uid):
     user_from_id = Member.objects.get(pk=uid)
+    user_a = request.user
+    if user_a.is_authenticated():
+        try:
+            follower = Follower.objects.filter(user_a=user_a, user_b=user_from_id).first()
+        except (Member.DoesNotExist, Follower.DoesNotExist):
+            follower = None
+
     topic_list = Topic.objects.order_by("-updated_on").filter(author=user_from_id.id)[:10]
     return render(request, "people/user.html", locals())
+
 
 def au_top(request):
     au_list = Member.objects.order_by('-au')[:20]

@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'bbs',      # 帖子相关
     'people',   # 用户相关
     'sites',    # 酷站
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (

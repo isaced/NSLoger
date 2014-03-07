@@ -7,10 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 
-from models import Topic,Comment,Category,Node,Notice
+from models import Topic,Comment,Category,Node,Notice, FavoritedTopic
 from people.models import Member as User
 from bbs.forms import ReplyForm, TopicForm, EditForm
+from django.db import IntegrityError
 
+from django.contrib import messages
 from NSLoger.settings import NUM_TOPICS_PER_PAGE
 
 def index(request):
@@ -53,10 +55,17 @@ def topic(request,topic_id):
     topic.num_views += 1
     topic.save()
 
+    faved_num = FavoritedTopic.objects.filter(topic=topic).count()
+
     comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
+    if request.user.is_authenticated():
+        try:
+            faved_topic = FavoritedTopic.objects.filter(user=request.user, topic=topic).first()
+        except (User.DoesNotExist, FavoritedTopic.DoesNotExist):
+            faved_topic = None
 
     form = ReplyForm()
-    return render(request,"bbs/topic.html",{'topic':topic,'comment_list':comment_list,'form':form})
+    return render(request,"bbs/topic.html", locals())
 
 @login_required
 def reply(request, topic_id):
@@ -203,3 +212,43 @@ def notice_delete(request, notice_id):
 
 def about(request):
     return render(request,'bbs/about.html')
+
+
+@login_required
+def fav_topic_list(request):
+    faved_topic = FavoritedTopic.objects.filter(user=request.user).all()
+    return render(request, 'bbs/fav_topic.html', locals())
+
+
+@login_required
+def fav_topic(request, topic_id):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("bbs:index"))
+    try:
+        topic = Topic.objects.get(pk=topic_id)
+        fav_topic_new = FavoritedTopic.objects.create(user=request.user, topic=topic)
+        fav_topic_new.save()
+    except Topic.DoesNotExist:
+        messages.error(request, u"主题不存在")
+        return HttpResponseRedirect(reverse("bbs:index"))
+
+    except IntegrityError:
+        messages.error(request, u"主题已经关注了")
+        return HttpResponseRedirect(reverse("bbs:index"))
+
+    return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
+
+
+@login_required
+def unfav_topic(request, topic_id):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("bbs:index"))
+    try:
+        topic = Topic.objects.get(pk=topic_id)
+        faved_topic = FavoritedTopic.objects.filter(user=request.user, topic=topic)
+        faved_topic.delete()
+    except Topic.DoesNotExist:
+        messages.error(request, u"主题不存在")
+        return HttpResponseRedirect(reverse("bbs:index"))
+
+    return HttpResponseRedirect(reverse("bbs:topic", args=(topic_id,)))

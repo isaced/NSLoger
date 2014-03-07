@@ -123,3 +123,22 @@ class Member(AbstractBaseUser):
         """
         self.au = self.topic_num * 5 + self.comment_num * 1
         return self.au
+
+
+class Follower(models.Model):
+    """
+    用户的关系表
+    B is the follower of A
+    B 是 A 的关注者
+    A 被 B 关注
+    """
+    user_a = models.ForeignKey(Member, related_name="user_a")
+    user_b = models.ForeignKey(Member, related_name="user_b")
+    date_followed = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = ('user_a', 'user_b')
+
+
+    def __unicode__(self):
+        return "%s following %s" % (self.user_a, self.user_b)

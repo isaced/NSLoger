@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load gravatar %}
+
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading">收藏列表</div>
+    <div class="panel-body tableview">
+        {% for faved in faved_topic %}
+                      <div class="cell">
+                          <div class="pull-left">
+                              <a href="{% url 'user:user' faved.topic.author.id %}" title="{{ faved.topic.author }}">
+                                  <img class="headimage" src="{% gravatar faved.topic.author 60 %}">
+                              </a>
+                          </div>
+                          <div class="detail">
+                              <div class="pull-right">
+                                  <div class="badge badge-info">
+                                      <a href="{% url 'bbs:topic' faved.topic.id %}">
+                                          {{ faved.topic.num_comments }}
+                                      </a>
+                                  </div>
+                              </div>
+                              <a href="{% url 'bbs:topic' faved.topic.id %}" class="title">
+                                  {{faved.topic.title}}
+                              </a>
+                              <div class="meta">
+                                  <a href="{% url 'bbs:node' faved.topic.node.slug %}" class="node">
+                                      {{ faved.topic.node.name }}
+                                  </a>
+                                  <span class="text-muted">
+                                      •
+                                  </span>
+                                  <a href="{% url 'user:user' faved.topic.author.id %}" title="{{ faved.topic.author }}">
+                                      {{ faved.topic.author }}
+                                  </a>
+                                  <span class="text-muted">
+                                      •
+                                  </span>
+                                  {{ faved.topic.created_on|naturaltime }}
+                                  <span class="text-muted">
+                                      •
+                                  </span>
+                                  最后回复来自
+                                  <a href="{% url 'user:user' faved.topic.last_reply.id %}"  title="{{ faved.topic.last_reply }}">
+                                      {{ faved.topic.last_reply }}  
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+        {% endfor %}
+    </div>
+    </div>
+</div>
+{% endblock %}

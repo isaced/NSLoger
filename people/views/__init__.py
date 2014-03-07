@@ -2,6 +2,7 @@
 
 from people.views.handle import register, login, logout, user, au_top
 from people.views.settings import profile, password
+from people.views.follow import follow, following, un_follow
 
 
 class MyMiddleware(object):
