@@ -16,13 +16,21 @@
             </div>
             <div class="col-md-12 p-info">
             </br>
+            {% if user_from_id.location %}
                 <p> <strong>位置：</strong>{{ user_from_id.location }}</p>
+            {% endif %}
+            {% if user_from_id.weibo_id %}
                 <p> <strong>微博：</strong><a href="http://weibo.com/{{ user_from_id.weibo_id }}">{{ user_from_id.weibo_id }}</a></p>
+            {% endif %}
+            {% if user_from_id.blog %}
                 <p> <strong>博客：</strong><a href="{{ user_from_id.blog }}">{{ user_from_id.blog }}</a></p>
+            {% endif %}
+            {% if user_from_id.profile %}
                 <blockquote class="pull-right">
                   <p>{{ user_from_id.profile }}</p>
                   <small>{{ user_from_id.username }}</small>
                 </blockquote>
+            {% endif %}
             </div>
         </div>
     </div>
