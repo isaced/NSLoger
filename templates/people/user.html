@@ -15,6 +15,7 @@
                 <p>NSLoger 第 {{ user_from_id.id }} 名会员，加入于 {{ user_from_id.date_joined|date:'Y-m-d H:i:s' }}</p>
             </div>
             <div class="col-md-12 p-info">
+            </br>
                 <p> <strong>位置：</strong>{{ user_from_id.location }}</p>
                 <p> <strong>微博：</strong><a href="http://weibo.com/{{ user_from_id.weibo_id }}">{{ user_from_id.weibo_id }}</a></p>
                 <p> <strong>博客：</strong><a href="{{ user_from_id.blog }}">{{ user_from_id.blog }}</a></p>
