@@ -25,8 +25,22 @@ def register(request):
             # Email 验证
             # TODO
             new_user.save()
-            return HttpResponseRedirect(reverse("user:login"))
 
+            #注册成功后自动登陆
+            user = authenticate(email=data["email"], password=data["password"])
+            if user is not None:
+                auth_login(request, user)
+                go = reverse("bbs:index")
+                if request.session.get("next"):
+                    go = request.session.pop("next")
+
+                is_auto_login = request.POST.get('auto')
+                if not is_auto_login:
+                    request.session.set_expiry(0)
+                return HttpResponseRedirect(go)
+            else:
+                messages.error(request, '密码不正确！')
+                return render(request,'people/login.html',locals())
     else:
         form = RegisterForm()
     return render(request, 'people/register.html', {
