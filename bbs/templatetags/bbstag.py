@@ -4,8 +4,10 @@ from django.utils.encoding import force_unicode
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
-from bbs.models import Notice
+from bbs.models import Notice,FavoritedTopic
 from people.models import Member as User
+from people.models import Follower
+
 import markdown2
 import re
 
@@ -21,6 +23,16 @@ def notice_set_all_readed(user):
 @register.simple_tag
 def num_notice(user):
     num = Notice.objects.filter(to_user=user,is_readed=False,is_deleted=False).count()
+    return num
+
+@register.simple_tag
+def get_fav_count(user):
+    num = FavoritedTopic.objects.filter(user=user).count()
+    return num
+
+@register.simple_tag
+def get_following_count(user):
+    num = Follower.objects.filter(user_a=user).count()
     return num
 
 # --- filter ---

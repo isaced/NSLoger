@@ -14,6 +14,7 @@
                 <strong>{{ user_from_id.username }}</strong>
                 {% if user.is_authenticated %}
                 {% if user_a.id != user_from_id.id %}
+                <div class="pull-right">
                     {% if not follower %}
                     <form action="{% url 'user:follow' user_from_id.id %}" method=POST>
                         {% csrf_token %}
@@ -25,6 +26,7 @@
                         <button type="submit" class="btn btn-default">取消关注</button>
                     </form>
                     {% endif %}
+                </div>
                 {% endif %}
                 {% endif %}
                 <p>NSLoger 第 {{ user_from_id.id }} 名会员，加入于 {{ user_from_id.date_joined|date:'Y-m-d H:i:s' }}</p>

@@ -6,16 +6,15 @@
 {% block content %}
 <div class="panel panel-default">
     <div class="panel-heading">关注列表</div>
-        <div class="panel-body row">
-            {% for follower in following_list %}
-            <div class="col-xs-2 text-center" style="margin-bottom:15px;">
-                <a href="{% url 'user:user' follower.user_b.id %}">
-                    <img width="60" height="60" src="{% gravatar follower.user_b.email 60 %}" class="img-responsive center-block" alt="{{ follower.user_b.username }}">
-                    <span>{{ follower.user_b.username }}</span>
-                </a>
-            </div>
-            {% endfor %}
+    <div class="panel-body row">
+        {% for follower in following_list %}
+        <div class="col-xs-2 text-center" style="margin-bottom:15px;">
+            <a href="{% url 'user:user' follower.user_b.id %}">
+                <img width="60" height="60" src="{% gravatar follower.user_b.email 60 %}" class="img-responsive center-block" alt="{{ follower.user_b.username }}">
+                <span>{{ follower.user_b.username }}</span>
+            </a>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

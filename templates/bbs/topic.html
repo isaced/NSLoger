@@ -7,31 +7,31 @@
 {% block content %}
 <div class="panel panel-default">
                   <div class="topic-header">
-                    <div class="topic-headimg pull-right"><img src="{% gravatar topic.author 60 %}" /></div>
+                    <div class="topic-headimg pull-right"><a href="{% url 'user:user' topic.author.id %}"><img src="{% gravatar topic.author 60 %}" /></a></div>
                     <div class="topic_breadcrumb">
                       <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">node</a> 
                     </div>
                     <div class="topic-title">{{ topic.title }}</div>
                     <div class="topic-meta text-muted">
-                      By <a href="#">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击
+                      By <a href="{% url 'user:user' topic.author.id %}">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击
                     </div>
                   </div>
     <div class="panel-body">
       {{ topic.content|my_markdown }}
     </div>
-    <div class="panel-footer">
+    <div class="panel-footer topic-footer">
         {% if user.is_authenticated %}
         {% if user.id != topic.author.id %}
       <div class="pull-left">
         {% if not faved_topic %}
           <form action="{% url 'user:fav_topic' topic.id %}" method=POST>
                       {% csrf_token %}
-              <button class="btn btn-default" type="submit">加入收藏</button>
+              <button class="btn btn-default fav-btn" type="submit">加入收藏</button>
           </form>
         {% else %}
           <form action="{% url 'user:unfav_topic' topic.id %}" method=POST>
                       {% csrf_token %}
-              <button class="btn btn-default" type="submit">取消收藏</button>
+              <button class="btn btn-default fav-btn" type="submit">取消收藏</button>
           </form>
         {% endif %}
       </div>
@@ -53,7 +53,7 @@
   <div class="panel-heading">{{ comment_list.count }} 回复</div>
   <div class="panel-body">
     {% for comment in comment_list %}
-      <div class="cell">
+      <div class="comment">
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
       <tbody><tr>
       <td valign="top" width="48">
