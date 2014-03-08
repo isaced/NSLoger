@@ -7,13 +7,6 @@
             <div class="panel panel-default">
               <div class="panel-heading">登陆</div>
               <div class="panel-body">
-
-                  {% if messages %}
-                    <div class="alert alert-danger" style="margin-bottom: 0px;">
-                        {% for message in messages %}{{ message }}{% endfor %}
-                    </div>
-                  {% endif %}
-
                     <form class="form-horizontal" action="{% url 'user:login' %}" method='POST'>
                       {% csrf_token %}
                     {% for field in form %}

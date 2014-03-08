@@ -7,11 +7,6 @@
             <div class="panel panel-default">
               <div class="panel-heading">个人设置</div>
                 <div class="panel-body">
-                  {% if messages %}
-                    <div class="alert alert-info" style="margin:10px">
-                        {% for message in messages %}{{ message }}{% endfor %}
-                    </div>
-                  {% endif %}
                   <form action="{% url 'user:settings' %}" method='POST' class="form-horizontal">{% csrf_token %}
                   {% for field in form %}
                   <div class="form-group">
