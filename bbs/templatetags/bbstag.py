@@ -20,7 +20,7 @@ def notice_set_all_readed(user):
     Notice.objects.filter(to_user=user,is_readed=False,is_deleted=False).update(is_readed=True)
     return ''
 
-@register.simple_tag
+@register.assignment_tag#(takes_context=True)
 def num_notice(user):
     num = Notice.objects.filter(to_user=user,is_readed=False,is_deleted=False).count()
     return num
@@ -44,7 +44,7 @@ def my_markdown(value):
 	md = md.replace('[HTML_REMOVED]', '')
 
 	# @人给链接输出
-	team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+	team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
 	at_name_list = set(re.findall(team_name_pattern, md))
 	if at_name_list:
 		for at_name in at_name_list:

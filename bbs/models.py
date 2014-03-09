@@ -65,15 +65,15 @@ class Notice(models.Model):
 
 
 class FavoritedTopic(models.Model):
-    user = models.OneToOneField(User, verbose_name="用户")
-    topic = models.OneToOneField(Topic, verbose_name="主题")
+    user = models.ForeignKey(User, verbose_name="用户")
+    topic = models.ForeignKey(Topic, verbose_name="主题")
 
-    class Meta:
-        unique_together = ('user', 'topic')
+    #class Meta:
+        #unique_together = ('user', 'topic')
 
 
     def __unicode__(self):
-        return self.id
+        return str(self.id)
 
 
 

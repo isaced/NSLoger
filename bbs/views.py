@@ -21,6 +21,7 @@ def index(request):
 
     nodes = []
     categor_list = Category.objects.all()
+    print request.path
     for category in categor_list:
         node = {}
         category_nodes = Node.objects.filter(category=category.id)
@@ -95,7 +96,8 @@ def reply(request, topic_id):
 
             # --- 解析@ ---
 
-            team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+            #team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+            team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
             at_name_list = set(re.findall(team_name_pattern, comment.content))
             if at_name_list:
                 for at_name in at_name_list:
@@ -224,17 +226,22 @@ def fav_topic_list(request):
 def fav_topic(request, topic_id):
     if request.method == "GET":
         return HttpResponseRedirect(reverse("bbs:index"))
+
     try:
         topic = Topic.objects.get(pk=topic_id)
+        if FavoritedTopic.objects.filter(user=request.user, topic=topic).first():
+            messages.error(request, u"主题已经关注了")
+            return HttpResponseRedirect(reverse("bbs:index"))
+
         fav_topic_new = FavoritedTopic.objects.create(user=request.user, topic=topic)
         fav_topic_new.save()
     except Topic.DoesNotExist:
         messages.error(request, u"主题不存在")
         return HttpResponseRedirect(reverse("bbs:index"))
 
-    except IntegrityError:
-        messages.error(request, u"主题已经关注了")
-        return HttpResponseRedirect(reverse("bbs:index"))
+    #except IntegrityError:
+        #messages.error(request, u"主题已经关注了")
+        #return HttpResponseRedirect(reverse("bbs:index"))
 
     return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
 

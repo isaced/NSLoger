@@ -9,11 +9,11 @@
                   <div class="topic-header">
                     <div class="topic-headimg pull-right"><a href="{% url 'user:user' topic.author.id %}"><img src="{% gravatar topic.author 60 %}" /></a></div>
                     <div class="topic_breadcrumb">
-                      <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">node</a> 
+                        <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">{{ topic.node }}</a>
                     </div>
                     <div class="topic-title">{{ topic.title }}</div>
                     <div class="topic-meta text-muted">
-                      By <a href="{% url 'user:user' topic.author.id %}">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击
+                      By <a href="{% url 'user:user' topic.author.id %}">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击 · {{ faved_num }} 人收藏
                     </div>
                   </div>
     <div class="panel-body">
@@ -38,9 +38,11 @@
       {% endif %}
       {% endif %}
 
+      <!--
       <div class="pull-right">
           <small>{{ faved_num }} 人收藏</small>
       </div>
+      -->
       <div class="clearfix"></div>
     </div>
 </div>

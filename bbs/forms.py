@@ -13,7 +13,7 @@ class TopicForm(forms.ModelForm):
             #raise forms.ValidationError("请输入标题...")
         if len(title) < 5:
             raise forms.ValidationError("标题太短哦...")
-        elif len(title) > 20:
+        elif len(title) > 50:
             raise forms.ValidationError("标题太长哦...")
         else:
             return title

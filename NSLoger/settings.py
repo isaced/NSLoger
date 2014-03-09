@@ -113,6 +113,7 @@ NUM_TOPICS_PER_PAGE = 10
 
 # Gravtar Define
 GRAVATAR_DEFAULT_IMAGE = ""
-GRAVATAR_URL_PREFIX = "https://secure.gravatar.com/"
+#GRAVATAR_URL_PREFIX = "https://secure.gravatar.com/"
+GRAVATAR_URL_PREFIX = "http://gravatar.duoshuo.com/"
 GRAVATAR_DEFAULT_RATING = "g"
 GRAVATAR_DEFAULT_SIZE = "48"
