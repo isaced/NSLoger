@@ -105,6 +105,7 @@ def user(request, uid):
             follower = None
 
     topic_list = Topic.objects.order_by("-updated_on").filter(author=user_from_id.id)[:10]
+    comment_list = Comment.objects.order_by("-created_on").filter(author=user_from_id)
     return render(request, "people/user.html", locals())
 
 
