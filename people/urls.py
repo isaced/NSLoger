@@ -17,6 +17,4 @@ urlpatterns = patterns('',
         url(r'^unfollow/(?P<uid>\d+)/$', views.un_follow, name="unfollow"),
         url(r'^my/following/$', views.following, name="following"),
         url(r'^my/fav/$', bbs.views.fav_topic_list, name="faved_topic_list"),
-        url(r'^t/fav/(?P<topic_id>\d+)/$', bbs.views.fav_topic, name="fav_topic"),
-        url(r'^t/unfav/(?P<topic_id>\d+)/$', bbs.views.unfav_topic, name="unfav_topic"),
         )

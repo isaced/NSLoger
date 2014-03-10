@@ -26,12 +26,12 @@
     <div class="panel-footer topic-footer"> 
       <div class="pull-left">
         {% if not faved_topic %}
-          <form action="{% url 'user:fav_topic' topic.id %}" method=POST>
+          <form action="{% url 'bbs:fav_topic' topic.id %}" method="POST">
                       {% csrf_token %}
               <button class="btn btn-default fav-btn" type="submit">加入收藏</button>
           </form>
         {% else %}
-          <form action="{% url 'user:unfav_topic' topic.id %}" method=POST>
+          <form action="{% url 'bbs:unfav_topic' topic.id %}" method="POST">
                       {% csrf_token %}
               <button class="btn btn-default fav-btn" type="submit">取消收藏</button>
           </form>
