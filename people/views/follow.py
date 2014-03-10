@@ -32,10 +32,10 @@ def follow(request, uid):
         follower = Follower.objects.create(user_a=user_a, user_b=user_b)
         follower.save()
         messages.success(request, u"关注用户 %s 成功" % user_b.username)
-        return HttpResponseRedirect(reverse("user:following"))
+        return HttpResponseRedirect(reverse("user:user",args=(user_b.id,)))
     except IntegrityError:
         messages.error(request, u"你已经关注了用户 %s，不能重复关注" % user_b.username)
-        return HttpResponseRedirect(reverse("user:following"))
+        return HttpResponseRedirect(reverse("user:user",args=(user_b.id,)))
 
 
 @csrf_protect
@@ -54,7 +54,7 @@ def un_follow(request, uid):
     else:
         follower.delete()
         messages.success(request, u"取消关注用户 %s 成功" % user_b.username)
-        return HttpResponseRedirect(reverse("user:following"))
+        return HttpResponseRedirect(reverse("user:user",args=(user_b.id,)))
 
 
 @login_required
