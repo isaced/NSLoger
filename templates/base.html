@@ -64,7 +64,8 @@
             <div class="col-xs-12 col-sm-7 col-md-8">
               
               {% if messages %}
-                <div class="alert alert-info" style="margin-bottom: 0px;">
+                <div class="alert alert-info">
+                    <button type="button" class="close" id="message-close" aria-hidden="true">&times;</button>
                     {% for message in messages %}{{ message }}{% endfor %}
                 </div>
               {% endif %}
@@ -154,6 +155,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{% static "js/jquery-2.1.0.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
     {% block footer%}{% endblock %}
   </body>
 </html>
