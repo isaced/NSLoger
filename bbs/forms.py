@@ -11,9 +11,9 @@ class TopicForm(forms.ModelForm):
         title = self.cleaned_data.get("title").strip()
         #if len(title) == 0:
             #raise forms.ValidationError("请输入标题...")
-        if len(title) < 5:
+        if len(title) < 3:
             raise forms.ValidationError("标题太短哦...")
-        elif len(title) > 50:
+        elif len(title) > 100:
             raise forms.ValidationError("标题太长哦...")
         else:
             return title
@@ -24,7 +24,7 @@ class TopicForm(forms.ModelForm):
             #raise forms.ValidationError("请输入内容...")
         #elif len(content) < 10:
             #raise forms.ValidationError("正文内容太短哦...")
-        if len(content) > 2000:
+        if len(content) > 5000:
             raise forms.ValidationError("正文内容太长哦...")
         else:
             return content

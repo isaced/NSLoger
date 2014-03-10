@@ -5,7 +5,7 @@ html,
 body {
   height: 100%;
   background-color: #E0E0E0;
-  font-family: "Avenir Next", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 
@@ -147,23 +147,38 @@ body {
 
 
 /* --- reply --- */
-.comment{
-  margin-top: 8px;
+.comment-tableview{
+  padding: 0px;
 }
 
-.comment .headimage{
-  margin-left: 10px;
-  width: 60px;
-  height: 60px;
+.comment-tableview .comment{
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
 }
-.comment .content{
+.comment-tableview .light{
+  background-color: #F7F2FC;
+}
+.comment-tableview .comment .name a{
+  font-weight: bold;
+  color: #888;
+}
+.comment-tableview .comment .headimage{
+  margin-left: 10px;
+  width: 48px;
+  height: 48px;
+}
+.comment-tableview .comment .content{
   margin-top: 5px;
 }
-.comment .datetime{
-  margin-left: 10px;
-  font-size: 13px;
+.comment-tableview .comment .content .at_user{
+  color: #000;
+  font-weight: bold;
 }
-.comment .cell{
+.comment-tableview .comment .datetime{
+  margin-left: 10px;
+  font-size: 12px;
+}
+.comment-tableview .comment .cell{
   height: auto;
   margin: 10px;
 }

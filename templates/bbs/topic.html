@@ -7,7 +7,7 @@
 {% block content %}
 <div class="panel panel-default">
                   <div class="topic-header">
-                    <div class="topic-headimg pull-right"><a href="{% url 'user:user' topic.author.id %}"><img src="{% gravatar topic.author 60 %}" /></a></div>
+                    <div class="topic-headimg pull-right"><a href="{% url 'user:user' topic.author.id %}"><img src="{% gravatar topic.author 48 %}" /></a></div>
                     <div class="topic_breadcrumb">
                         <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">{{ topic.node }}</a>
                     </div>
@@ -49,32 +49,32 @@
 {% block reply %}
 <div class="panel panel-default">
   <div class="panel-heading">{{ comment_list.count }} 回复</div>
-  <div class="panel-body">
+  <div class="panel-body comment-tableview">
     {% for comment in comment_list %}
-      <div class="comment">
-      <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tbody><tr>
-      <td valign="top" width="48">
-      <a href="{% url 'user:user' comment.author.id %}" title="{{ comment.author.username }}">
-        <img src="{% gravatar comment.author 60 %}">
-      </a>
-      </td>
-      <td width="10"></td>
-      <td valign="top" width="auto">
-      <div class="pull-right">
-      <span class="text-muted">
-        #{{forloop.counter}} - <a href="#" onclick="">回复</a>
-      </span>
+      <div class="comment" id="comment{{forloop.counter}}">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tbody><tr>
+        <td valign="top" width="48">
+        <a href="{% url 'user:user' comment.author.id %}" title="{{ comment.author.username }}">
+          <img src="{% gravatar comment.author 48 %}">
+        </a>
+        </td>
+        <td width="10"></td>
+        <td valign="top" width="auto">
+          <div class="pull-right">
+            <span class="text-muted">
+              #{{forloop.counter}} - <a href="#reply_content" onclick="replyOne('{{comment.author}}','{{forloop.counter}}');">回复</a>
+            </span>
+          </div>
+          <div class="pull-left">
+            <span class="name"><a href="{% url 'user:user' comment.author.id %}">{{ comment.author}}</a></span>
+            <span class="datetime text-muted">{{forloop.counter}}楼 , {{ comment.created_on|naturaltime }}</span>
+            <div class="content reply_content">{{ comment.content|my_markdown }}</div>
+          </div>
+        </td>
+        </tr>
+        </tbody></table>
       </div>
-        <a href="{% url 'user:user' comment.author.id %}">{{ comment.author}}</a>
-      <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
-        <div class="content reply_content">{{ comment.content|my_markdown }}</div>
-        <div class="pull-right">
-      </div>
-      </td>
-      </tr>
-      </tbody></table>
-  </div>
     {% endfor %}
   </div>
 </div>
@@ -83,14 +83,12 @@
   <div class="panel panel-default">
     <div class="panel-heading">回复</div>
     <div class="panel-body">
-            <div>
               <form class="text" action="{% url 'bbs:reply' topic.id %}" method="post">
                 {% csrf_token %}
 
                 <div class="form-group">
-                  <div id="epiceditor" style="border: 1px solid #ccc;">
-                    <textarea style="display:none"  name="content" id="content" class="form-control">{{ form.content.value |default_if_none:""}}</textarea>
-                  </div>
+                  <label class="sr-only" for="replay">回复</label>
+                  <textarea name="content" id="reply_content" class="form-control" rows="5">{{ form.content.value |default_if_none:""}}</textarea>
                 </div>
 
                 <button type="submit" class="btn btn-default submit-btn">回复</button>
@@ -106,18 +104,8 @@
                 {% endif %}
 
               </form>
-            </div>
     </div>
   </div>
-{% endif %}
-
-{% endblock %}
-
-
-{% block footer %}
-
-{% if user.is_authenticated %}
-{% include "bbs/epiceditor_script.html" %}
 {% endif %}
 
 {% endblock %}

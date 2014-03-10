@@ -40,7 +40,7 @@ def get_following_count(user):
 @register.filter(is_safe=True)
 @stringfilter
 def my_markdown(value):
-	md = markdown2.markdown(force_unicode(value),extras=['fenced-code-blocks'],safe_mode=True)
+	md = markdown2.markdown(force_unicode(value),extras=['fenced-code-blocks',"break-on-newline"],safe_mode=True)
 	md = md.replace('[HTML_REMOVED]', '')
 
 	# @人给链接输出
@@ -51,7 +51,7 @@ def my_markdown(value):
 			try:
 				at_user = User.objects.get(username=at_name)
 				if at_user:
-					md = md.replace('@'+at_name,'<a href="%s">@%s</a>' % (reverse("user:user",args=(at_user.id,)),at_name))
+					md = md.replace('@'+at_name,'<a href="%s" class="at_user">@%s</a>' % (reverse("user:user",args=(at_user.id,)),at_name))
 			except:
 				pass
 

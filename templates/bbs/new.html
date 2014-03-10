@@ -31,9 +31,7 @@
                       </div>
                       <div class="form-group">
                         <label>{{ form.content.label }}:</label>
-                        <div id="epiceditor" style="border: 1px solid #ccc;">
-                          <textarea style="display:none"  name="content" id="content" class="form-control">{{ form.content.value |default_if_none:""}}</textarea>
-                        </div>
+                          <textarea name="content" id="content" class="form-control" rows="10">{{ form.content.value |default_if_none:""}}</textarea>
                       </div>
 
                       <button type="submit" class="btn btn-default">发布</button>
@@ -46,8 +44,4 @@
                     <small>支持Markdown语法</small>
                   </blockquote>
               </div>
-{% endblock %}
-
-{% block footer %}
-{% include "bbs/epiceditor_script.html" %}
 {% endblock %}
