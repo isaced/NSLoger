@@ -17,7 +17,7 @@ from NSLoger.settings import NUM_TOPICS_PER_PAGE
 
 def index(request):
     '''首页'''
-    topic_list = Topic.objects.all().order_by('-updated_on')[:NUM_TOPICS_PER_PAGE]
+    topic_list = Topic.objects.all().order_by('-created_on')[:NUM_TOPICS_PER_PAGE]
 
     nodes = []
     categor_list = Category.objects.all()
@@ -32,7 +32,7 @@ def index(request):
     return render(request,"bbs/index.html",{'topic_list':topic_list,'nodes':nodes})
 
 def recent(request):
-    topic_list = Topic.objects.all().order_by('-updated_on')
+    topic_list = Topic.objects.all().order_by('-created_on')
     paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
     page = request.GET.get('page')
 
@@ -131,7 +131,7 @@ def node(request, node_slug):
     except Node.DoesNotExist:
         raise Http404
 
-    topic_list = Topic.objects.filter(node=node).order_by('-updated_on')
+    topic_list = Topic.objects.filter(node=node).order_by('-created_on')
     paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
     page = request.GET.get('page')
 
