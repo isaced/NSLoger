@@ -19,9 +19,11 @@
     <div class="panel-body">
       {{ topic.content|my_markdown }}
     </div>
-    <div class="panel-footer topic-footer">
-        {% if user.is_authenticated %}
-        {% if user.id != topic.author.id %}
+
+
+    {% if user.is_authenticated %}
+    {% if user.id != topic.author.id %}
+    <div class="panel-footer topic-footer"> 
       <div class="pull-left">
         {% if not faved_topic %}
           <form action="{% url 'user:fav_topic' topic.id %}" method=POST>
@@ -35,16 +37,10 @@
           </form>
         {% endif %}
       </div>
-      {% endif %}
-      {% endif %}
-
-      <!--
-      <div class="pull-right">
-          <small>{{ faved_num }} 人收藏</small>
-      </div>
-      -->
       <div class="clearfix"></div>
     </div>
+    {% endif %}
+    {% endif %}
 </div>
 
 {% endblock %}
