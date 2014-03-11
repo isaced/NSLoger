@@ -116,6 +116,7 @@ def user(request, uid):
 # 用户榜
 def au_top(request):
     au_list = Member.objects.order_by('-au')[:20]
+    user_count = Member.objects.all().count()
     return render(request, "people/au_top.html", locals())
 
 # 用户个人页面 - 所有主题
