@@ -76,7 +76,35 @@
         </tbody></table>
       </div>
     {% endfor %}
-  </div>
+  </div>  
+  {% if comment_list.paginator.num_pages > 1 %}
+    <div class="panel-footer">
+      <ul class="pager text-muted">
+
+        {% if comment_list.has_previous %}
+          <li class="previous">
+            <a href="?page={{ comment_list.previous_page_number }}">&larr;上一页</a>
+          </li>
+        {% else %}
+          <li class="previous disabled">
+            <a href="#">&larr;上一页</a>
+          </li>
+        {% endif %}
+
+        <li>{{ comment_list.number }}/{{ comment_list.paginator.num_pages }}</li>
+
+        {% if comment_list.has_next %}
+          <li class="next">
+            <a href="?page={{ comment_list.next_page_number }}">下一页 &rarr;</a>
+          </li>
+        {% else %}
+          <li class="next disabled">
+            <a href="#">下一页 &rarr;</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  {% endif %}
 </div>
 
 {% if user.is_authenticated %}

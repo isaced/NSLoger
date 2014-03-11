@@ -13,7 +13,7 @@ from bbs.forms import ReplyForm, TopicForm, EditForm
 from django.db import IntegrityError
 
 from django.contrib import messages
-from NSLoger.settings import NUM_TOPICS_PER_PAGE
+from NSLoger.settings import NUM_TOPICS_PER_PAGE,NUM_COMMENT_PER_PAGE
 
 def index(request):
     '''首页'''
@@ -58,12 +58,25 @@ def topic(request,topic_id):
 
     faved_num = FavoritedTopic.objects.filter(topic=topic).count()
 
-    comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
     if request.user.is_authenticated():
         try:
             faved_topic = FavoritedTopic.objects.filter(user=request.user, topic=topic).first()
         except (User.DoesNotExist, FavoritedTopic.DoesNotExist):
             faved_topic = None
+
+    # Comment
+    comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
+    paginator = Paginator(comment_list, NUM_COMMENT_PER_PAGE)
+    page = request.GET.get('page')
+    if page == None:
+        page = paginator.num_pages
+
+    try:
+        comment_list = paginator.page(page)
+    except PageNotAnInteger:
+        comment_list = paginator.page(1)
+    except EmptyPage:
+        comment_list = paginator.page(paginator.num_pages)
 
     form = ReplyForm()
     return render(request,"bbs/topic.html", locals())
