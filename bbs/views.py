@@ -43,7 +43,7 @@ def recent(request):
     except EmptyPage:
         topic_list = paginator.page(paginator.num_pages)
 
-    return render_to_response("bbs/recent.html",{"topic_list":topic_list});
+    return render(request,"bbs/recent.html",{"topic_list":topic_list});
 
 def topic(request,topic_id):
     '''主题详情'''

@@ -8,11 +8,11 @@
 <div class="panel panel-default">
   <div class="panel-body userpage">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <img width="120" height="120" src="{% gravatar user_from_id.email 120 %}" class="img-responsive center-block" alt="{{ user_from_id.username }}">
             </div>
-            <div class="col-md-10">
-                <strong>{{ user_from_id.username }}</strong>
+            <div class="col-md-9">
+                <strong class="username">{{ user_from_id.username }}</strong>
                 {% if user.is_authenticated %}
                 {% if user_a.id != user_from_id.id %}
                 <div class="pull-right">

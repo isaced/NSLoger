@@ -206,6 +206,10 @@ body {
   color: #999;
 }
 
+.userpage .username{
+  font-size: 25px;
+}
+
 .notice-cell{
   padding: 10px;
   padding-top: 10px;
