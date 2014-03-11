@@ -13,6 +13,6 @@ urlpatterns = patterns('',
         url(r'^t/unfav/(?P<topic_id>\d+)/$', views.unfav_topic, name="unfav_topic"),
         url(r'^node/([\w-]+)/new/?$',views.new,name='new'),
         url(r'^node/(?P<node_slug>[\w-]+)/$',views.node,name="node"),
-		url(r'^notice/?$',views.notice,name='notice'),
-		url(r'^notice/(\d+)/delete/?$',views.notice_delete,name='notice_delete'),
+	url(r'^notice/?$',views.notice,name='notice'),
+	url(r'^notice/(\d+)/delete/?$',views.notice_delete,name='notice_delete'),
         )

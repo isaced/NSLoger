@@ -10,6 +10,11 @@ from django.contrib.auth import logout as auth_logout, authenticate, login as au
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 
+from bbs.models import Topic
+from NSLoger.settings import NUM_TOPICS_PER_PAGE,NUM_COMMENT_PER_PAGE
+
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 __all__ = ['register', 'login', 'logout']
 
 @csrf_protect
@@ -104,11 +109,41 @@ def user(request, uid):
         except (Member.DoesNotExist, Follower.DoesNotExist):
             follower = None
 
-    topic_list = Topic.objects.order_by("-updated_on").filter(author=user_from_id.id)[:10]
-    comment_list = Comment.objects.order_by("-created_on").filter(author=user_from_id)
+    topic_list = Topic.objects.order_by("-created_on").filter(author=user_from_id.id)[:10]
+    comment_list = Comment.objects.order_by("-created_on").filter(author=user_from_id)[:10]
     return render(request, "people/user.html", locals())
 
-
+# 用户榜
 def au_top(request):
     au_list = Member.objects.order_by('-au')[:20]
     return render(request, "people/au_top.html", locals())
+
+# 用户个人页面 - 所有主题
+def user_topics(request, uid):
+    this_user = Member.objects.get(pk=uid)
+    topic_list = Topic.objects.order_by("-created_on").filter(author=uid)
+    paginator = Paginator(topic_list, NUM_TOPICS_PER_PAGE)
+    page = request.GET.get('page')
+    try:
+        topic_list = paginator.page(page)
+    except PageNotAnInteger:
+        topic_list = paginator.page(1)
+    except EmptyPage:
+        topic_list = paginator.page(paginator.num_pages)
+
+    return render(request, "people/user_topics.html", locals())
+
+# 用户个人页面 - 所有回复
+def user_comments(request, uid):
+    this_user = Member.objects.get(pk=uid)
+    comment_list = Comment.objects.order_by("-created_on").filter(author=uid)
+    paginator = Paginator(comment_list, NUM_COMMENT_PER_PAGE)
+    page = request.GET.get('page')
+    try:
+        comment_list = paginator.page(page)
+    except PageNotAnInteger:
+        comment_list = paginator.page(1)
+    except EmptyPage:
+        comment_list = paginator.page(paginator.num_pages)
+
+    return render(request, "people/user_comments.html", locals())

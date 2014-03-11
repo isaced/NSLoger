@@ -58,43 +58,11 @@
   <div class="panel-heading">最近创建的主题</div>
   <div class="panel-body tableview">
     {% for topic in topic_list %}
-    <div class="cell">
-        <div class="detail" style="padding-left:0px;">
-            <div class="pull-right">
-                <div class="badge badge-info">
-                    <a href="{% url 'bbs:topic' topic.id %}">
-                        {{ topic.num_comments }}
-                    </a>
-                </div>
-            </div>
-            <a href="{% url 'bbs:topic' topic.id %}" class="title">
-                {{topic.title}}
-            </a>
-            <div class="meta">
-                <a href="{% url 'bbs:node' topic.node.slug %}" class="node">
-                    {{ topic.node.name }}
-                </a>
-                <span class="text-muted">
-                    •
-                </span>
-                <a href="{% url 'user:user' topic.author.id %}" title="{{ topic.author }}">
-                    {{ topic.author }}
-                </a>
-                <span class="text-muted">
-                    •
-                </span>
-                {{ topic.created_on|naturaltime }}
-                <span class="text-muted">
-                    •
-                </span>
-                最后回复来自
-                <a href="{% url 'user:user' topic.last_reply.id %}"  title="{{ topic.last_reply }}">
-                    {{ topic.last_reply }}
-                </a>
-            </div>
-        </div>
-    </div>
+        {% include "people/user_topics_cell.html" %}
     {% endfor %}
+    </div>
+    <div class="panel-footer">
+        <a href="{% url 'user:user_topics' user_from_id.id %}">» {{ user_from_id.username }} 创建的更多主题</a>
     </div>
 </div>
 
@@ -102,22 +70,12 @@
   <div class="panel-heading">最近回复的主题</div>
   <div class="panel-body comment-tableview">
     {% for comment in comment_list %}
-      <div class="comment" id="comment{{forloop.counter}}">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tbody><tr>
-        <td width="10"></td>
-        <td valign="top" width="auto">
-          <div class="pull-left">
-            <span ><a href="">{{comment.topic.title}}</a></span>
-            <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
-            <div class="content reply_content">{{ comment.content|my_markdown }}</div>
-          </div>
-        </td>
-        </tr>
-        </tbody></table>
-      </div>
+        {% include "people/user_comments_cell.html" %}
     {% endfor %}
   </div>
+    <div class="panel-footer">
+        <a href="{% url 'user:user_comments' user_from_id.id %}">» {{ user_from_id.username }} 创建的更多回复</a>
+    </div>
 </div>
 
 {% endblock %}

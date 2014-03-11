@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load gravatar %}
+
+{% block content %}
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <ol class="breadcrumb">
+                          <li><a href="/">NSLoger</a></li>
+                          <li><a href="{% url 'user:user' this_user.id %}">{{this_user.username}}</a></li>
+                          <li>所有主题</li>
+                      </ol>
+                  </div>
+
+                  <div class="panel-body tableview">
+                    {% for topic in topic_list %}
+                      {% include "people/user_topics_cell.html" %}
+                    {% endfor %}
+                  </div>
+                  <div class="panel-footer">
+                    <ul class="pager text-muted">
+
+                      {% if topic_list.has_previous %}
+                        <li class="previous">
+                          <a href="?page={{ topic_list.previous_page_number }}">&larr;上一页</a>
+                        </li>
+                      {% else %}
+                        <li class="previous disabled">
+                          <a href="#">&larr;上一页</a>
+                        </li>
+                      {% endif %}
+
+                      <li>{{ topic_list.number }}/{{ topic_list.paginator.num_pages }}</li>
+
+
+                      {% if topic_list.has_next %}
+                        <li class="next">
+                          <a href="?page={{ topic_list.next_page_number }}">下一页 &rarr;</a>
+                        </li>
+                      {% else %}
+                        <li class="next disabled">
+                          <a href="#">下一页 &rarr;</a>
+                        </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+              </div>
+{% endblock %}

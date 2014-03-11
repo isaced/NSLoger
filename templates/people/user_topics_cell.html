@@ -1,0 +1,37 @@
+{% load humanize %}
+    <div class="cell">
+        <div class="detail" style="padding-left:0px;">
+            <div class="pull-right">
+                <div class="badge badge-info">
+                    <a href="{% url 'bbs:topic' topic.id %}">
+                        {{ topic.num_comments }}
+                    </a>
+                </div>
+            </div>
+            <a href="{% url 'bbs:topic' topic.id %}" class="title">
+                {{topic.title}}
+            </a>
+            <div class="meta">
+                <a href="{% url 'bbs:node' topic.node.slug %}" class="node">
+                    {{ topic.node.name }}
+                </a>
+                <span class="text-muted">
+                    •
+                </span>
+                <a href="{% url 'user:user' topic.author.id %}" title="{{ topic.author }}">
+                    {{ topic.author }}
+                </a>
+                <span class="text-muted">
+                    •
+                </span>
+                {{ topic.created_on|naturaltime }}
+                <span class="text-muted">
+                    •
+                </span>
+                最后回复来自
+                <a href="{% url 'user:user' topic.last_reply.id %}"  title="{{ topic.last_reply }}">
+                    {{ topic.last_reply }}
+                </a>
+            </div>
+        </div>
+    </div>

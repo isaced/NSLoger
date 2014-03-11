@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load gravatar %}
+{% load bbstag %}
+
+{% block content %}
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <ol class="breadcrumb">
+                          <li><a href="/">NSLoger</a></li>
+                          <li><a href="{% url 'user:user' this_user.id %}">{{this_user.username}}</a></li>
+                          <li>所有主题</li>
+                      </ol>
+                  </div>
+
+                  <div class="panel-body comment-tableview">
+                      {% for comment in comment_list %}
+                        {% include "people/user_comments_cell.html" %}
+                      {% endfor %}
+                  </div>
+                  <div class="panel-footer">
+                    <ul class="pager text-muted">
+
+                      {% if comment_list.has_previous %}
+                        <li class="previous">
+                          <a href="?page={{ comment_list.previous_page_number }}">&larr;上一页</a>
+                        </li>
+                      {% else %}
+                        <li class="previous disabled">
+                          <a href="#">&larr;上一页</a>
+                        </li>
+                      {% endif %}
+
+                      <li>{{ comment_list.number }}/{{ comment_list.paginator.num_pages }}</li>
+
+
+                      {% if comment_list.has_next %}
+                        <li class="next">
+                          <a href="?page={{ comment_list.next_page_number }}">下一页 &rarr;</a>
+                        </li>
+                      {% else %}
+                        <li class="next disabled">
+                          <a href="#">下一页 &rarr;</a>
+                        </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+              </div>
+{% endblock %}
