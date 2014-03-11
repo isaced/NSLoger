@@ -92,7 +92,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return HttpResponseRedirect(reverse('user:login'))
+    return HttpResponseRedirect(reverse('bbs:index'))
 
 
 def user(request, uid):
