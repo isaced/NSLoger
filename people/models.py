@@ -5,6 +5,13 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 from django.utils import timezone
+from django.conf import settings
+import hashlib
+import random
+import string
+
+SALT = getattr(settings, "EMAIL_TOKEN_SALT",
+                         "NSLoger")
 
 # Create your models here.
 class MyUserManager(BaseUserManager):
@@ -142,3 +149,45 @@ class Follower(models.Model):
 
     def __unicode__(self):
         return "%s following %s" % (self.user_a, self.user_b)
+
+
+class EmailVerified(models.Model):
+    user = models.OneToOneField(Member, related_name="user")
+    token = models.CharField("Email 验证 token", max_length=32, default=None)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __unicode__(self):
+        return "%s@%s" % (self.user, self.token)
+
+    def generate_token(self):
+        year = self.timestamp.year
+        month = self.timestamp.month
+        day = self.timestamp.day
+        date = "%s-%s-%s" % (year, month, day)
+        token = hashlib.md5(str(self.user.id)+self.user.username+self.ran_str()+date).hexdigest()
+        return token
+
+    def ran_str(self):
+        salt = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+        return salt + SALT
+
+
+class FindPass(models.Model):
+    user = models.OneToOneField(Member, verbose_name="用户")
+    token = models.CharField(max_length=32, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=True)
+
+    def __unicode__(self):
+        return "%s@%s" % (self.user, self.token)
+
+    def generate_token(self):
+        year = self.timestamp.year
+        month = self.timestamp.month
+        day = self.timestamp.day
+        date = "%s-%s-%s" % (year, month, day)
+        token = hashlib.md5(str(self.user.id)+self.user.username+self.ran_str()+date).hexdigest()
+        return token
+
+    def ran_str(self):
+        salt = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+        return salt + SALT

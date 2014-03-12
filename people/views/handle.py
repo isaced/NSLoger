@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from people.forms import RegisterForm, LoginForm
-from people.models import Member, Follower
+from people.models import Member, Follower, EmailVerified as Email, FindPass
 from bbs.models import Topic, Comment
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import logout as auth_logout, authenticate, login as auth_login
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 from bbs.models import Topic
 from NSLoger.settings import NUM_TOPICS_PER_PAGE,NUM_COMMENT_PER_PAGE
-
+from django.conf import settings
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.mail import send_mail
+import datetime
 
-__all__ = ['register', 'login', 'logout']
+SITE_URL = getattr(settings, "SITE_URL", "http://localhost:8080")
+
 
 @csrf_protect
 def register(request):
@@ -31,21 +36,26 @@ def register(request):
             # TODO
             new_user.save()
 
+            email_verified = Email(user=new_user)
+            email_verified.token = email_verified.generate_token()
+            email_verified.save()
+
+            send_mail(u"欢迎加入NSLoger", u"请点击链接验证您的邮箱 %s%s" % (SITE_URL, reverse("user:email_verified", args=(new_user.id, email_verified.token))),
+                       "no-reply@nsloger.com", [data["email"]]
+                    )
+            messages.success(request, u"恭喜您注册成功，请去您的邮箱验证一下您的邮箱，如果未收到邮件，请去垃圾信箱看一下。")
+
             #注册成功后自动登陆
             user = authenticate(email=data["email"], password=data["password"])
-            if user is not None:
-                auth_login(request, user)
-                go = reverse("bbs:index")
-                if request.session.get("next"):
-                    go = request.session.pop("next")
+            auth_login(request, user)
+            go = reverse("bbs:index")
+            if request.session.get("next"):
+                go = request.session.pop("next")
 
-                is_auto_login = request.POST.get('auto')
-                if not is_auto_login:
-                    request.session.set_expiry(0)
-                return HttpResponseRedirect(go)
-            else:
-                messages.error(request, '密码不正确！')
-                return render(request,'people/login.html',locals())
+            is_auto_login = request.POST.get('auto')
+            if not is_auto_login:
+                request.session.set_expiry(0)
+            return HttpResponseRedirect(go)
     else:
         form = RegisterForm()
     return render(request, 'people/register.html', {
@@ -148,3 +158,111 @@ def user_comments(request, uid):
         comment_list = paginator.page(paginator.num_pages)
 
     return render(request, "people/user_comments.html", locals())
+
+
+@login_required
+@csrf_protect
+def send_verified_email(request):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("user:settings"))
+
+    user = request.user
+    if user.email_verified:
+        messages.error(request, u"您的邮箱已经验证过了")
+        return HttpResponseRedirect(reverse("user:settings"))
+
+    try:
+        email = Email.objects.get(user=user)
+        email.token = email.generate_token()
+        email.save()
+    except Email.DoesNotExist:
+        email = Email(user=user)
+        email.token = email.generate_token()
+        email.save()
+    finally:
+        send_mail(u"欢迎加入NSLoger", u"请点击链接验证您的邮箱 %s%s" % (SITE_URL, reverse("user:email_verified", args=(user.id, email.token))),
+                    "no-reply@nsloger.com", [user.email]
+                )
+        messages.success(request, u"邮件已经发送，请去您的邮箱验证一下您的邮箱，如果未收到邮件，请去垃圾信箱看一下。")
+        return HttpResponseRedirect(reverse("user:settings"))
+
+
+def email_verified(request, uid, token):
+    try:
+        user = Member.objects.get(pk=uid)
+        email = Email.objects.get(user=user)
+    except Member.DoesNotExist, Email.DoesNotExist:
+        raise Http404
+    else:
+        if email.token == token:
+            user.email_verified = True
+            user.save()
+            email.delete()
+            messages.success(request, u"验证成功")
+            if not request.user.is_authenticated():
+                auth_login(request, user)
+            return HttpResponseRedirect(reverse("bbs:index"))
+        else:
+            raise Http404
+
+
+def find_password(request):
+    if request.method == "GET":
+        return render(request, "people/find_password.html")
+
+    email = request.POST["email"]
+    user = Member.objects.get(email=email)
+    if user:
+        find_pass = FindPass.objects.filter(user=user)
+        if find_pass:
+            find_pass = find_pass[0]
+        else:
+            find_pass = FindPass(user=user)
+            find_pass.timestamp = timezone.now()
+            find_pass.token = find_pass.generate_token()
+
+        find_pass.save()
+        send_mail(u"重置NSLoger密码", u"请点击链接重置密码 %s%s" % (SITE_URL, reverse("user:first_reset_password", args=(user.id, find_pass.token))),
+                    "no-reply@nsloger.com", [email]
+                )
+        messages.success(request, u"邮件已经发送，邮箱如果未收到邮件，请去垃圾信箱看一下。")
+        return HttpResponseRedirect(reverse("bbs:index"))
+
+
+def first_reset_password(request, uid=None, token=None):
+    user = Member.objects.get(pk=uid)
+    find_pass = FindPass.objects.filter(user=user)
+    if not find_pass:
+        messages.error(request, u"错误")
+        return HttpResponseRedirect(reverse("user:find_pass"))
+    find_pass = find_pass[0]
+
+    now = timezone.now()
+    timestamp = find_pass.timestamp
+    if int(now.strftime('%Y%m%d'))-int(timestamp.strftime('%Y%m%d'))<3:
+        request.session["find_pass"] = uid
+        return render(request, "people/reset_password.html")
+    else:
+        raise Http404
+
+
+def reset_password(request):
+    if request.method == "GET":
+        raise Http404
+
+    password = request.POST.get("password", '')
+    if len(password) < 6:
+        messages.error(request, u"密码不能少于6位")
+        return render(request, "people/reset_password.html")
+
+    uid = request.session["find_pass"]
+    user = Member.objects.get(pk=uid)
+    if user:
+        user.set_password(password)
+        user.save()
+        FindPass.objects.get(user=user).delete()
+        del request.session["find_pass"]
+        messages.success(request, u"重置成功，请登录")
+        return HttpResponseRedirect(reverse("user:login"))
+
+    raise Http404

@@ -104,11 +104,12 @@ LOGIN_URL = '/login'
 
 # Email setting
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.exmail.qq.com"
-EMAIL_PORT = 465
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "test@cloverstd.com"
-EMAIL_HOST_PASSWORD = "aa1234567"
+EMAIL_HOST = "smtp.ym.163.com"
+#EMAIL_PORT = 994
+#EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "no-reply@nsloger.com"
+EMAIL_HOST_PASSWORD = ""
+EMAIL_TOKEN_SALT = "NSLoger"
 
 # Constant Define
 NUM_TOPICS_PER_PAGE = 20
@@ -120,3 +121,5 @@ GRAVATAR_DEFAULT_IMAGE = ""
 GRAVATAR_URL_PREFIX = "http://gravatar.duoshuo.com/"
 GRAVATAR_DEFAULT_RATING = "g"
 GRAVATAR_DEFAULT_SIZE = "48"
+
+SITE_URL = "http://localhost:8080"
