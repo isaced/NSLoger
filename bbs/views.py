@@ -15,6 +15,9 @@ from django.db import IntegrityError
 from django.contrib import messages
 from NSLoger.settings import NUM_TOPICS_PER_PAGE,NUM_COMMENT_PER_PAGE
 
+import datetime
+from django.db.models import Count 
+
 def index(request):
     '''首页'''
     topic_list = Topic.objects.all().order_by('-created_on')[:NUM_TOPICS_PER_PAGE]
@@ -28,8 +31,19 @@ def index(request):
         node['category_name'] = category.name
         node['category_nodes'] = category_nodes
         nodes.append(node)
+    
+    # 今日热议
+    hot_comments = Comment.objects.filter(created_on__gt=datetime.date.today()).values('topic').annotate(count=Count('topic')).order_by('-count')[:10]
+    hot_topics = []
+    for comment in hot_comments:
+        topic = Topic.objects.get(id=comment['topic'])
+        hot_topics.append(topic)
 
-    return render(request,"bbs/index.html",{'topic_list':topic_list,'nodes':nodes})
+    return render(request,"bbs/index.html",{
+        'topic_list':topic_list,
+        'nodes':nodes,
+        'hot_topics':hot_topics
+        })
 
 def recent(request):
     topic_list = Topic.objects.all().order_by('-created_on')

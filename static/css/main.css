@@ -51,8 +51,8 @@ body {
 }
 .tableview .cell:hover{background:#f6f6f6}
 .tableview .cell .headimage{
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   margin-left: 5px;
   margin-top: -3px;
 }

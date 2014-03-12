@@ -42,6 +42,30 @@
 {% endblock %}
 
 {% block sidebar %}
+
+<div class="panel panel-default hidden-xs">
+  <div class="panel-heading">今日热议</div>
+  <div class="panel-body tableview">
+      {% for topic in hot_topics %}
+        <div class="cell">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody><tr>
+                <td width="24" valign="middle" align="center">
+                    <a href="{% url 'user:user' topic.author.id %}"><img src="{% gravatar topic.author 48 %}" class="avatar" border="0" align="default" style="max-width: 24px; max-height: 24px;"></a>
+                </td>
+                <td width="10"></td>
+                <td width="auto" valign="middle">
+                  <span>
+                    <a href="{% url 'bbs:topic' topic.id %}">{{topic.title}}</a>
+                  </span>
+                </td>
+            </tr>
+        </tbody></table>
+        </div>
+      {% endfor %}
+  </div>
+</div>
+
 <div class="panel panel-default hidden-xs">
   <div class="panel-heading">友情链接</div>
   <div class="panel-body">
