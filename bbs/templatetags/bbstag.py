@@ -35,12 +35,19 @@ def get_following_count(user):
     num = Follower.objects.filter(user_a=user).count()
     return num
 
+# 计算楼层
+@register.simple_tag
+def page_item_idx(page_obj, p ,forloop):
+	return page_obj.page(p).start_index() + forloop['counter0']
+
 # --- filter ---
 
 @register.filter(is_safe=True)
 @stringfilter
 def my_markdown(value):
-	md = markdown2.markdown(force_unicode(value),extras=['fenced-code-blocks',"break-on-newline"],safe_mode=True)
+	link_patterns=[(re.compile(r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+(:[0-9]+)?|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)'),r'\1')]
+	extras_list = ["fenced-code-blocks","break-on-newline","link-patterns","wiki-tables","tag-friendly"]
+	md = markdown2.markdown(force_unicode(value),extras=extras_list,link_patterns=link_patterns,safe_mode=True)
 	md = md.replace('[HTML_REMOVED]', '')
 
 	# @人给链接输出
