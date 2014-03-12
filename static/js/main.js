@@ -23,13 +23,16 @@ function replyOne(username,at_floor){
 
 // Floor add Link
 $(function(){
-		var str=$(".comment-tableview").html();
+	obj = $(".comment-tableview")
+	if (obj.length>0) {
+		var str=obj.html();
 		var attr=/#[1-9]\d*楼/g;
-		str=str.replace(attr, function(floor){
+		str = str.replace(attr, function(floor){
 			n = floor.substring(1,floor.length-1);
 			return "<a href='#comment"+ n +"' onclick='gotofloor(" + n +")'>"+floor+"</a>";}
 		);
 		$(".comment-tableview").html(str);
+	};
 });
 
 var old_element = null;
