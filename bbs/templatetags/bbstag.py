@@ -8,7 +8,7 @@ from bbs.models import Notice,FavoritedTopic
 from people.models import Member as User
 from people.models import Follower
 
-import markdown2
+import markdown
 import re
 
 register = template.Library()
@@ -40,20 +40,31 @@ def get_following_count(user):
 def page_item_idx(page_obj, p ,forloop):
 	return page_obj.page(p).start_index() + forloop['counter0']
 
-# --- filter ---
+# --------- filter ---------
+
+#  -------- Markdown Extension --------
+class CommentMarkdownExtension(markdown.Extension):
+    def extendMarkdown(self, md, md_globals):
+        del md.parser.blockprocessors['hashheader']		#删除H1~H6标签
+#  -------- Markdown Extension --------
 
 @register.filter(is_safe=True)
 @stringfilter
-def my_markdown(value):
-	link_patterns=[(re.compile(r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+(:[0-9]+)?|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)'),r'\1')]
-	extras_list = ["fenced-code-blocks","break-on-newline","link-patterns","wiki-tables","tag-friendly"]
-	md = markdown2.markdown(force_unicode(value),extras=extras_list,link_patterns=link_patterns,safe_mode=True)
-	md = md.replace('[HTML_REMOVED]', '')
+def my_markdown(value, flag):
+
+    extension_list = ['nl2br','fenced_code']
+
+    # 根据参数（主题或评论）载入不同Markdown扩展
+    if flag == 'comment':
+        extension_list.append(CommentMarkdownExtension())
+
+    md = markdown.markdown(force_unicode(value), extension_list, safe_mode = 'escape')
+	
 
 	# @人给链接输出
-	team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
-	at_name_list = set(re.findall(team_name_pattern, md))
-	if at_name_list:
+    team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
+    at_name_list = set(re.findall(team_name_pattern, md))
+    if at_name_list:
 		for at_name in at_name_list:
 			try:
 				at_user = User.objects.get(username=at_name)
@@ -62,4 +73,4 @@ def my_markdown(value):
 			except:
 				pass
 
-	return mark_safe(md)
+    return mark_safe(md)

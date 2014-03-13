@@ -19,7 +19,7 @@
     <div class="pull-left">{{forloop.counter|length }}
       <span class="name"><a href="{% url 'user:user' comment.author.id %}">{{ comment.author}}</a></span>
       <span class="datetime text-muted">{% page_item_idx paginator comment_list.number forloop %}楼 , {{ comment.created_on|naturaltime }}</span>
-      <div class="content reply_content">{{ comment.content|my_markdown }}</div>
+      <div class="content reply_content">{{ comment.content|my_markdown:"comment" }}</div>
     </div>
   </td>
   </tr>
