@@ -63,9 +63,9 @@ def my_markdown(value, flag):
 
     # 根据参数（主题或评论）载入不同Markdown扩展
     if flag == 'comment':
-        renderer = CommentRenderer(flags=misaka.HTML_ESCAPE)
+        renderer = CommentRenderer(flags=misaka.HTML_ESCAPE | misaka.HTML_HARD_WRAP)
     else:
-        renderer = TopicRenderer(flags=misaka.HTML_ESCAPE)
+        renderer = TopicRenderer(flags=misaka.HTML_ESCAPE | misaka.HTML_HARD_WRAP)
 
     md = misaka.Markdown(renderer, extensions=extensions)
     md = md.render(force_unicode(value))
