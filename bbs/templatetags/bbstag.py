@@ -8,7 +8,7 @@ from bbs.models import Notice,FavoritedTopic
 from people.models import Member as User
 from people.models import Follower
 
-import markdown
+import misaka
 import re
 
 register = template.Library()
@@ -43,23 +43,32 @@ def page_item_idx(page_obj, p ,forloop):
 # --------- filter ---------
 
 #  -------- Markdown Extension --------
-class CommentMarkdownExtension(markdown.Extension):
-    def extendMarkdown(self, md, md_globals):
-        del md.parser.blockprocessors['hashheader']		#删除H1~H6标签
+class CommentRenderer(misaka.HtmlRenderer):
+    def header(self, text, level):
+        if level < 4:
+            return '<p>#%s</p>' % text
+        return '<h%d>%s</h%d>' % (level, text, level)
+class TopicRenderer(misaka.HtmlRenderer):
+    pass
 #  -------- Markdown Extension --------
 
 @register.filter(is_safe=True)
 @stringfilter
 def my_markdown(value, flag):
 
-    extension_list = ['nl2br','fenced_code']
+    extensions = (
+        misaka.EXT_NO_INTRA_EMPHASIS | misaka.EXT_FENCED_CODE | misaka.EXT_AUTOLINK |
+        misaka.EXT_TABLES | misaka.EXT_STRIKETHROUGH | misaka.EXT_SUPERSCRIPT
+    )
 
     # 根据参数（主题或评论）载入不同Markdown扩展
     if flag == 'comment':
-        extension_list.append(CommentMarkdownExtension())
+        renderer = CommentRenderer(flags=misaka.HTML_ESCAPE)
+    else:
+        renderer = TopicRenderer(flags=misaka.HTML_ESCAPE)
 
-    md = markdown.markdown(force_unicode(value), extension_list, safe_mode = 'escape')
-	
+    md = misaka.Markdown(renderer, extensions=extensions)
+    md = md.render(force_unicode(value))
 
 	# @人给链接输出
     team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)

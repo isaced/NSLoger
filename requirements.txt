@@ -1,5 +1,5 @@
 Django==1.6.2
 South==0.8.4
 argparse==1.2.1
-Markdown==2.3.1
+misaka==1.0.2
 wsgiref==0.1.2
