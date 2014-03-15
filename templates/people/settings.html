@@ -5,7 +5,7 @@
 
 {% block content %}
 {% if not user.is_email_verified %}
-<form id="send_email_form" action="{% url 'user:send_verified_email' %}" method=POST>{% csrf_token %}
+<form id="send_email_form" action="{% url 'user:send_verified_email' %}" method='POST'>{% csrf_token %}
 <script>
     $(function(){
             $("#send_verified_email").click(function(){
@@ -18,7 +18,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">个人设置
 {% if not user.is_email_verified %}
-                    <a href="#" id="send_verified_email" class="btn btn-info btn-xs">验证邮箱</a>
+                    <a href="#" id="send_verified_email" class="btn btn-info btn-xs pull-right">验证邮箱</a>
 {% endif %}
                 </div>
                 <div class="panel-body">

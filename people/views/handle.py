@@ -40,7 +40,7 @@ def register(request):
             email_verified.token = email_verified.generate_token()
             email_verified.save()
 
-            send_mail(u"欢迎加入NSLoger", u"请点击链接验证您的邮箱 %s%s" % (SITE_URL, reverse("user:email_verified", args=(new_user.id, email_verified.token))),
+            send_mail(u"欢迎加入NSLoger", u"%s 你好：\r\n 请点击链接验证您的邮箱 %s%s" % (new_user.username,SITE_URL, reverse("user:email_verified", args=(new_user.id, email_verified.token))),
                        "no-reply@nsloger.com", [data["email"]]
                     )
             messages.success(request, u"恭喜您注册成功，请去您的邮箱验证一下您的邮箱，如果未收到邮件，请去垃圾信箱看一下。")
@@ -171,20 +171,30 @@ def send_verified_email(request):
         messages.error(request, u"您的邮箱已经验证过了")
         return HttpResponseRedirect(reverse("user:settings"))
 
+    last_email = None
     try:
-        email = Email.objects.get(user=user)
-        email.token = email.generate_token()
-        email.save()
-    except Email.DoesNotExist:
-        email = Email(user=user)
-        email.token = email.generate_token()
-        email.save()
-    finally:
-        send_mail(u"欢迎加入NSLoger", u"请点击链接验证您的邮箱 %s%s" % (SITE_URL, reverse("user:email_verified", args=(user.id, email.token))),
-                    "no-reply@nsloger.com", [user.email]
-                )
-        messages.success(request, u"邮件已经发送，请去您的邮箱验证一下您的邮箱，如果未收到邮件，请去垃圾信箱看一下。")
-        return HttpResponseRedirect(reverse("user:settings"))
+        last_email = Email.objects.get(user=user)
+    except:
+        pass
+
+    if last_email and (timezone.now() - last_email.timestamp).seconds < (3600 * 2):
+        messages.error(request, u'两小时内只能申请验证一次哦！')
+    else:
+        try:
+            email = Email.objects.get(user=user)
+            email.token = email.generate_token()
+            email.timestamp = timezone.now()
+            email.save()
+        except Email.DoesNotExist:
+            email = Email(user=user)
+            email.token = email.generate_token()
+            email.save()
+        finally:
+            send_mail(u"欢迎加入NSLoger!", u"%s 你好：\r\n 欢迎您注册成为NSLoger会员,请点击链接验证您的邮箱: %s%s" % (user.username,SITE_URL, reverse("user:email_verified", args=(user.id, email.token))),
+                        "no-reply@nsloger.com", [user.email]
+                    )
+            messages.success(request, u"邮件已经发送，请去您的邮箱验证一下您的邮箱，如果未收到邮件，请去垃圾信箱看一下。")
+    return HttpResponseRedirect(reverse("user:settings"))
 
 
 def email_verified(request, uid, token):
@@ -211,22 +221,31 @@ def find_password(request):
         return render(request, "people/find_password.html")
 
     email = request.POST["email"]
-    user = Member.objects.get(email=email)
+    user = None
+    try:
+        user = Member.objects.get(email=email)
+    except Member.DoesNotExist:
+        messages.error(request, '未找到用户')
+    
     if user:
         find_pass = FindPass.objects.filter(user=user)
         if find_pass:
             find_pass = find_pass[0]
+            if (timezone.now() - find_pass.timestamp).seconds < (3600 * 2): # 2小时
+                messages.error(request, '两小时内不能重复找回密码')
+                return HttpResponseRedirect(reverse("bbs:index"))
         else:
             find_pass = FindPass(user=user)
             find_pass.timestamp = timezone.now()
             find_pass.token = find_pass.generate_token()
 
         find_pass.save()
-        send_mail(u"重置NSLoger密码", u"请点击链接重置密码 %s%s" % (SITE_URL, reverse("user:first_reset_password", args=(user.id, find_pass.token))),
+        send_mail(u"NSLoger重置密码", u"%s 你好：\r\n 请点击链接重置密码 %s%s" % (user.username,SITE_URL, reverse("user:first_reset_password", args=(user.id, find_pass.token))),
                     "no-reply@nsloger.com", [email]
                 )
-        messages.success(request, u"邮件已经发送，邮箱如果未收到邮件，请去垃圾信箱看一下。")
-        return HttpResponseRedirect(reverse("bbs:index"))
+        messages.success(request, u"找回密码邮件已经发送，邮箱如果未收到邮件，请去垃圾信箱看一下。")
+    
+    return HttpResponseRedirect(reverse("bbs:index"))
 
 
 def first_reset_password(request, uid=None, token=None):
