@@ -33,7 +33,9 @@ def index(request):
         nodes.append(node)
     
     # 今日热议
-    hot_comments = Comment.objects.filter(created_on__gt=datetime.date.today()).values('topic').annotate(count=Count('topic')).order_by('-count')[:10]
+    now = timezone.now()
+    start = now - datetime.timedelta(hours=23, minutes=59, seconds=59)
+    hot_comments = Comment.objects.filter(created_on__gt=start).values('topic').annotate(count=Count('topic')).order_by('-count')[:10]
     hot_topics = []
     for comment in hot_comments:
         topic = Topic.objects.get(id=comment['topic'])

@@ -2,6 +2,7 @@
 
 {% load humanize %}
 {% load gravatar %}
+{% load cache %}
 
 {% block content %}
 
@@ -20,6 +21,7 @@
   </div>
 </div>
 
+{% cache 60 index_node_panel %}
 <div class="panel panel-default">
     <div class="panel-heading">节点导航</div>
     <div class="panel-body node-panel">  
@@ -39,10 +41,13 @@
       </ul>
     </div>
 </div>
+{% endcache %}
+
 {% endblock %}
 
 {% block sidebar %}
 
+{% cache 60 index_sidebar %}
 <div class="panel panel-default hidden-xs">
   <div class="panel-heading">今日热议</div>
   <div class="panel-body tableview">
@@ -65,6 +70,7 @@
       {% endfor %}
   </div>
 </div>
+{% endcache %}
 
 <div class="panel panel-default hidden-xs">
   <div class="panel-heading">友情链接</div>
