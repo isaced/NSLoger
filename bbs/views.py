@@ -20,7 +20,7 @@ from django.db.models import Count
 
 def index(request):
     '''首页'''
-    topic_list = Topic.objects.all().order_by('-created_on')[:NUM_TOPICS_PER_PAGE]
+    topic_list = Topic.objects.all().order_by('-updated_on')[:NUM_TOPICS_PER_PAGE]
 
     nodes = []
     categor_list = Category.objects.all()

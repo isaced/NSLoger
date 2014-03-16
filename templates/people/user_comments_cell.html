@@ -1,4 +1,3 @@
-{% load humanize %}
 {% load bbstag %}
 
 <div class="comment" id="comment{{forloop.counter}}">
@@ -8,7 +7,7 @@
       <td valign="top" width="auto">
         <div class="pull-left">
           <span><a href="{% url 'bbs:topic' comment.topic.id %}">{{ comment.topic.title }}</a></span>
-          <span class="datetime text-muted">{{ comment.created_on|naturaltime }}</span>
+          <span class="datetime text-muted">{{ comment.created_on|time_to_now }}</span>
           <div class="content reply_content">{{ comment.content|my_markdown:"comment" }}</div>
         </div>
       </td>

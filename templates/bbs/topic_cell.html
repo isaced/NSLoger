@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load bbstag %}
 {% load gravatar %}
                       <div class="cell">
                           <div class="pull-left">
@@ -30,7 +30,7 @@
                                   <span class="text-muted">
                                       •
                                   </span>
-                                  {{ topic.created_on|naturaltime }}
+                                  {{ topic.created_on|time_to_now }}
                                   <span class="text-muted">
                                       •
                                   </span>

@@ -33,8 +33,9 @@
                             <div class="col-sm-offset-3 col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                <input type="checkbox" name="auto" > 记住我
+                                <input type="checkbox" name="auto" > 记住我 
                                 </label>
+                                <a style="margin-left:50px;" href="{% url 'user:find_pass' %}">忘记密码</a>
                             </div>
                             </div>
                         </div>
@@ -43,11 +44,7 @@
                             <button type="submit" class="btn btn-default">登陆</button>
                           </div>
                         </div>
-                        <div class="form-group">
-                          <div class="col-sm-offset-3 col-sm-10">
-                              <a class="btn btn-warning" href="{% url 'user:find_pass' %}">忘记密码</a>
-                          </div>
-                        </div>
+
                     </form>
                 </div>
               </div>

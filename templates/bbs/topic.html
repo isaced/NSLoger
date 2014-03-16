@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-{% load humanize %}
 {% load gravatar %}
 {% load bbstag %}
 
@@ -13,7 +12,7 @@
                     </div>
                     <div class="topic-title">{{ topic.title }}</div>
                     <div class="topic-meta text-muted">
-                      By <a href="{% url 'user:user' topic.author.id %}">{{ topic.author.username }}</a> · {{ topic.created_on|naturaltime }} · {{ topic.num_views }} 次点击 · {{ faved_num }} 人收藏
+                      By <a href="{% url 'user:user' topic.author.id %}">{{ topic.author.username }}</a> · {{ topic.created_on|time_to_now }} · {{ topic.num_views }} 次点击 · {{ faved_num }} 人收藏
                     </div>
                   </div>
     <div class="panel-body">

@@ -8,6 +8,10 @@ from bbs.models import Notice,FavoritedTopic
 from people.models import Member as User
 from people.models import Follower
 
+import datetime
+from django.utils import timezone
+from django.utils.translation import ugettext as _
+
 import misaka
 import re
 
@@ -39,6 +43,22 @@ def get_following_count(user):
 @register.simple_tag
 def page_item_idx(page_obj, p ,forloop):
 	return page_obj.page(p).start_index() + forloop['counter0']
+
+@register.filter
+def time_to_now(value):
+    now = timezone.now()
+    delta = now - value
+    if delta.days > 365:
+        return '%s 年前' % str(delta.days / 365)
+    if delta.days > 30:
+        return '%s 月前' % str(delta.days / 30)
+    if delta.days > 0:
+        return '%s 天前' % str( delta.days)
+    if delta.seconds > 3600:
+        return '%s 小时前' % str(delta.seconds / 3600)
+    if delta.seconds > 60:
+        return '%s 分钟前' % str(delta.seconds / 60)
+    return '刚刚'
 
 # --------- filter ---------
 

@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load bbstag %}
     <div class="cell">
         <div class="detail" style="padding-left:0px;">
             <div class="pull-right">
@@ -24,7 +24,7 @@
                 <span class="text-muted">
                     •
                 </span>
-                {{ topic.created_on|naturaltime }}
+                {{ topic.created_on|time_to_now }}
                 <span class="text-muted">
                     •
                 </span>

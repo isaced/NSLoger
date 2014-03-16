@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load humanize %}
+{% load bbstag %}
 {% load gravatar %}
 
 {% block content %}
@@ -38,7 +38,7 @@
                                   <span class="text-muted">
                                       •
                                   </span>
-                                  {{ faved.topic.created_on|naturaltime }}
+                                  {{ faved.topic.created_on|time_to_now }}
                                   <span class="text-muted">
                                       •
                                   </span>

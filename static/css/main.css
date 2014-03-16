@@ -66,6 +66,10 @@ body {
 .tableview .cell .detail .meta{
   margin-top: 5px;
   font-size: 12px;
+  color: #ccc;
+}
+.tableview .cell .detail .meta a{
+  color: #778087;
 }
 
 .breadcrumb{
