@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     url(r'^', include('bbs.urls', namespace='bbs')),
     url(r'^sites/', include('sites.urls', namespace='sites')),
     url(r'^', include('people.urls', namespace='user')),
+    url(r'^', include('page.urls', namespace='page')),
 )

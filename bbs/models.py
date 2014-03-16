@@ -34,9 +34,8 @@ class Topic(models.Model):
     num_comments = models.IntegerField(default=0,verbose_name='评论数')
     num_favorites = models.IntegerField(default=0,verbose_name='收藏数')
     last_reply = models.ForeignKey(User,related_name='+',verbose_name='最后回复者')
-    datetime = models.DateTimeField(auto_now_add=True,verbose_name='发表时间')
-    created_on = models.DateTimeField(auto_now_add=True,verbose_name='更新时间')
-    updated_on = models.DateTimeField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True,verbose_name='发表时间')
+    updated_on = models.DateTimeField(blank=True, null=True,verbose_name='更新时间')
 
     def __unicode__(self):
         return self.title
