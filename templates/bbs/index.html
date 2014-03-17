@@ -8,10 +8,11 @@
 <div class="panel panel-default">
   <div class="panel-heading">Cocoa开发者的聚集地</div>
   <div class="panel-body tableview">
+    {% cache 30 sidebar index_topics %}
     {% for topic in topic_list %}
         {% include "bbs/topic_cell.html" %}
     {% endfor %}
-
+    {% endcache %}
   </div>
   <div class="panel-body">
     <ul class="pager">
@@ -20,7 +21,6 @@
   </div>
 </div>
 
-{% cache 3600 index_node_panel %}
 <div class="panel panel-default">
     <div class="panel-heading">节点导航</div>
     <div class="panel-body node-panel">  
@@ -40,13 +40,11 @@
       </ul>
     </div>
 </div>
-{% endcache %}
 
 {% endblock %}
 
 {% block sidebar %}
 
-{% cache 300 index_sidebar %}
 <div class="panel panel-default hidden-xs">
   <div class="panel-heading">今日热议</div>
   <div class="panel-body tableview">
@@ -69,6 +67,5 @@
       {% endfor %}
   </div>
 </div>
-{% endcache %}
 
 {% endblock %}

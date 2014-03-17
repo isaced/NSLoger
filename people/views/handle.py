@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.core.cache import cache
 
 from bbs.models import Topic
 from NSLoger.settings import NUM_TOPICS_PER_PAGE,NUM_COMMENT_PER_PAGE
@@ -125,8 +126,16 @@ def user(request, uid):
 
 # 用户榜
 def au_top(request):
-    au_list = Member.objects.order_by('-au')[:20]
-    user_count = Member.objects.all().count()
+    au_list = cache.get('au_top_list')
+    if not au_list:
+        au_list = Member.objects.order_by('-au')[:20]
+        cache.set('au_top_list',au_list,600)
+
+    user_count = cache.get('user_count')
+    if not user_count:
+        user_count = Member.objects.all().count()
+        cache.set('user_count',user_count,600)
+
     return render(request, "people/au_top.html", locals())
 
 # 用户个人页面 - 所有主题

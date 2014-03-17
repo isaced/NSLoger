@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.core.cache import cache
 
 from models import Topic,Comment,Category,Node,Notice, FavoritedTopic
 from people.models import Member as User
@@ -20,30 +21,40 @@ from django.db.models import Count
 
 def index(request):
     '''首页'''
+
+    # 主题列表
     topic_list = Topic.objects.all().order_by('-updated_on')[:NUM_TOPICS_PER_PAGE]
 
-    nodes = []
-    categor_list = Category.objects.all()
-    print request.path
-    for category in categor_list:
-        node = {}
-        category_nodes = Node.objects.filter(category=category.id)
-        node['category_name'] = category.name
-        node['category_nodes'] = category_nodes
-        nodes.append(node)
+    # 节点导航
+    nodes = cache.get('index_nodes')  #取缓存
+    if not nodes:
+        nodes = []
+        categor_list = Category.objects.all()
+        print request.path
+        for category in categor_list:
+            node = {}
+            category_nodes = Node.objects.filter(category=category.id)
+            node['category_name'] = category.name
+            node['category_nodes'] = category_nodes
+            nodes.append(node)
+        cache.set('index_nodes',nodes,600); #10分钟刷新
+
     
     # 今日热议
-    now = timezone.now()
-    start = now - datetime.timedelta(hours=23, minutes=59, seconds=59)
-    hot_comments = Comment.objects.filter(created_on__gt=start).values('topic').annotate(count=Count('topic')).order_by('-count')[:10]
-    hot_topics = []
-    for comment in hot_comments:
-        topic = Topic.objects.get(id=comment['topic'])
-        hot_topics.append(topic)
+    hot_topics = cache.get('index_hot_topics')  #取缓存
+    if not hot_topics:
+        now = timezone.now()
+        start = now - datetime.timedelta(hours=23, minutes=59, seconds=59)
+        hot_comments = Comment.objects.filter(created_on__gt=start).values('topic').annotate(count=Count('topic')).order_by('-count')[:10]
+        hot_topics = []
+        for comment in hot_comments:
+            topic = Topic.objects.get(id=comment['topic'])
+            hot_topics.append(topic)
+        cache.set('index_hot_topics',hot_topics,300); #5分钟刷新
 
     return render(request,"bbs/index.html",{
         'topic_list':topic_list,
-        'nodes':nodes,
+        'nodes':nodes,  
         'hot_topics':hot_topics
         })
 
