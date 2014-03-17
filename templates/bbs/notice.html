@@ -22,12 +22,12 @@
             <tbody>
             <tr>
                 <td width="48" valign="top" align="center">
-                  <a href="{% url 'user:user' user.id %}"><img src="{% gravatar item.from_user 48 %}" class="img-rounded img-responsive" border="0" alt="{{ item.fron_user.name}}"></a>
+                  <a href="{% url 'user:user' item.from_user.id %}"><img src="{% gravatar item.from_user 48 %}" class="img-rounded img-responsive" border="0" alt="{{ item.fron_user.name}}"></a>
                 </td>
                 <td width="12"></td>
                 <td width="auto" valign="middle">
                   <p class="text-gray">
-                    <a href="{% url 'user:user' user.id %}">{{item.from_user.username}}</a> 在主题 
+                    <a href="{% url 'user:user' item.from_user.id %}">{{item.from_user.username}}</a> 在主题 
                     <a href="{% url 'bbs:topic' item.topic.id %}" target="_blank">{{item.topic.title}}</a> 中提到了我 &nbsp;&nbsp;
                     <span class="text-muted small">{{ item.time|naturaltime }}</span>
                     {% if not item.is_readed %} &nbsp;&nbsp;

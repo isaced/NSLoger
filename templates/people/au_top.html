@@ -3,9 +3,11 @@
 
 {% load humanize %}
 {% load gravatar %}
+{% load cache %}
 
 {% block content %}
 
+{% cache 600 au_top %}
 <div class="panel panel-default">
     <div class="panel-heading">用户活跃榜</div>
     <div class="panel-body row">
@@ -22,4 +24,6 @@
         共有 {{user_count}} 位会员加入了NSLoger
     </div>
 </div>
+{% endcache %}
+
 {% endblock %}

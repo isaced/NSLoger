@@ -41,7 +41,7 @@
                 <p> <strong>微博：</strong><a href="http://weibo.com/{{ user_from_id.weibo_id }}">{{ user_from_id.weibo_id }}</a></p>
             {% endif %}
             {% if user_from_id.blog %}
-                <p> <strong>博客：</strong><a href="{{ user_from_id.blog }}">{{ user_from_id.blog }}</a></p>
+                <p> <strong>博客：</strong><a href="http://{{ user_from_id.blog }}" target='_blank'>{{ user_from_id.blog }}</a></p>
             {% endif %}
             {% if user_from_id.profile %}
                 <blockquote class="pull-right">
