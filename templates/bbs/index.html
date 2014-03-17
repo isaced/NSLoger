@@ -20,7 +20,7 @@
   </div>
 </div>
 
-{% cache 60 index_node_panel %}
+{% cache 100 index_node_panel %}
 <div class="panel panel-default">
     <div class="panel-heading">节点导航</div>
     <div class="panel-body node-panel">  
@@ -46,7 +46,7 @@
 
 {% block sidebar %}
 
-{% cache 60 index_sidebar %}
+{% cache 100 index_sidebar %}
 <div class="panel panel-default hidden-xs">
   <div class="panel-heading">今日热议</div>
   <div class="panel-body tableview">
@@ -71,12 +71,4 @@
 </div>
 {% endcache %}
 
-<div class="panel panel-default hidden-xs">
-  <div class="panel-heading">友情链接</div>
-  <div class="panel-body">
-    <ul>
-      <li>虚位以待</li>
-    </ul>
-  </div>
-</div>
 {% endblock %}
