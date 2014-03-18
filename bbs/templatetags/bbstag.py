@@ -63,12 +63,20 @@ def time_to_now(value):
 # --------- filter ---------
 
 #  -------- Markdown Extension --------
-class CommentRenderer(misaka.HtmlRenderer):
+class BaseRenderer(misaka.HtmlRenderer):
+    def autolink(self, link, is_email):
+        if is_email:
+            return '<a href="mailto:%(link)s">%(link)s</a>' % {'link': link}
+        content = link.replace('http://', '').replace('https://', '')
+        return '<a href="%s" target="_blank">%s</a>' % (link, content)
+
+class CommentRenderer(BaseRenderer):
     def header(self, text, level):
         if level < 4:
             return '<p>#%s</p>' % text
         return '<h%d>%s</h%d>' % (level, text, level)
-class TopicRenderer(misaka.HtmlRenderer):
+
+class TopicRenderer(BaseRenderer):
     pass
 #  -------- Markdown Extension --------
 
