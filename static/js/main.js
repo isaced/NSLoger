@@ -3,6 +3,10 @@ $("button#message-close").click(function () {
   $("button#message-close").parent().hide("slow");
 });
 
+// no re submit
+$("form").submit(function(){  
+$(":submit",this).attr("disabled","disabled");  
+});
 
 // Reply Comment
 function replyOne(username,at_floor){
