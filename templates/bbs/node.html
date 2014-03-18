@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block title %}{{node.name}} -   
+  {% if topic_list.paginator %}
+      (第 {{ topic_list.number }} 页)
+  {% endif %}  - 
+{% endblock %}
+
 {% load humanize %}
 {% load gravatar %}
 

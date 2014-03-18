@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="iOS、Mac开发者社区">
-    <title>{% if user.is_authenticated %}{% num_notice user as unread_notice_cnt %}{% if unread_notice_cnt != 0 %}({{unread_notice_cnt}}) - {% endif %}{% endif %}NSLog</title>
+    <title>{% block title %}{% endblock %}NSLoger</title>
 
     {% load static from staticfiles %}
     <link href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">

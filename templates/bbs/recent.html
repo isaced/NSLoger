@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block title %}
+  最近的主题 
+  {% if topic_list.paginator %}
+      (第 {{ topic_list.number }} 页)
+  {% endif %}  - 
+{% endblock %}
+
 {% load humanize %}
 {% load gravatar %}
 
