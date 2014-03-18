@@ -134,7 +134,7 @@ def reply(request, topic_id):
         form = ReplyForm(request.POST)
         if form.is_valid():
             last_comment = Comment.objects.filter(author=request.user).order_by('-created_on')[:1]
-            last_comment = last_comment[0]
+            last_comment = last_comment.first()
             if last_comment and last_comment.content == form.clean()['content'] and ((timezone.now()-last_comment.created_on).seconds < 10):
                 messages.error(request,'你是否正在尝试连续提交两次相同的回复？');
             else:
@@ -214,7 +214,7 @@ def new(request, node_slug):
         form = TopicForm(request.POST)
         if form.is_valid():
             last_topic = Topic.objects.filter(author=request.user).order_by('-created_on')[:1]
-            last_topic = last_topic[0]
+            last_topic = last_topic.first()
             if last_topic and last_topic.title == form.clean()['title'] and ((timezone.now()-last_topic.created_on).seconds < 10):
                 messages.error(request,'你是否正在尝试连续提交两次相同的内容？');
                 return HttpResponseRedirect(reverse("bbs:topic" ,args=(last_topic.id,)))
