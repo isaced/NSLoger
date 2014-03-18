@@ -113,7 +113,20 @@ def reply(request, topic_id):
 
     try:
         topic = Topic.objects.get(id=topic_id)
+        # comment ---
         comment_list = Comment.objects.filter(topic=topic).order_by('created_on')
+        paginator = Paginator(comment_list, NUM_COMMENT_PER_PAGE)
+        page = request.GET.get('page')
+        if page == None:
+            page = paginator.num_pages
+
+        try:
+            comment_list = paginator.page(page)
+        except PageNotAnInteger:
+            comment_list = paginator.page(1)
+        except EmptyPage:
+            comment_list = paginator.page(paginator.num_pages)
+        # comment ---
     except Topic.DoesNotExist:
         raise Http404
 
@@ -160,7 +173,7 @@ def reply(request, topic_id):
     else:
         form = ReplyForm()
 
-    return render(request,"bbs/topic.html",{"node":node,"topic":topic,"form":form,"comment_list":comment_list})
+    return render(request,"bbs/topic.html",{"node":node,"topic":topic,"form":form,"comment_list":comment_list,'paginator':paginator})
 
 
 def node(request, node_slug):
