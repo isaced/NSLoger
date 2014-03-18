@@ -133,43 +133,48 @@ def reply(request, topic_id):
     if request.method == 'POST':
         form = ReplyForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            request.user.comment_num += 1
-            request.user.calculate_au()
-            request.user.save()
-            comment.author = request.user
+            last_comment = Comment.objects.filter(author=request.user).order_by('-created_on')[:1]
+            last_comment = last_comment[0]
+            if last_comment and last_comment.content == form.clean()['content'] and ((timezone.now()-last_comment.created_on).seconds < 10):
+                messages.error(request,'你是否正在尝试连续提交两次相同的回复？');
+            else:
+                comment = form.save(commit=False)
+                request.user.comment_num += 1
+                request.user.calculate_au()
+                request.user.save()
+                comment.author = request.user
 
-            try:
-                topic = Topic.objects.get(id=topic_id)
-            except Topic.DoesNotExist:
-                raise Http404
+                try:
+                    topic = Topic.objects.get(id=topic_id)
+                except Topic.DoesNotExist:
+                    raise Http404
 
-            comment.topic = topic
-            comment.save()
+                comment.topic = topic
+                comment.save()
 
-            # --- 解析@ ---
+                # --- 解析@ ---
 
-            #team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
-            team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
-            at_name_list = set(re.findall(team_name_pattern, comment.content))
-            if at_name_list:
-                for at_name in at_name_list:
-                    if at_name != comment.author.username and at_name != comment.topic.author.username:
-                        try:
-                            at_user = User.objects.get(username=at_name)
-                            if at_user:
-                                notice = Notice(from_user=comment.author,to_user=at_user    ,topic=comment.topic,content=comment.content)
-                                notice.save()
-                        except:
-                            pass
+                #team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+                team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
+                at_name_list = set(re.findall(team_name_pattern, comment.content))
+                if at_name_list:
+                    for at_name in at_name_list:
+                        if at_name != comment.author.username and at_name != comment.topic.author.username:
+                            try:
+                                at_user = User.objects.get(username=at_name)
+                                if at_user:
+                                    notice = Notice(from_user=comment.author,to_user=at_user    ,topic=comment.topic,content=comment.content)
+                                    notice.save()
+                            except:
+                                pass
 
-            # --- 解析@ ---
+                # --- 解析@ ---
 
-            topic.num_comments += 1
-            topic.updated_on = timezone.now()
-            topic.last_reply = request.user
-            topic.save()
-            return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
+                topic.num_comments += 1
+                topic.updated_on = timezone.now()
+                topic.last_reply = request.user
+                topic.save()
+                return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic_id,)))
     else:
         form = ReplyForm()
 
@@ -208,36 +213,42 @@ def new(request, node_slug):
     if request.method == 'POST':
         form = TopicForm(request.POST)
         if form.is_valid():
-            topic = form.save(commit=False)
-            topic.node = node
-            request.user.topic_num += 1
-            request.user.calculate_au()
-            request.user.save()
-            topic.author = request.user
-            topic.last_reply = request.user
-            topic.updated_on = timezone.now()
-            topic.save()
-            node.num_topics += 1
-            node.save()
+            last_topic = Topic.objects.filter(author=request.user).order_by('-created_on')[:1]
+            last_topic = last_topic[0]
+            if last_topic and last_topic.title == form.clean()['title'] and ((timezone.now()-last_topic.created_on).seconds < 10):
+                messages.error(request,'你是否正在尝试连续提交两次相同的内容？');
+                return HttpResponseRedirect(reverse("bbs:topic" ,args=(last_topic.id,)))
+            else:
+                topic = form.save(commit=False)
+                topic.node = node
+                request.user.topic_num += 1
+                request.user.calculate_au()
+                request.user.save()
+                topic.author = request.user
+                topic.last_reply = request.user
+                topic.updated_on = timezone.now()
+                topic.save()
+                node.num_topics += 1
+                node.save()
 
-            # --- 解析@ ---
+                # --- 解析@ ---
 
-            team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
-            at_name_list = set(re.findall(team_name_pattern, topic.content))
-            if at_name_list:
-                for at_name in at_name_list:
-                    if at_name != topic.author.username:
-                        try:
-                            at_user = User.objects.get(username=at_name)
-                            if at_user:
-                                notice = Notice(from_user=topic.author,to_user=at_user,topic=topic,content='')
-                                notice.save()
-                        except:
-                            pass
+                team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
+                at_name_list = set(re.findall(team_name_pattern, topic.content))
+                if at_name_list:
+                    for at_name in at_name_list:
+                        if at_name != topic.author.username:
+                            try:
+                                at_user = User.objects.get(username=at_name)
+                                if at_user:
+                                    notice = Notice(from_user=topic.author,to_user=at_user,topic=topic,content='')
+                                    notice.save()
+                            except:
+                                pass
 
-            # --- 解析@ ---
+                # --- 解析@ ---
 
-            return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic.id,)))
+                return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic.id,)))
     else:
         form = TopicForm()
 

@@ -4,9 +4,9 @@ $("button#message-close").click(function () {
 });
 
 // no re submit
-$("form").submit(function(){  
-$(":submit",this).attr("disabled","disabled");  
-});
+// $("form").submit(function(){  
+// $(":submit",this).attr("disabled","disabled");  
+// });
 
 // Reply Comment
 function replyOne(username,at_floor){
