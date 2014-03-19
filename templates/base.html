@@ -115,8 +115,17 @@
                                               </tbody>
                                             </table>
                                             <div class="box-line"></div>
-                                            {% load bbstag %}
-                                            <div class="panel-footer notice"><a href="{% url 'bbs:notice' %}">{{ unread_notice_cnt }} 条未读信息</a></div>
+    
+                                            <div class="panel-footer notice">
+                                              <a href="{% url 'bbs:notice' %}">
+                                                    {% num_notice user as unread_notice_cnt %}
+                                                    {% if unread_notice_cnt != 0 %}
+                                                      {{ unread_notice_cnt }} 条未读信息
+                                                    {% else %}
+                                                      暂无未读消息
+                                                    {% endif %}
+                                              </a>
+                                            </div>
                                           </div>
                                       </div>
                                 {% else %}
