@@ -25,7 +25,9 @@ class RegisterForm(forms.Form):
         username = self.cleaned_data.get("username").strip()
         if not re.match(r"^[a-zA-Z0-9_.]+$", username):
             raise forms.ValidationError(u"用户名只支持字母、数字、下划线")
-
+            
+        if username[:1] == '_':
+            raise forms.ValidationError(u"用户名不能以下划线打头")
 
         try:
             Member._default_manager.get(username=username)
