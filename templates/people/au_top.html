@@ -14,7 +14,7 @@
     {% for user in au_list %}
     <div class="col-xs-4 col-md-3 col-lg-2 text-center" style="margin-bottom:15px;">
     	<a href="{% url 'user:user' user.id %}">
-	        <img width="48" height="48" src="{% gravatar user.email 48 %}" class="img-responsive center-block" alt="{{ user.username }}">
+	        <img width="48" height="48" src="{% gravatar user 48 %}" class="img-responsive center-block" alt="{{ user.username }}">
 	        <span>{{ user.username }}</span>
         </a>
     </div>

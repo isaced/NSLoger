@@ -6,7 +6,7 @@ from people.views.handle import (register, login, logout,
                                  email_verified, first_reset_password,
                                  find_password, reset_password,
                             )
-from people.views.settings import profile, password
+from people.views.settings import profile, password, upload_headimage, delete_headimage
 from people.views.follow import follow, following, un_follow
 
 

@@ -219,3 +219,14 @@ body {
   padding-top: 10px;
   border-bottom: #eee solid 1px;
 }
+
+/* setting */
+.headimage_setting .current_headimage{
+  /*text-align: center;*/
+}
+.headimage_setting .upload_form{
+  /*text-align: center;*/
+}
+.headimage_setting .file_input{
+  padding-top: 3px;
+}

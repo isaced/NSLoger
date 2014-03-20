@@ -5,7 +5,7 @@
   <tbody><tr>
   <td valign="top" width="48">
   <a href="{% url 'user:user' comment.author.id %}" title="{{ comment.author.username }}">
-    <img src="{% gravatar comment.author 48 %}">
+    <img height="48" width="48" src="{% gravatar comment.author 48 %}">
   </a>
   </td>
   <td width="10"></td>

@@ -3,6 +3,7 @@
 {% block title %}设置 - {% endblock %}
 
 {% load humanize %}
+{% load gravatar %}
 
 {% block content %}
 {% if not user.is_email_verified %}
@@ -62,4 +63,36 @@
                 </form>
                 </div>
               </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">头像设置
+                    <a href="{% url 'user:delete_headimage' %}" class="btn btn-warning btn-xs pull-right">删除邮箱</a>
+              </div>
+                <div class="panel-body headimage_setting">
+                    <!-- upload -->
+                    <form class="form-horizontal" method="post" action="http://up.qiniu.com/" enctype="multipart/form-data">
+                      <input name="key" type="hidden" value="avatar/{{ user.username }}">
+                      <input name="token" type="hidden" value="{{uptoken}}">
+                      
+                      <div class="form-group">
+                        <label class="col-xs-4 col-sm-3 control-label">当前头像：</label>
+                        <div class="col-xs-8 col-sm-3"><img  width="48" height="48" src="{% gravatar user 48 %}" /></div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-xs-4 col-sm-3 control-label">选择一张图片：</label>
+                        <input class="col-xs-8 col-sm-8 file_input" name="file" type="file" accept="image/jpeg, image/png" />
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-4 col-sm-3"></label>
+                        <span class="help-block col-xs-8 col-sm-8">上传限制：PNG/JPG 300KB (未上传则自动抓取邮箱对应<a href="http://cn.gravatar.com" target="_blank">Gravatar头像</a>)</span>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                          <button type="submit" class="btn btn-default">上传</button>
+                        </div>
+                      </div>
+                    </form>
+                    <!-- upload -->
+                  </div>
+            </div>
 {% endblock %}

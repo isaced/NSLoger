@@ -8,7 +8,7 @@
 {% block content %}
 <div class="panel panel-default">
                   <div class="topic-header">
-                    <div class="topic-headimg pull-right"><a href="{% url 'user:user' topic.author.id %}"><img src="{% gravatar topic.author 48 %}" /></a></div>
+                    <div class="topic-headimg pull-right"><a href="{% url 'user:user' topic.author.id %}"><img height="48" width="48" src="{% gravatar topic.author 48 %}" /></a></div>
                     <div class="topic_breadcrumb">
                         <a href="/">NSLoger</a>  ›   <a href="{% url 'bbs:node' topic.node.slug %}">{{ topic.node }}</a>
                     </div>

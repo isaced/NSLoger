@@ -14,6 +14,9 @@ GRAVATAR_DEFAULT_SIZE = getattr(settings, "GRAVATAR_DEFAULT_SIZE", 80)
 User = get_user_model()
 register = template.Library()
 
+# ---Qiniu---
+import qiniu.rs
+
 
 def _get_user(user):
     if not isinstance(user, User):
@@ -71,6 +74,14 @@ def gravatar(user, size=None):
 
 @register.simple_tag
 def gravatar_url_for_user(user, size=None):
+    if user.avatar and  user.avatar != '':
+        img = 'http://nsloger.qiniudn.com/' + user.avatar
+        if size == None:
+            img = img + '?imageView2/2/w/58'
+        else:
+            img = img + '?imageView2/2/w/' + str(size)
+        return img
+
     email = _get_user(user)
     return gravatar_url_for_email(email, size)
 
