@@ -3,3 +3,4 @@ South==0.8.4
 argparse==1.2.1
 misaka==1.0.2
 wsgiref==0.1.2
+qiniu==6.1.3
