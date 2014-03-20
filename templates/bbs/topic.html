@@ -21,10 +21,9 @@
       {{ topic.content|my_markdown:"topic" }}
     </div>
 
-
+    <div class="panel-footer topic-footer">
     {% if user.is_authenticated %}
-    {% if user.id != topic.author.id %}
-    <div class="panel-footer topic-footer"> 
+      {% if user.id != topic.author.id %}
       <div class="pull-left">
         {% if not faved_topic %}
           <form action="{% url 'bbs:fav_topic' topic.id %}" method="POST">
@@ -38,10 +37,12 @@
           </form>
         {% endif %}
       </div>
+      {% else %}
+        <div class="pull-right"><a href="{% url 'bbs:edit' topic.id %}" class="btn btn-default btn-xs pull-right">编辑</a></div>
+      {% endif %}
+    {% endif %}
       <div class="clearfix"></div>
     </div>
-    {% endif %}
-    {% endif %}
 </div>
 
 {% endblock %}

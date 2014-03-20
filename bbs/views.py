@@ -254,6 +254,28 @@ def new(request, node_slug):
 
     return render(request,'bbs/new.html',{'node':node,'form':form})
 
+@login_required
+def edit(request,topic_id):
+
+    try:
+        topic = Topic.objects.get(id=topic_id)
+        if topic.author != request.user:
+            raise Http404
+    except Node.DoesNotExist:
+        raise Http404
+
+    if request.method == 'POST':
+        form = TopicForm(request.POST)
+        if form.is_valid():
+            topic.title = form.clean()['title']
+            topic.content = form.clean()['content']
+            topic.updated_on = timezone.now()
+            topic.save()
+            return HttpResponseRedirect(reverse("bbs:topic" ,args=(topic.id,)))
+    else:
+        form = TopicForm(instance=topic)
+    
+    return render(request,'bbs/edit.html',{'topic':topic,'form':form})
 
 @login_required
 def notice(request):

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}主题编辑 - {% endblock %}
+{% block content %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ol class="breadcrumb">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="{% url 'bbs:node' topic.node.slug %}">{{topic.node.name}}</a></li>
+                        <li><a href="{% url 'bbs:topic' topic.id %}">{{topic.title}}</a></li>
+                        <li>编辑</li>
+                    </ol>
+                </div>
+                <div class="panel-body">
+                    {% if form.title.errors or form.content.errors %}
+                    <div>
+                        <ol class="alert alert-danger">
+                        遇到问题了：
+                        {% for field in form %}
+                          {% for error in field.errors %}
+                            <li style="margin-left:30px;">{{ error }}</li>
+                          {% endfor %}
+                        {% endfor %}
+                        </ol>
+                    </div>
+                    {% endif %}
+                    <form role="form" action="{% url 'bbs:edit' topic.id %}" method="post" class="form-vertical">
+                      {% csrf_token %}
+
+                      <div class="form-group">
+                        <label >{{ form.title.label }}:</label>
+                        <input type="text" class="form-control" name="{{ form.title.html_name }}" value="{{ form.title.value |default_if_none:""}}">
+                      </div>
+                      <div class="form-group">
+                        <label>{{ form.content.label }}:</label>
+                          <textarea name="content" id="content" class="form-control" rows="10">{{ form.content.value |default_if_none:""}}</textarea>
+                      </div>
+
+                      <button type="submit" class="btn btn-default">编辑</button>
+                    </form>
+                  </div>
+                </br>
+                  <blockquote>
+                    <small>你可以使用Markdown语法</small>
+                  </blockquote>
+              </div>
+{% endblock %}
