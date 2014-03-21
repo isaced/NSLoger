@@ -40,7 +40,7 @@
                 <p> <strong>位置：</strong>{{ user_from_id.location }}</p>
             {% endif %}
             {% if user_from_id.weibo_id %}
-                <p> <strong>微博：</strong><a href="http://weibo.com/{{ user_from_id.weibo_id }}">{{ user_from_id.weibo_id }}</a></p>
+                <p> <strong>微博：</strong><a href="http://weibo.com/{{ user_from_id.weibo_id }}" target='_blank'>{{ user_from_id.weibo_id }}</a></p>
             {% endif %}
             {% if user_from_id.blog %}
                 <p> <strong>博客：</strong><a href="http://{{ user_from_id.blog }}" target='_blank'>{{ user_from_id.blog }}</a></p>
