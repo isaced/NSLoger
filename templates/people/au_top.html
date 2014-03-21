@@ -12,7 +12,7 @@
     <div class="panel-heading">用户活跃榜</div>
     <div class="panel-body row">
     {% for user in au_list %}
-    <div class="col-xs-4 col-md-3 col-lg-2 text-center" style="margin-bottom:15px;">
+    <div class="col-xs-4 col-md-3 col-lg-2 au-user">
     	<a href="{% url 'user:user' user.id %}">
 	        <img width="48" height="48" src="{% gravatar user 48 %}" class="img-responsive center-block" alt="{{ user.username }}">
 	        <span>{{ user.username }}</span>
