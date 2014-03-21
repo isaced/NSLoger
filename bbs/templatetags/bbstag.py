@@ -99,7 +99,7 @@ def my_markdown(value, flag):
     md = md.render(force_unicode(value))
 
 	# @人给链接输出
-    team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
+    team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z_.]+)', re.UNICODE)
     at_name_list = set(re.findall(team_name_pattern, md))
     if at_name_list:
 		for at_name in at_name_list:

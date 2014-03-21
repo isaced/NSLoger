@@ -155,7 +155,7 @@ def reply(request, topic_id):
                 # --- 解析@ ---
 
                 #team_name_pattern = re.compile('(?<=@)(\w+)', re.UNICODE)
-                team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z.]+)', re.UNICODE)
+                team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z_.]+)', re.UNICODE)
                 at_name_list = set(re.findall(team_name_pattern, comment.content))
                 if at_name_list:
                     for at_name in at_name_list:
