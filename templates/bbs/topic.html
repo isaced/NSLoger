@@ -15,6 +15,9 @@
                     <div class="topic-title">{{ topic.title }}</div>
                     <div class="topic-meta text-muted">
                       By <a href="{% url 'user:user' topic.author.id %}">{{ topic.author.username }}</a> · {{ topic.created_on|time_to_now }} · {{ topic.num_views }} 次点击 · {{ faved_num }} 人收藏
+                      {% if user.is_authenticated %}{% if user.id == topic.author.id %}
+                       · <a href="{% url 'bbs:edit' topic.id %}" class="node">编辑</a>
+                       {% endif %}{% endif %}
                     </div>
                   </div>
     <div class="panel-body">
@@ -37,11 +40,14 @@
           </form>
         {% endif %}
       </div>
-      {% else %}
-        <div class="pull-right"><a href="{% url 'bbs:edit' topic.id %}" class="btn btn-default btn-xs pull-right">编辑</a></div>
       {% endif %}
     {% endif %}
-      <div class="clearfix"></div>
+    <!-- Share -->
+    <div class="pull-right">
+      <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- Share -->
     </div>
 </div>
 
@@ -115,4 +121,8 @@
   </div>
 {% endif %}
 
+{% endblock %}
+
+{% block footer%}
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","weixin","twi","sqq","copy"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 {% endblock %}
