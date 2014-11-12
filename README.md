@@ -1,4 +1,4 @@
-[NSLoger.com](http://nsloger.com)
+NSLoger.com
 =======
 
 > This is a lightweight forum,The development of the use of Django.
