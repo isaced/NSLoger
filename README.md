@@ -3,6 +3,10 @@ NSLoger.com
 
 > This is a lightweight forum,The development of the use of Django.
 
+演示地址：[NSLoger-isaced.c9.io](http://nsloger-isaced.c9.io)
+
+###截图
+![Screenshot](https://raw.githubusercontent.com/isaced/NSLoger/master/Screenshot.jpg)
 
 ###关于
 第一个用 Python/Django 写的完整项目，在这里感谢 [@cloverstd](https://github.com/cloverstd) 的付出，本来想打造一个 Cocoa 开发者社区，历经种种，虽然社区最终还是迎来关闭，有时候结果也许不太重要，不过这个过程是有意义的。
