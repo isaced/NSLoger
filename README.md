@@ -3,8 +3,6 @@ NSLoger.com
 
 > This is a lightweight forum,The development of the use of Django.
 
-演示地址：[NSLoger-isaced.c9.io](http://nsloger-isaced.c9.io)
-
 ###截图
 ![Screenshot](https://raw.githubusercontent.com/isaced/NSLoger/master/Screenshot.jpg)
 
