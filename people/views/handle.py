@@ -210,7 +210,7 @@ def email_verified(request, uid, token):
     try:
         user = Member.objects.get(pk=uid)
         email = Email.objects.get(user=user)
-    except Member.DoesNotExist, Email.DoesNotExist:
+    except (Member.DoesNotExist, Email.DoesNotExist):
         raise Http404
     else:
         if email.token == token:

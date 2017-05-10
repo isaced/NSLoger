@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from page import views
 
 
-urlpatterns = patterns('',
+urlpatterns = [
         url(r'^(?P<page_slug>[\w-]+)/$',views.page,name="page"),
-        )
+]

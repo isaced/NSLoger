@@ -67,7 +67,7 @@ class Member(AbstractBaseUser):
     avatar = models.CharField("头像", max_length=128, blank=True)
 
     au = models.IntegerField("用户活跃度", default=0)
-    last_ip = models.IPAddressField("上次访问IP", default="0.0.0.0")
+    last_ip = models.GenericIPAddressField("上次访问IP", default="0.0.0.0")
 
 
     email_verified = models.BooleanField("邮箱是否验证", default=False)
@@ -175,7 +175,7 @@ class EmailVerified(models.Model):
 class FindPass(models.Model):
     user = models.OneToOneField(Member, verbose_name="用户")
     token = models.CharField(max_length=32, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True, auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return "%s@%s" % (self.user, self.token)

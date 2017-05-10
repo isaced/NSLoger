@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import template
-from django.utils.encoding import force_unicode
+# from django.utils.encoding import force_unicode
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
@@ -96,18 +96,18 @@ def my_markdown(value, flag):
         renderer = TopicRenderer(flags=misaka.HTML_ESCAPE | misaka.HTML_HARD_WRAP)
 
     md = misaka.Markdown(renderer, extensions=extensions)
-    md = md.render(force_unicode(value))
+    md = md(value) # force_unicode()
 
 	# @人给链接输出
     team_name_pattern = re.compile('(?<=@)([0-9a-zA-Z_.]+)', re.UNICODE)
     at_name_list = set(re.findall(team_name_pattern, md))
     if at_name_list:
-		for at_name in at_name_list:
-			try:
-				at_user = User.objects.get(username=at_name)
-				if at_user:
-					md = md.replace('@'+at_name,'<a href="%s" class="at_user">@%s</a>' % (reverse("user:user",args=(at_user.id,)),at_name))
-			except:
-				pass
+        for at_name in at_name_list:
+            try:
+                at_user = User.objects.get(username=at_name)
+                if at_user:
+                    md = md.replace('@'+at_name,'<a href="%s" class="at_user">@%s</a>' % (reverse("user:user",args=(at_user.id,)),at_name))
+            except:
+                pass
 
     return mark_safe(md)

@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+'''
+'''
+
 import re
 from django.shortcuts import render_to_response,render,HttpResponseRedirect
 from django.http import Http404
@@ -8,7 +10,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 
-from models import Topic,Comment,Category,Node,Notice, FavoritedTopic
+from bbs.models import Topic,Comment,Category,Node,Notice, FavoritedTopic
 from people.models import Member as User
 from bbs.forms import ReplyForm, TopicForm, EditForm
 from django.db import IntegrityError
@@ -30,7 +32,7 @@ def index(request):
     if not nodes:
         nodes = []
         categor_list = Category.objects.all()
-        print request.path
+        print(request.path)
         for category in categor_list:
             node = {}
             category_nodes = Node.objects.filter(category=category.id)

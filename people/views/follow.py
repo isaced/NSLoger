@@ -60,6 +60,5 @@ def un_follow(request, uid):
 @login_required
 def following(request):
     following_list = Follower.objects.filter(user_a=request.user).all()
-    print following_list
-    print "test"
+    print(following_list)
     return render(request, "people/following.html", locals())

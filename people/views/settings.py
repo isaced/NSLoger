@@ -18,14 +18,14 @@ from django.conf import settings
 SITE_URL = getattr(settings, "SITE_URL")
 
 # ---Qiniu---
-import qiniu.conf
+# import qiniu.conf
 
-qiniu.conf.ACCESS_KEY = ""
-qiniu.conf.SECRET_KEY = ""
+# qiniu.conf.ACCESS_KEY = ""
+# qiniu.conf.SECRET_KEY = ""
 
-import qiniu.rs
+# import qiniu.rs
 
-bucket_name = 'nsloger'
+# bucket_name = 'nsloger'
 # ---Qiniu---
 
 __all__ = ['profile', 'password']
@@ -45,18 +45,18 @@ def profile(request):
         form = ProfileForm(instance=user)
 
     # Create Qiniu Upload Token
-    key_name = 'avatar/' + user.username
-    policy = qiniu.rs.PutPolicy(scope='%s:%s' % (bucket_name, key_name))
-    policy.fsizeLimit = 1024 * 300
-    policy.mimeLimit = "image/jpeg;image/png"
-    policy.returnBody = '{"hash": $(etag), "key": $(key)}'
-    policy.returnUrl = SITE_URL + reverse("user:upload_headimage")
-    uptoken = policy.token()
+    # key_name = 'avatar/' + user.username
+    # policy = qiniu.rs.PutPolicy(scope='%s:%s' % (bucket_name, key_name))
+    # policy.fsizeLimit = 1024 * 300
+    # policy.mimeLimit = "image/jpeg;image/png"
+    # policy.returnBody = '{"hash": $(etag), "key": $(key)}'
+    # policy.returnUrl = SITE_URL + reverse("user:upload_headimage")
+    # uptoken = policy.token()
 
     return render(request, "people/settings.html", {
         "form": form,
         "user": user,
-        "uptoken":uptoken
+        "uptoken":'uptoken'
         })
 
 
@@ -117,11 +117,12 @@ def delete_headimage(request):
     if user.avatar == None or user.avatar == '':
         messages.error(request, '亲，你还没上传头像呢！')
     else:
-        ret, err = qiniu.rs.Client().delete(bucket_name, user.avatar)
-        if err is not None:
-            messages.error(request, '头像删除失败')
-        else:
-            user.avatar = ''
-            user.save()
-            messages.success(request, '头像删除成功')
+        pass
+        # ret, err = qiniu.rs.Client().delete(bucket_name, user.avatar)
+        # if err is not None:
+        #     messages.error(request, '头像删除失败')
+        # else:
+        #     user.avatar = ''
+        #     user.save()
+        #     messages.success(request, '头像删除成功')
     return HttpResponseRedirect(reverse("user:settings"))

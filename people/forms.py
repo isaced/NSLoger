@@ -65,7 +65,7 @@ class LoginForm(forms.Form):
         except Member.DoesNotExist:
             email_not_exits = False
 
-        print email_not_exits, username_not_exist
+        print(email_not_exits, username_not_exist)
 
         if username_not_exist or email_not_exits:
             return username

@@ -2,11 +2,11 @@
 
 from django import template
 from django.conf import settings
-import urllib, hashlib
+import hashlib
+import urllib.parse
 from django.contrib.auth import get_user_model
 
-GRAVATAR_URL_PREFIX = getattr(settings, "GRAVATAR_URL_PREFIX",
-                                      "http://www.gravatar.com/")
+GRAVATAR_URL_PREFIX = getattr(settings, "GRAVATAR_URL_PREFIX", "http://www.gravatar.com/")
 GRAVATAR_DEFAULT_IMAGE = getattr(settings, "GRAVATAR_DEFAULT_IMAGE", "")
 GRAVATAR_DEFAULT_RATING = getattr(settings, "GRAVATAR_DEFAULT_RATING", "g")
 GRAVATAR_DEFAULT_SIZE = getattr(settings, "GRAVATAR_DEFAULT_SIZE", 80)
@@ -15,7 +15,7 @@ User = get_user_model()
 register = template.Library()
 
 # ---Qiniu---
-import qiniu.rs
+# import qiniu.rs
 
 
 def _get_user(user):
@@ -26,9 +26,8 @@ def _get_user(user):
             raise Exception("Bad user for gravatar.")
     return user.email
 
-
 def _get_gravatar_id(email):
-    return hashlib.md5(email).hexdigest()
+    return hashlib.md5(email.encode('utf-8')).hexdigest()
 
 
 class GravatarUrlNode(template.Node):
@@ -45,7 +44,7 @@ class GravatarUrlNode(template.Node):
         size = 40
 
         gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
-        gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+        gravatar_url += urllib.parse.urlencode({'d':default, 's':str(size)})
 
         return gravatar_url
 
@@ -53,10 +52,8 @@ class GravatarUrlNode(template.Node):
 def gravatar_url(parser, token):
     try:
         tag_name, email = token.split_contents()
-
-
     except ValueError:
-        raise template.TemplateSyntaxError, "%r tag requires a single argument" % token.contents.split()[0]
+        raise (template.TemplateSyntaxError, "%r tag requires a single argument" % token.contents.split()[0])
 
     return GravatarUrlNode(email)
 
@@ -69,7 +66,7 @@ def gravatar(user, size=None):
 
         return gravatar_url_for_email(user, size)
     except ValueError:
-        raise template.TemplateSyntaxError, u"语法错误"
+        raise (template.TemplateSyntaxError, "语法错误")
 
 
 @register.simple_tag
@@ -98,6 +95,6 @@ def gravatar_url_for_email(email, size=None):
         ('r', GRAVATAR_DEFAULT_RATING),
     ) if p[1]]
     if parameters:
-        gravatar_url += '?' + urllib.urlencode(parameters, doseq=True)
+        gravatar_url += '?' + urllib.parse.urlencode(parameters, doseq=True)
 
     return gravatar_url

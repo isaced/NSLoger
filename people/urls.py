@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from people import views
 import bbs
 
-urlpatterns = patterns('',
+urlpatterns = [
         url(r'^register/$', views.register, name="register"),
         url(r'^login/$', views.login, name="login"),
         url(r'^logout/$', views.logout, name="logout"),
@@ -26,4 +26,4 @@ urlpatterns = patterns('',
         url(r'^find_password/$', views.find_password, name="find_pass"),
         url(r'^reset_password/(?P<uid>\d+)/(?P<token>\w+)/$', views.first_reset_password, name="first_reset_password"),
         url(r'^reset_password/$', views.reset_password, name="reset_password"),
-        )
+]

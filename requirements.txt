@@ -1,6 +1,6 @@
-Django==1.6.2
-South==0.8.4
+Django==1.11.1
+South==1.0.2
 argparse==1.2.1
-misaka==1.0.2
+misaka==2.1.0
 wsgiref==0.1.2
 qiniu==6.1.3
