@@ -1,4 +1,4 @@
-Django==1.11.1
+Django>=1.11.19
 South==1.0.2
 argparse==1.2.1
 misaka==2.1.0
